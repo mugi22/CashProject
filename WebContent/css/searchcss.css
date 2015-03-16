@@ -1,0 +1,41 @@
+   
+            #formCari { margin:0 auto;width:500px;background-color:#CCCCCC;padding:10px;}    
+            h1 { padding:5px;margin:10px;text-align:center }     
+            form label { float:left; width:100px;}     
+            form br { clear:left;}     
+            #btn { margin:10px; text-align:center;padding:5px; } 
+
+            #div2{
+                width:80%;	
+                position:fixed; top:0; left:0;
+                background-color:#66FFFF;
+                margin: 0 auto;
+                position:relative;
+                padding-bottom: 5px;
+                padding-top: 5px;
+            }
+            #result{
+                background-color: darkseagreen;
+            }
+      
+#fm{
+    margin:0;
+    padding:10px 30px;
+}
+.ftitle{
+    font-size:14px;
+    font-weight:bold;
+    padding:5px 0;
+    margin-bottom:10px;
+    border-bottom:1px solid #ccc;
+}
+.fitem{
+    margin-bottom:5px;
+}
+.fitem label{
+    display:inline-block;
+    width:120px;
+}
+.fitem input{
+    width:160px;
+}

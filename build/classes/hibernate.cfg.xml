@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <!--memkai database oracle XE -->
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
+    <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
+    <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:XE</property>
+    <property name="hibernate.connection.username">testdb</property>
+    <property name="hibernate.connection.password">password</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.hbm2ddl.auto">update</property> <!-- untuk pembentukan/update table <property name="propertyName">propertyValue</property>-->
+    
+    <property name="hibernate.ejb.event.post-insert">org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener</property>
+   <property name="hibernate.ejb.event.post-update">org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener</property>
+   <property name="hibernate.ejb.event.post-delete">org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener</property>
+   <property name="hibernate.ejb.event.pre-collection-update">org.hibernate.envers.event.AuditEventListener</property>
+   <property name="hibernate.ejb.event.pre-collection-remove">org.hibernate.envers.event.AuditEventListener</property>
+   <property name="hibernate.ejb.event.post-collection-recreate">org.hibernate.envers.event.AuditEventListener</property>
+   
+   <property name="org.hibernate.envers.versionsTableSuffix">_V</property>
+   <property name="org.hibernate.envers.revisionFieldName">ver_rev</property>
+
+    
+    
+    
+    
+    
+    <mapping class="com.id.kas.pojo.TblUser"/>
+    <mapping class="com.id.kas.pojo.TblUserGroup"/>
+    <mapping class="com.id.kas.pojo.TblPriviledge"/>
+    <mapping class="com.id.kas.pojo.TblMenu"/>
+    <mapping class="com.id.kas.pojo.TblBranch"/>
+    <mapping class="com.id.kas.pojo.TblParam"/>
+    <mapping class="com.id.kas.pojo.TblLookup"/>
+    <mapping class="com.id.kas.pojo.TblGroup"/>
+    <mapping class="com.id.kas.pojo.TblUserGroup"/>
+    <mapping class="com.id.kas.pojo.TblProvinsi"/>
+    <mapping class="com.id.kas.pojo.TblKabupaten"/>
+    <mapping class="com.id.kas.pojo.TblSeq"/>
+     
+    
+  </session-factory>
+    
+</hibernate-configuration>

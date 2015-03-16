@@ -1,0 +1,64 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body style="background-image: url('css/bg_top.jpg')">
+<h1>Main Page</h1>
+<a href="userList.htm">User </a>
+</body>
+</html-->
+<html>
+<head>
+<meta charset="UTF-8">
+<title>UANG KAS</title>
+<link rel="stylesheet" type="text/css"
+	href="css/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="css/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../demo.css">
+<script type="text/javascript" src="css/jquery.min.js"></script>
+<script type="text/javascript" src="css/jquery.easyui.min.js"></script>
+
+              
+</head>
+<body>
+	
+	<div style="margin: 20px 0;"></div> 
+	<div id="cc" class="easyui-layout" style="width: 100%; height: 650px;">
+		<div data-options="region:'north'" style="height: 100px">
+			<h2>Basic Layout</h2>${key}
+			<a href="logout.htm">Logout</a>
+		</div>
+			<!-- div data-options="region:'south',split:true" style="height: 50px;"></div-->
+		<div data-options="region:'west',split:true" title="Menu" style="width: 200px;">		
+	        ${menu}
+			<input type="button" value="test" onclick="test()">
+		</div>
+		<div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
+			<iframe src="utamaMain.htm" style="width: 100%; height: 100%" id="iframe" frameborder="0"></iframe>			
+		</div>
+	</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+$('#tt').tree({
+	onClick: function(node){
+		//alert(node.id);  // alert node text property when clicked
+		$('#iframe').attr('src',node.id);
+		$('#cc').layout('panel', 'center').panel('setTitle', node.text);
+	}
+});
+
+function test(){
+	alert("test");
+	$('#cc').layout('panel', 'center').panel('setTitle', 'abc');
+}
+
+</script>

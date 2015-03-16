@@ -1,0 +1,86 @@
+package com.id.kas.DEVELOPMENT;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.hibernate.Session;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+
+import com.id.kas.pojo.XXXpojo;
+
+public class XXXpojoDAO {
+	private Session session;
+	
+	public XXXpojoDAO(Session session){
+		this.session = session;
+	}
+	
+	
+	public void insert(XXXpojo XXXKecil){
+		session.save(XXXKecil);
+	}
+		
+	public void delete(XXXpojo XXXKecil){
+		session.delete(XXXKecil);
+	}
+	
+	public void update(XXXpojo XXXKecil){
+		session.update(XXXKecil);
+	}
+//====================================================================	
+	public XXXpojo getById(XXXByIdParam){
+		Criteria criteria =null;
+		criteria = session.createCriteria(XXXpojo.class);
+XXXgetIdCriteria
+		return (XXXpojo)  criteria.uniqueResult();//session.get(XXXpojo.class, id);
+	}
+	
+	public List<XXXpojo> getAll(){
+		return (List<XXXpojo>) session.createCriteria(XXXpojo.class).list();
+	}
+	
+	
+	
+	public Long getAllCount(){
+		return (Long) session.createCriteria(XXXpojo.class).setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	public List<XXXpojo> getAll(int start, int rowcount ){
+		return (List<XXXpojo>) session.createCriteria(XXXpojo.class).setFirstResult(start).setMaxResults(rowcount).list();
+	}
+
+/*//SESUAIKAN DENGAN KRITERIA*/	
+	public Criteria getCriteria(XXXgetCriParam){
+		Criteria criteria =null;
+		criteria = session.createCriteria(XXXpojo.class);
+XXXgetCriteria		
+		return criteria;
+	}
+
+	public List<XXXpojo> getBy(XXXgetCriParam ,int start, int rowcount ){
+		Criteria criteria =getCriteria(XXX2getCriParam);
+		return (List<XXXpojo>) criteria.setFirstResult(start).setMaxResults(rowcount).list();
+	}
+	
+	public Long getByCount(XXXgetCriParam, int start, int rowcount  ){
+		Criteria criteria =getCriteria(XXX2getCriParam);
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	public Map<String,Object> getByPerPage(XXXgetCriParam ,int start, int rowcount ){
+		Map map = new HashMap<String, Object>();		
+		long rowCount =  getByCount(XXX2getCriParam,  start,rowcount);//total jumlah row
+		List<XXXpojo> l = getBy(XXX2getCriParam, start,rowcount);//data result nya
+		map.put("total", rowCount);
+		map.put("rows", l);
+		return map;
+	}
+
+
+
+
+}
