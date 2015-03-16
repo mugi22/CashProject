@@ -49,8 +49,10 @@ public class SusunTreeJeasyUI {
         	PriviledgeCek pv = new PriviledgeCek();
         	pv.cekPriveldge(user, (tblmenu.getMenuId()+""));//, isAdd, isEdit, isDelete, isView);
         	String Enc =crypto.encrypt(tblmenu.getMenuId()+"");
-        	String x ="isAdd="+crypto.encrypt(pv.getIsAdd())+"isEdit="+crypto.encrypt(pv.getIsEdit())+"isDelete="+crypto.encrypt(pv.getIsDelete())+"isView="+crypto.encrypt(pv.getIsView());
-        	String priv = x;//crypto.encrypt(x);
+        	//String x ="isAdd="+crypto.encrypt(pv.getIsAdd())+"isEdit="+crypto.encrypt(pv.getIsEdit())+"isDelete="+crypto.encrypt(pv.getIsDelete())+"isView="+crypto.encrypt(pv.getIsView());
+        	String x ="&isAdd="+(pv.getIsAdd())+"&isEdit="+(pv.getIsEdit())+"&isDelete="+(pv.getIsDelete())+"&isView="+(pv.getIsView());
+
+        	String priv = crypto.encrypt(x);
             String dec ="";// crypto.decrypt(priv);
            
 

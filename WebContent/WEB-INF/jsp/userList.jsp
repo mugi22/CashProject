@@ -69,9 +69,10 @@
 		<form id="fm" method="post" novalidate>
 			<div class="fitem">
 				<label>User ID</label> :<input name="userId"	class="easyui-textbox" required="true" id="userId">
+				<input type="button" name="btnKirim" id="btnCariUser" value="Cari" onclick="cariUser()"> 
 			</div>
 			<div class="fitem">
-				<label>Nama User</label> :<input name="name" class="easyui-textbox" required="true"  id="namax">
+				<label>Nama User</label> :<input name="name" class="easyui-textbox" required="true"  id="namax">				
 			</div>
 			
 			<div class="fitem">
@@ -108,6 +109,21 @@
 		<a href="javascript:void(0)" class="easyui-linkbutton" 	iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')"style="width: 90px" id="btnCancel">Cancel</a>
 	</div>
 	<!-- ************************************************END FORM******************* -->
+
+
+    <div id="dd" class="easyui-dialog" title="Pencarian" style="width:400px;height:200px;"
+		    data-options="iconCls:'icon-save',resizable:true,modal:true,closed: true">
+		    <form id="fm2" method="post" novalidate>
+		    <div class="fitem">
+				<label>Nama User</label> :<input name="name" class="easyui-textbox" required="true"  id="namaSearch">				
+			</div>			
+		    </form>
+		    <div id="dlg-buttons">
+				<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="getSearchVal()" style="width: 90px" id="btnSave">OK</a> 
+				<a href="javascript:void(0)" class="easyui-linkbutton" 	iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')"style="width: 90px" id="btnCancel">Cancel</a>
+			</div>
+    </div>
+
 
 </body>
 </html>
@@ -313,6 +329,32 @@ var branchcode;
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
-
+	function cariUser(){
+		//alert("Cari User");
+	    $('#dd').dialog({
+	        title: 'My Dialog',
+	        width: 400,
+	        height: 200,
+	        closed: false,
+	        cache: false,
+	       // href: 'get_content.php',
+	        modal: true
+	        });
+	        //$('#dd').dialog('refresh', 'new_content.php');
+	}
+	
+	function getSearchVal(){
+		//alert("getSearchVal");
+		$('#namax').textbox('setValue',$('#namaSearch').val());	
+		 $('#dd').dialog({
+		        title: 'My Dialog',
+		        width: 400,
+		        height: 200,
+		        closed: true,
+		        cache: false,
+		       // href: 'get_content.php',
+		        modal: true
+		        });
+	}
 	
 </script>

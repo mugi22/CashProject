@@ -75,7 +75,7 @@ public class AEScrypto222 {
 	    // performs encryption & decryption 
 	    public static void main(String[] args) 
 	    {
-	    	AEScrypto aeScrypto = new AEScrypto();
+	    	AEScrypto222 aeScrypto = new AEScrypto222();
 	    	aeScrypto.getKeyValue("sfivbqhfbczzfnko");
 	            String plainText = "isAdd=enable&isEdit=enable&isDelete=enable&isView=enable";
 	            String encryptedText = aeScrypto.encrypt(plainText);

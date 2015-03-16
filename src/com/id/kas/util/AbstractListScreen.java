@@ -29,19 +29,18 @@ public abstract class AbstractListScreen {
 	//=========================
 	
 	 public String doGet(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 
 		 String param =reg.getParameter("param");//.replace(" ", "");
 		 if(param.contains(" ")){
 			 String z = param.replace(" ", "+");
 			 param = z;
 		 }
-//		 System.out.println(" NEW param   : "+param);
 		 String param2 =reg.getParameter("param2");
 		 System.out.println(param);
-//		 String key = (String) session.getAttribute("key");
 		 JCrypto crypto = new JCrypto(param2);
-//		 System.out.println("key:  "+key+" param : "+param+ "param2 : "+param2);
-		 String sDec[] =param.split("==");
+//		 System.out.println("key:  "+param2+" param : "+param+ "  dec param : "+crypto.decrypt(param));
+		 String sPriv = crypto.decrypt(param);
+		 System.out.println(sPriv);
+		 String sDec[] =sPriv.split("&");//==
 		 String sIsAdd ="";
 		 String sIsEdit ="";
 		 String sIsDelete ="";
@@ -49,24 +48,24 @@ public abstract class AbstractListScreen {
 				 
 		 for(String s: sDec){
 			if (s.contains("isAdd=")){
-				sIsAdd = crypto.decrypt(((s.replace("isAdd=", "")+"==")));
+				sIsAdd = /*crypto.decrypt*/(((s.replace("isAdd=", ""))));
 //				System.out.println("isAdd : "+sIsAdd+" : "+" param2 : "+param2);
 			}
 			if (s.contains("isEdit=")){
-				sIsEdit = crypto.decrypt(((s.replace("isEdit=", "")+"==")));
+				sIsEdit = /*crypto.decrypt*/(((s.replace("isEdit=", ""))));
 			}
 			if (s.contains("isDelete=")){
-				sIsDelete = crypto.decrypt(((s.replace("isDelete=", "")+"==")));
+				sIsDelete = /*crypto.decrypt*/(((s.replace("isDelete=", ""))));
 			}
 			if (s.contains("isView=")){
-				sIsView = crypto.decrypt(((s.replace("isView=", "")+"==")));
+				sIsView = /*crypto.decrypt*/(((s.replace("isView=", ""))));
 			}
 			 
 		 }
          String ses = (String) session.getAttribute("session");
          TblUser user = (TblUser) session.getAttribute("user");
          if(cekValidSession(session)){
-        	 System.out.println(sIsAdd+"==========================");
+        	 System.out.println(sIsAdd+"*==========================");
 	         model.put("btnAdd",sIsAdd);// "disable");
 	         model.put("btnEdit",sIsEdit);//reg.getParameter("isEdit") );//"disable");
 	         model.put("btnDelete",sIsDelete);//reg.getParameter("isDelete"));//"disable");   isShow
