@@ -110,44 +110,97 @@
 	</div>
 	<!-- ************************************************END FORM******************* -->
 
+<div id="win">	
+<div id="cari">
+<form id="formCari2" method="post" action="#"  >    
+                <label>User Id</label> : 
+                <input name="userId" type="text" id="searchUserName" size="30" maxlength="30"><br>
 
-    <div id="dd" class="easyui-dialog" title="Pencarian" style="width:400px;height:200px;"
-		    data-options="iconCls:'icon-save',resizable:true,modal:true,closed: true">
-		    <form id="fm2" method="post" novalidate>
-		    <div class="fitem">
-				<label>Nama User</label> :<input name="name" class="easyui-textbox" required="true"  id="namaSearch">				
-			</div>			
-		    </form>
-		    <div id="dlg-buttons">
-				<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="getSearchVal()" style="width: 90px" id="btnSave">OK</a> 
-				<a href="javascript:void(0)" class="easyui-linkbutton" 	iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')"style="width: 90px" id="btnCancel">Cancel</a>
-			</div>
-    </div>
-
-
+                <div id="btn">     
+                    <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="userSearch()">     
+                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
+                </div>
+            </form> 
+</div>
+	<table id="dg2">  </table>
+	<div id="toolbar2">
+             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="doAmbil()" id="btnAmbil">Tampil</a>
+        </div>
+</div>
 </body>
 </html>
 
 
 
 <script>
-var url;
-var branchcode;
+	function cariUser() {
+	    $('#win').window({
+	        width:600,
+	        height:400,
+	        modal:true
+	        });
+	   
+	    $('#cari').show();
+	    
+	    $('#dg2').datagrid({
+	        url:'userListAll.htm?param=',
+	        title:"Pencarian",	        
+	        pagination:"true",	               
+	        columns:[[
+	        {field:'userId',title:'userId',width:100},
+	        {field:'name',title:'Name',width:250},
+	        {field:'branchCode',title:'branchCode',width:100,align:'right'}
+	        ]],
+	        toolbar:"#toolbar2"
+	        
+	        });
+	    
+	    
+	}
+
+	function userSearch() {
+		
+		var jsonurl = 'userListAll.htm?param='+$("#searchUserName").val();
+		alert("Cari User  "+jsonurl);		
+		$('#dg2').datagrid({
+			url : jsonurl,
+			onLoadSuccess : function(data) {
+				if (data.total == 0) {
+					alert("Data Tidak Ditemukan..................");
+				}
+			}
+		});
+	}
+
+	var url;
+	var branchcode;
 	$("document").ready(function() {
 		$("#btnAdd").linkbutton('${btnAdd}');
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
-		$("#btnShow").linkbutton('${btnShow}');		
-		
+		$("#btnShow").linkbutton('${btnShow}');
+		$('#cari').hide();
+		//toolbar2
+		$('#toolbar2').hide();
 		$('#cc').layout('panel', 'west').panel('tittle', 'abc');
+		
+		doClear();
 	});
 
+	function doAmbil(){
+		var row = $('#dg2').datagrid('getSelected');
+		//alert(row.userId);
+		$('#userId').textbox('setValue',row.userId);
+		$('#win').window('close'); 
+	}
+	
+	
 	function test() {
 		alert("testtttt..... click");
 	}
 
-/* function untuk list data*/
-	function retrieve() {		
+	/* function untuk list data*/
+	function retrieve() {
 		var jsonurl = 'userListAll.htm?param=' + $('#userIdSearch').val();
 		$('#dg').datagrid({
 			url : jsonurl,
@@ -173,10 +226,10 @@ var branchcode;
 	}
 
 	/* END function untuk list data*/
-	
+
 	/* ============FORM FUNCTION ==========*/
 
-	function doAdd() { 
+	function doAdd() {
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah User');
 		$('#fm').form('clear');
 		url = 'userAdd.htm';
@@ -205,7 +258,7 @@ var branchcode;
 
 	function doShow() {
 		$('#fm').form('clear');
-		var row = $('#dg').datagrid('getSelected');		
+		var row = $('#dg').datagrid('getSelected');
 		if (row) {
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit User');
 			$('#fm').form('clear');
@@ -217,7 +270,7 @@ var branchcode;
 			onShow();
 		}
 	}
-	
+
 	function doDelete() {
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
@@ -269,8 +322,7 @@ var branchcode;
 			}
 		});
 	}
-	
-	
+
 	/* ================TAMBAHAN=================*/
 	//untuk mengisi combobox kode cabang keseluruhan dengan default value sesuai parameter
 	function addComboBranch() {
@@ -290,6 +342,7 @@ var branchcode;
 	/*inputan readonly atau tidak saat onShow */
 	function onShow() {
 		//list button
+		$('#btnCariUser').hide();
 		$('#userId').textbox('readonly', true);
 		$('#namax').textbox('readonly', true);
 		$('#password').textbox('readonly', true);
@@ -304,6 +357,7 @@ var branchcode;
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
 		//list button
+		$('#btnCariUser').show();
 		$('#userId').textbox('readonly', false);
 		$('#namax').textbox('readonly', false);
 		$('#password').textbox('readonly', false);
@@ -317,7 +371,8 @@ var branchcode;
 	}
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		//list button
+		//list buttonbtn CariUser
+		$('#btnCariUser').hide();
 		$('#userId').textbox('readonly', true);
 		$('#namax').textbox('readonly', false);
 		$('#password').textbox('readonly', false);
@@ -329,32 +384,29 @@ var branchcode;
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
-	function cariUser(){
-		//alert("Cari User");
-	    $('#dd').dialog({
-	        title: 'My Dialog',
-	        width: 400,
-	        height: 200,
-	        closed: false,
-	        cache: false,
-	       // href: 'get_content.php',
-	        modal: true
-	        });
-	        //$('#dd').dialog('refresh', 'new_content.php');
-	}
-	
-	function getSearchVal(){
-		//alert("getSearchVal");
-		$('#namax').textbox('setValue',$('#namaSearch').val());	
-		 $('#dd').dialog({
-		        title: 'My Dialog',
-		        width: 400,
-		        height: 200,
-		        closed: true,
-		        cache: false,
-		       // href: 'get_content.php',
-		        modal: true
-		        });
-	}
-	
+
+	//getSearch
+	//function getSarch(){		
+	//	var jsonurl = 'userListAll.htm?rows=10&param=' + $('#userSearch').val();
+	//	$('#dg').datagrid({
+	//		url : jsonurl,
+	//		onLoadSuccess : function(data) {
+	//			if (data.total == 0) {
+	//				alert("Data Tidak Ditemukan..................");
+	//			}
+	//		}
+	//	});
+
+	//$('#namax').textbox('setValue',$('#namaSearch').val());	
+	//$('#dd').dialog({
+	//title: 'My Dialog',
+	//width:600,
+	// height: 300,
+	//    closed: true,
+	//    cache: false,
+	// href: 'get_content.php',
+	//    modal: true
+	//    });
+	//$('#dd').dialog('refresh', 'new_content.php');
+	//}
 </script>
