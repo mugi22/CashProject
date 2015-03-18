@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.CacheMode;
 import org.hibernate.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,9 +49,6 @@ public class MenuController  extends AbstractListScreen{
 //	 ***************************** LIST  **************************************************************
 	 @RequestMapping(value="/menuListAll.htm", method=RequestMethod.POST)
      public @ResponseBody String menuListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-     
-//     	 String kriteria1 =reg.getParameter("param");
-//		 String kriteria2 =reg.getParameter("param2");
 		 String menuId="0";
 			if(reg.getParameter("MenuId").length()>0){
 				 menuId = reg.getParameter("MenuId");
@@ -76,14 +74,16 @@ if(reg.getParameter("ParentId").length()>0){
          int loffset = (Integer.parseInt(reg.getParameter("page"))-1)*row;
          Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
          
-         Session sess = null;
+         
          try {
+        	 Session sess = null;
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
 			TblMenuDAO dao = new TblMenuDAO(sess);
 			Map h = new HashMap<String, Object>();
 			List<TblMenu> l = new ArrayList<TblMenu>();
 				h = dao.getByPerPage(new BigDecimal(menuId),MenuName,new BigDecimal(ParentId),loffset, row);
+				sess.setCacheMode(CacheMode.IGNORE);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -93,8 +93,10 @@ if(reg.getParameter("ParentId").length()>0){
             sess.close();
         	result ="{"+'"'+"total"+'"'+":"+h.get("total")+","+'"'+"rows"+'"'+":["+x+']'+'}';
             */
+          
             
-			
+            System.out.println("session "+sess);
+//            HibernateUtil.shutdown();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

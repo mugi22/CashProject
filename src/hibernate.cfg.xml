@@ -20,9 +20,29 @@
     <property name="hibernate.connection.password">server</property>
     
     <property name="hibernate.show_sql">true</property>
+    
+    <!-- property name="connection.autocommit">false</property-->
+		
+		<!-- Optional configuration -->
+		<property name="show_sql">true</property>
+		<property name="format_sql">false</property>
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="use_sql_comments">false</property>
+		<property name="generate_statistics">false</property>
+		<property name="max_fetch_depth">2</property>
+		<property name="default_batch_fetch_size">16</property>
+		<property name="use_streams_for_binary">true</property>
+		<property name="connection.isolation">2</property>
+		<!-- property name="hibernate.transaction.flush_before_completion">true</property-->
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+      
+    
+    
+    
+    
     <property name="hibernate.hbm2ddl.auto">update</property> <!-- untuk pembentukan/update table <property name="propertyName">propertyValue</property>-->
     
-    <property name="hibernate.ejb.event.post-insert">org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener</property>
+    <!-- property name="hibernate.ejb.event.post-insert">org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener</property>
    <property name="hibernate.ejb.event.post-update">org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener</property>
    <property name="hibernate.ejb.event.post-delete">org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener</property>
    <property name="hibernate.ejb.event.pre-collection-update">org.hibernate.envers.event.AuditEventListener</property>
@@ -32,7 +52,7 @@
    <property name="org.hibernate.envers.versionsTableSuffix">_V</property>
    <property name="org.hibernate.envers.revisionFieldName">ver_rev</property>
 
-    
+     -->
     
     
     

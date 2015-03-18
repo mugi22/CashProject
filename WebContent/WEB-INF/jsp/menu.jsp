@@ -45,15 +45,16 @@
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-                    <th field="params" width="100"sortable="true">Params</th> 
+                    
                     <th field="menuId" width="100"sortable="true">MenuId</th> 
-                    <th field="haveChild" width="100"sortable="true">HaveChild</th> 
                     <th field="menuName" width="100"sortable="true">MenuName</th> 
-                    <th field="noUrut" width="100"sortable="true">NoUrut</th> 
+                    <th field="haveChild" width="100"sortable="true">HaveChild</th> 
                     <th field="parentId" width="100"sortable="true">ParentId</th> 
+                    <th field="noUrut" width="100"sortable="true">NoUrut</th>                   
                     <th field="menuPage" width="100"sortable="true">MenuPage</th> 
                     <th field="screenClass" width="100"sortable="true">ScreenClass</th> 
                     <th field="isUsingGroovy" width="100"sortable="true">IsUsingGroovy</th> 
+                    <th field="params" width="100"sortable="true">Params</th> 
                      
                 </tr>
             </thead>
@@ -71,15 +72,16 @@
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
 		<div class="ftitle">MENU</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>Params</label> :<input name="params"	class="easyui-textbox" required="false" id="params">	</div>
-                    <div class="fitem">	<label>MenuId</label> :<input name="menuId"	class="easyui-textbox" required="false" id="menuId">	</div>
-                    <div class="fitem">	<label>HaveChild</label> :<input name="haveChild"	class="easyui-textbox" required="false" id="haveChild">	</div>
+					<div class="fitem">	<label>MenuId</label> :<input name="menuId"	class="easyui-textbox" required="false" id="menuId">	</div>
                     <div class="fitem">	<label>MenuName</label> :<input name="menuName"	class="easyui-textbox" required="false" id="menuName">	</div>
-                    <div class="fitem">	<label>NoUrut</label> :<input name="noUrut"	class="easyui-textbox" required="false" id="noUrut">	</div>
                     <div class="fitem">	<label>ParentId</label> :<input name="parentId"	class="easyui-textbox" required="false" id="parentId">	</div>
                     <div class="fitem">	<label>MenuPage</label> :<input name="menuPage"	class="easyui-textbox" required="false" id="menuPage">	</div>
-                    <div class="fitem">	<label>ScreenClass</label> :<input name="screenClass"	class="easyui-textbox" required="false" id="screenClass">	</div>
-                    <div class="fitem">	<label>IsUsingGroovy</label> :<input name="isUsingGroovy"	class="easyui-textbox" required="false" id="isUsingGroovy">	</div>
+                    
+                    <div class="fitem">	<label>HaveChild</label> :<input name="haveChild"	class="easyui-textbox" required="false" id="haveChild">	</div>
+                    <div class="fitem">	<label>NoUrut</label> :<input name="noUrut"	class="easyui-textbox" required="false" id="noUrut">	</div>
+                    <div class="fitem"> <label>ScreenClass</label> :<input name="screenClass"	class="easyui-textbox"  id="screenClass">	</div>
+                    <div class="fitem">	<label>IsUsingGroovy</label> :<input name="isUsingGroovy"	class="easyui-textbox"  id="isUsingGroovy">	</div>
+	                <div class="fitem">	<label>Params</label> :<input name="params"	class="easyui-textbox"  id="params">	</div>
 			
 		</form>
 	</div>
@@ -256,14 +258,14 @@ $('#isUsingGroovy').textbox('readonly', true);
 	function onAdd() {
 		//list button
 		//$('#userId').textbox('readonly', false);		
-$('#params').textbox('readonly', true);
-$('#menuId').textbox('readonly', true);
-$('#haveChild').textbox('readonly', true);
-$('#menuName').textbox('readonly', true);
-$('#noUrut').textbox('readonly', true);
-$('#parentId').textbox('readonly', true);
-$('#menuPage').textbox('readonly', true);
-$('#screenClass').textbox('readonly', true);
+$('#params').textbox('readonly', false);
+$('#menuId').textbox('readonly', false);
+$('#haveChild').textbox('readonly', false);
+$('#menuName').textbox('readonly', false);
+$('#noUrut').textbox('readonly', false);
+$('#parentId').textbox('readonly', false);
+$('#menuPage').textbox('readonly', false);
+$('#screenClass').textbox('readonly', false);
 $('#isUsingGroovy').textbox('readonly', true);
 		
 		//form button
@@ -274,15 +276,15 @@ $('#isUsingGroovy').textbox('readonly', true);
 	function onEdit() {
 		//list button
 		//$('#userId').textbox('readonly', true);	
-$('#params').textbox('readonly', true);
+$('#params').textbox('readonly', false);
 $('#menuId').textbox('readonly', true);
 $('#haveChild').textbox('readonly', true);
-$('#menuName').textbox('readonly', true);
-$('#noUrut').textbox('readonly', true);
-$('#parentId').textbox('readonly', true);
-$('#menuPage').textbox('readonly', true);
-$('#screenClass').textbox('readonly', true);
-$('#isUsingGroovy').textbox('readonly', true);
+$('#menuName').textbox('readonly', false);
+$('#noUrut').textbox('readonly', false);
+$('#parentId').textbox('readonly', false);
+$('#menuPage').textbox('readonly', false);
+$('#screenClass').textbox('readonly', false);
+$('#isUsingGroovy').textbox('readonly', false);
 	
 		//form button
 		$('#btnSave').linkbutton('enable');
