@@ -1,0 +1,7 @@
+
+
+//								id                            child      name      urut     parent,screen
+INSERT INTO `TBL_MENU` VALUES (100.00,NULL,NULL,NULL,NULL,NULL,'1',NULL,'Dev',NULL,10.00,NULL,0.00,NULL);
+
+//                                     id  group
+INSERT INTO `TBL_PRIVILEDGE` VALUES (100.00,1.00,NULL,NULL,NULL,NULL,NULL,'1','1','1','1');
