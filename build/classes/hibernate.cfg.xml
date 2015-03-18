@@ -3,11 +3,22 @@
 <hibernate-configuration>
   <!--memkai database oracle XE -->
   <session-factory>
+  <!-- ORACLE 
     <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
     <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
     <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:XE</property>
     <property name="hibernate.connection.username">testdb</property>
     <property name="hibernate.connection.password">password</property>
+    -->
+    
+    <!-- MYSQL -->
+    <!--  -->
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://10.2.21.62:3306/mysql?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">server</property>
+    
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.hbm2ddl.auto">update</property> <!-- untuk pembentukan/update table <property name="propertyName">propertyValue</property>-->
     

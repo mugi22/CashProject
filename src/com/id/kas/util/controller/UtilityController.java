@@ -115,4 +115,11 @@ public class UtilityController {
 //		 {"total":0,"rows":[]}
 		 return sClear;
 	 }
+	 
+	 
+	 
+	 @RequestMapping(value="/cariUser.htm", method=RequestMethod.GET)
+	 public String cariUser(){
+		 return "cariUser";
+	 }
 }

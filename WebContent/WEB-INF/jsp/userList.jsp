@@ -72,7 +72,8 @@
 				<input type="button" name="btnKirim" id="btnCariUser" value="Cari" onclick="cariUser()"> 
 			</div>
 			<div class="fitem">
-				<label>Nama User</label> :<input name="name" class="easyui-textbox" required="true"  id="namax">				
+				<label>Nama User</label> :<input name="name" class="easyui-textbox" required="true"  id="namax">	
+							
 			</div>
 			
 			<div class="fitem">
@@ -99,8 +100,7 @@
 							<option value="Y">Ya</option>
 							<option value="N">Tidak</option>
 				</select>
-			</div>
-			
+			</div>			
 		</form>
 	</div>
 
@@ -110,67 +110,38 @@
 	</div>
 	<!-- ************************************************END FORM******************* -->
 
-<div id="win">	
-<div id="cari">
-<form id="formCari2" method="post" action="#"  >    
-                <label>User Id</label> : 
-                <input name="userId" type="text" id="searchUserName" size="30" maxlength="30"><br>
-
-                <div id="btn">     
-                    <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="userSearch()">     
-                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
-                </div>
-            </form> 
-</div>
-	<table id="dg2">  </table>
-	<div id="toolbar2">
-             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="doAmbil()" id="btnAmbil">Tampil</a>
-        </div>
-</div>
+<div id="win"></div>
 </body>
 </html>
 
 
 
 <script>
-	function cariUser() {
-	    $('#win').window({
-	        width:600,
-	        height:400,
-	        modal:true
-	        });
-	   
-	    $('#cari').show();
-	    
-	    $('#dg2').datagrid({
-	        url:'userListAll.htm?param=',
-	        title:"Pencarian",	        
-	        pagination:"true",	               
-	        columns:[[
-	        {field:'userId',title:'userId',width:100},
-	        {field:'name',title:'Name',width:250},
-	        {field:'branchCode',title:'branchCode',width:100,align:'right'}
-	        ]],
-	        toolbar:"#toolbar2"
-	        
-	        });
-	    
-	    
-	}
+//window pencarian
+function cariUser() {
+	//alert("testtttt..... click");
+	$('#win').window({
+        width:600,
+        height:400,
+        href:'cariUser.htm',
+        modal:true,
+        minimizable:false,
+        maximizable:false,
+        collapsible:false
+        
+        });
+    //$('#cari').show();
+}
 
-	function userSearch() {
-		
-		var jsonurl = 'userListAll.htm?param='+$("#searchUserName").val();
-		alert("Cari User  "+jsonurl);		
-		$('#dg2').datagrid({
-			url : jsonurl,
-			onLoadSuccess : function(data) {
-				if (data.total == 0) {
-					alert("Data Tidak Ditemukan..................");
-				}
-			}
-		});
-	}
+
+function doAmbil(){ //ambil key dari row yang dipilih/klik
+	var row = $('#dg2').datagrid('getSelected');
+	//alert(row.userId);
+	$('#userId').textbox('setValue',row.userId);
+	$('#win').window('close'); 
+}
+
+
 
 	var url;
 	var branchcode;
@@ -180,25 +151,15 @@
 		$("#btnDelete").linkbutton('${btnDelete}');
 		$("#btnShow").linkbutton('${btnShow}');
 		$('#cari').hide();
-		//toolbar2
-		$('#toolbar2').hide();
+//		$('#toolbar2').hide();
 		$('#cc').layout('panel', 'west').panel('tittle', 'abc');
 		
 		doClear();
 	});
 
-	function doAmbil(){
-		var row = $('#dg2').datagrid('getSelected');
-		//alert(row.userId);
-		$('#userId').textbox('setValue',row.userId);
-		$('#win').window('close'); 
-	}
 	
 	
-	function test() {
-		alert("testtttt..... click");
-	}
-
+	
 	/* function untuk list data*/
 	function retrieve() {
 		var jsonurl = 'userListAll.htm?param=' + $('#userIdSearch').val();
@@ -385,28 +346,4 @@
 		$('#btnSave').linkbutton('enable');
 	}
 
-	//getSearch
-	//function getSarch(){		
-	//	var jsonurl = 'userListAll.htm?rows=10&param=' + $('#userSearch').val();
-	//	$('#dg').datagrid({
-	//		url : jsonurl,
-	//		onLoadSuccess : function(data) {
-	//			if (data.total == 0) {
-	//				alert("Data Tidak Ditemukan..................");
-	//			}
-	//		}
-	//	});
-
-	//$('#namax').textbox('setValue',$('#namaSearch').val());	
-	//$('#dd').dialog({
-	//title: 'My Dialog',
-	//width:600,
-	// height: 300,
-	//    closed: true,
-	//    cache: false,
-	// href: 'get_content.php',
-	//    modal: true
-	//    });
-	//$('#dd').dialog('refresh', 'new_content.php');
-	//}
 </script>
