@@ -116,32 +116,32 @@ XXXparamSearch
 
 	/* END function untuk list data*/
 	
-	/* ============FORM FUNCTION ==========*/
+	/* ============FORM FUNCTION ========== XXXZtambah*/
 
 	function doAdd() { 
-		$('#dlg').dialog('open').dialog('setTitle', 'Tambah XXXZtambah');
+		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
 		url = 'XXXZAdd.htm';
 		onAdd();
 	}
-
+/* ---- XXXZedit*/
 	function doEdit() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Edit XXXZedit');
+			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
 			url = 'XXXZEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
-
+/*-- XXXZtampil*/
 	function doShow() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Tampil XXXZtampil');
+			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
 			url = 'XXXZEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;

@@ -20,11 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
-import com.id.kas.pojo.TblGroup;
-import com.id.kas.pojo.TblMenu;
 import com.id.kas.pojo.TblUser;
 import com.id.kas.pojo.TblPriviledge;//harap tambahain coyyy
-import com.id.kas.pojo.dao.TblGroupDAO;
 import com.id.kas.util.AbstractListScreen;
 
 
@@ -51,18 +48,15 @@ public class PriviledgeController  extends AbstractListScreen{
 //	 ***************************** LIST  **************************************************************
 	 @RequestMapping(value="/priviledgeListAll.htm", method=RequestMethod.POST)
      public @ResponseBody String priviledgeListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		String GroupId="0";
-		if(reg.getParameter("GroupId").length()>0){
-			GroupId=reg.getParameter("GroupId");
-		}
-		String MenuId="0";
-		if(reg.getParameter("MenuId").length()>0){
-			MenuId=reg.getParameter("MenuId");
-		}
-		String IsAdd=reg.getParameter("IsAdd");
-		String IsDelete=reg.getParameter("IsDelete");
-		String IsUpdate=reg.getParameter("IsUpdate");
-		String IsView=reg.getParameter("IsView");		 
+String GroupId="0";//reg.getParameter("GroupId");
+if(reg.getParameter("GroupId").length()>0){
+	GroupId = reg.getParameter("GroupId");
+}	
+
+String MenuId="0";//reg.getParameter("MenuId");		
+if(reg.getParameter("MenuId").length()>0){
+	MenuId = reg.getParameter("MenuId");
+}	
          String ses = (String) session.getAttribute("session");
          TblUser user = (TblUser) session.getAttribute("user");
          model.put("session", ses);
@@ -81,11 +75,18 @@ public class PriviledgeController  extends AbstractListScreen{
 			TblPriviledgeDAO dao = new TblPriviledgeDAO(sess);
 			Map h = new HashMap<String, Object>();
 			List<TblPriviledge> l = new ArrayList<TblPriviledge>();
-				h = dao.getByPerPage(new BigDecimal(GroupId),new BigDecimal(MenuId),IsAdd,IsDelete,IsUpdate,IsView,loffset, row);
-			String x = changeJson(h, sess);
+				h = dao.getByPerPage(new BigDecimal(GroupId),new BigDecimal(MenuId),loffset, row);
+			sess.close();
+            result = gson.toJson(h);
+            System.out.println(result);
+            
+            /**  BILA ADA PERUBAHAN DATA JSON
+            String x = changeJson(h, sess);
             sess.close();
         	result ="{"+'"'+"total"+'"'+":"+h.get("total")+","+'"'+"rows"+'"'+":["+x+']'+'}';
-        	 System.out.println(result);
+            */
+            
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -122,6 +123,7 @@ public class PriviledgeController  extends AbstractListScreen{
                ses.beginTransaction();
                dao.insert(tbl);
                ses.getTransaction().commit();
+               simpanLog(user.getUserId(),gson.toJson(tbl));
                ses.close();
                x=gson.toJson("SUKSES");
          }catch(Exception e){
@@ -135,8 +137,15 @@ public class PriviledgeController  extends AbstractListScreen{
 //	 EDIT	 
 	 @RequestMapping(value="/priviledgeEdit.htm", method=RequestMethod.POST)
      public @ResponseBody String priviledgeEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String groupId=reg.getParameter("groupId");
-String menuId=reg.getParameter("menuId");
+		 String GroupId="0";//reg.getParameter("GroupId");
+		 if(reg.getParameter("groupId").length()>0){
+		 	GroupId = reg.getParameter("groupId");
+		 }	
+
+		 String MenuId="0";//reg.getParameter("MenuId");		
+		 if(reg.getParameter("menuId").length()>0){
+			 MenuId = reg.getParameter("menuId");
+		 }	
 		 
 		 TblUser user = getUser(session);
 		 if(!cekValidSession(session)){
@@ -151,13 +160,14 @@ String menuId=reg.getParameter("menuId");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
                TblPriviledgeDAO dao = new TblPriviledgeDAO(ses);
-               TblPriviledge tbl = dao.getById(new BigDecimal(groupId),new BigDecimal(menuId));
-	               tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
-	               tbl.setMenuId(new BigDecimal(reg.getParameter("menuId")));
-	               tbl.setIsAdd(reg.getParameter("isAdd").charAt(0));
-	               tbl.setIsDelete(reg.getParameter("isDelete").charAt(0));
-	               tbl.setIsUpdate(reg.getParameter("isUpdate").charAt(0));
-	               tbl.setIsView(reg.getParameter("isView").charAt(0));
+               TblPriviledge tbl = dao.getById(new BigDecimal(GroupId),new BigDecimal(MenuId));
+                String tblOld = gson.toJson(tbl);
+                tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
+                tbl.setMenuId(new BigDecimal(reg.getParameter("menuId")));
+                tbl.setIsAdd(reg.getParameter("isAdd").charAt(0));
+                tbl.setIsDelete(reg.getParameter("isDelete").charAt(0));
+                tbl.setIsUpdate(reg.getParameter("isUpdate").charAt(0));
+                tbl.setIsView(reg.getParameter("isView").charAt(0));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -165,6 +175,7 @@ String menuId=reg.getParameter("menuId");
                ses.beginTransaction();
                dao.update(tbl);
                ses.getTransaction().commit();
+                simpanLog(user.getUserId(),"MODIFY  : "+gson.toJson(tbl)+" OLD "+tblOld);
                ses.close();
                x=gson.toJson("UPDATE SUKSES");
          }catch(Exception e){
@@ -177,9 +188,16 @@ String menuId=reg.getParameter("menuId");
 //	***********************************DELETE**************************************** 
 	 @RequestMapping(value="/priviledgeDelete.htm", method=RequestMethod.POST)
      public @ResponseBody String priviledgeDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String groupId=reg.getParameter("groupId");
-String menuId=reg.getParameter("menuId");
-	
+		 String GroupId="0";//reg.getParameter("GroupId");
+		 if(reg.getParameter("GroupId").length()>0){
+		 	GroupId = reg.getParameter("GroupId");
+		 }	
+
+		 String MenuId="0";//reg.getParameter("MenuId");		
+		 if(reg.getParameter("MenuId").length()>0){
+		 	GroupId = reg.getParameter("MenuId");
+		 }	
+		 
 		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 TblUser user = getUser(session);
 		 
@@ -193,10 +211,12 @@ String menuId=reg.getParameter("menuId");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
                TblPriviledgeDAO dao = new TblPriviledgeDAO(ses);
-               TblPriviledge tbl = dao.getById(new BigDecimal(groupId),new BigDecimal(menuId));
+               TblPriviledge tbl = dao.getById(new BigDecimal(GroupId),new BigDecimal(MenuId));
+               String tblDel = gson.toJson(tbl);
                ses.beginTransaction();
                dao.delete(tbl);
                ses.getTransaction().commit();
+               simpanLog(user.getUserId(),"DELETE  : "+tblDel);
                ses.close();
                h.put("success", true);
                x=gson.toJson(h);
@@ -207,28 +227,29 @@ String menuId=reg.getParameter("menuId");
          return x;
  	 }
 
+//----------BILA ADA PERUBAHAN DATA JSON, RUBAH DI SINI------------------------------------------
+//	public String changeJson(Map<String,Object> result, Session sess){//nemabhakan field nama group dan nama menu
+//		List<TblPriviledge> listPri = (List<TblPriviledge>) result.get("rows");
+////		List<TblPriviledge> priv = (List<TblPriviledge>) h.get("rows");
+//		Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
+//		StringBuffer sb = new StringBuffer();
+//		for(TblPriviledge pr : listPri){
+//			String s = gson.toJson(pr);			
+//			TblGroupDAO groupDAO = new TblGroupDAO(sess);
+//			TblGroup group = groupDAO.getById(pr.getGroupId());
+//			TblMenuDAO menuDAO = new TblMenuDAO(sess);
+//			TblMenu menu =  menuDAO.getById(pr.getMenuId());
+//			String a = s.replace("}", ","+'"'+"groupName"+'"'+":"+'"'+group.getGroupName()+'"'+","+'"'+"menuName"+'"'+":"+'"'+menu.getMenuName()+'"'+"},");
+//			sb.append(a);
+//		}
+//		String x="";
+//		if(sb.toString().length()>0){
+//			x= (sb.toString()).substring(0,sb.toString().length()-1);
+//		}	else{
+//			x="";
+//		}
+//		return x;
+//	}
 
-	public String changeJson(Map<String,Object> result, Session sess){
-		List<TblPriviledge> listPri = (List<TblPriviledge>) result.get("rows");
-//		List<TblPriviledge> priv = (List<TblPriviledge>) h.get("rows");
-		Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
-		StringBuffer sb = new StringBuffer();
-		for(TblPriviledge pr : listPri){
-			String s = gson.toJson(pr);			
-			TblGroupDAO groupDAO = new TblGroupDAO(sess);
-			TblGroup group = groupDAO.getById(pr.getGroupId());
-			TblMenuDAO menuDAO = new TblMenuDAO(sess);
-			TblMenu menu =  menuDAO.getById(pr.getMenuId());
-			String a = s.replace("}", ","+'"'+"groupName"+'"'+":"+'"'+group.getGroupName()+'"'+","+'"'+"menuName"+'"'+":"+'"'+menu.getMenuName()+'"'+"},");
-			sb.append(a);
-		}
-		String x="";
-		if(sb.toString().length()>0){
-			x= (sb.toString()).substring(0,sb.toString().length()-1);
-		}	else{
-			x="";
-		}
-		return x;
-	}
-	 
+	
 }

@@ -57,39 +57,35 @@ public class TblPriviledgeDAO {
 	}
 
 /*//SESUAIKAN DENGAN KRITERIA*/	
-	public Criteria getCriteria(BigDecimal groupId,BigDecimal  menuId,String isAdd,String isDelete,String isUpdate,String isView){
+	public Criteria getCriteria(BigDecimal GroupId,BigDecimal MenuId){
 		Criteria criteria =null;
 		criteria = session.createCriteria(TblPriviledge.class);
-                    if (groupId.doubleValue()>0){criteria.add(Restrictions.eq("groupId", groupId)); 	}
-                    if (menuId.doubleValue()>0){criteria.add(Restrictions.eq("menuId", menuId)); 	}
-                    if (isAdd.length()>0){criteria.add(Restrictions.eq("isAdd", isAdd)); 	}
-                    if (isDelete.length()>0){criteria.add(Restrictions.eq("isDelete", isDelete)); 	}
-                    if (isUpdate.length()>0){criteria.add(Restrictions.eq("isUpdate", isUpdate)); 	}
-                    if (isView.length()>0){criteria.add(Restrictions.eq("isView", isView)); 	}
+                    if (GroupId.doubleValue()>0.0){criteria.add(Restrictions.eq("groupId", GroupId)); 	}
+                    if (MenuId.doubleValue()>0.0){criteria.add(Restrictions.eq("menuId", MenuId)); 	}
 		
 		return criteria;
 	}
 
-	public List<TblPriviledge> getBy(BigDecimal groupId,BigDecimal menuId,String isAdd,String isDelete,String isUpdate,String isView ,int start, int rowcount ){
-		Criteria criteria =getCriteria(groupId,menuId,isAdd,isDelete,isUpdate,isView);
+	public List<TblPriviledge> getBy(BigDecimal GroupId,BigDecimal MenuId ,int start, int rowcount ){
+		Criteria criteria =getCriteria(GroupId,MenuId);
 		return (List<TblPriviledge>) criteria.setFirstResult(start).setMaxResults(rowcount).list();
 	}
 	
-	public Long getByCount(BigDecimal groupId,BigDecimal menuId,String isAdd,String isDelete,String isUpdate,String isView, int start, int rowcount  ){
-		Criteria criteria =getCriteria(groupId,menuId,isAdd,isDelete,isUpdate,isView);
+	public Long getByCount(BigDecimal GroupId,BigDecimal MenuId, int start, int rowcount  ){
+		Criteria criteria =getCriteria(GroupId,MenuId);
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	public Map<String,Object> getByPerPage(BigDecimal groupId,BigDecimal menuId,String isAdd,String isDelete,String isUpdate,String isView ,int start, int rowcount ){
+	public Map<String,Object> getByPerPage(BigDecimal GroupId,BigDecimal MenuId ,int start, int rowcount ){
 		Map map = new HashMap<String, Object>();		
-		long rowCount =  getByCount(groupId,menuId,isAdd,isDelete,isUpdate,isView,  start,rowcount);//total jumlah row
-		List<TblPriviledge> l = getBy(groupId,menuId,isAdd,isDelete,isUpdate,isView, start,rowcount);//data result nya
+		long rowCount =  getByCount(GroupId,MenuId,  start,rowcount);//total jumlah row
+		List<TblPriviledge> l = getBy(GroupId,MenuId, start,rowcount);//data result nya
 		map.put("total", rowCount);
 		map.put("rows", l);
 		return map;
 	}
 
 
-	
+
 
 }

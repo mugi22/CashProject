@@ -15,6 +15,7 @@
         <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
         <script type="text/javascript" src="css/formater.js"></script>
 
+		<script type="text/javascript" src="css/myalert.js"></script>
 
 <title>User</title>
 </head>
@@ -22,11 +23,9 @@
 
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
-            <form name="FREG" id="formCari" method="post" action="#"  >    
-                <label>User Id</label> : 
-                <input name="idSearch" type="text" id="idSearch" size="30" maxlength="30"><br>
-                <label>Group Id</label> : 
-                <input name="groupSearch" type="text" id="groupSearch" size="30" maxlength="30"><br>
+            <form name="FREG" id="formCari" method="post" action="#"  >                 
+                    <label>GroupId</label> : <input name="GroupId" type="text" id="GroupId" size="30" maxlength="30"><br>
+                    <label>UserId</label> : <input name="UserId" type="text" id="UserId" size="30" maxlength="30"><br>
 
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
@@ -45,8 +44,8 @@
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-                    <th field="userId" width="100"sortable="true">UserId</th> 
                     <th field="groupId" width="100"sortable="true">GroupId</th> 
+                    <th field="userId" width="100"sortable="true">UserId</th> 
                      
                 </tr>
             </thead>
@@ -62,14 +61,13 @@
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">User Information</div>
+		<div class="ftitle">USERGROUP</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>UserId</label> :<input name="userId"	class="easyui-textbox" required="false" id="userId">	</div>
                     <div class="fitem">	<label>GroupId</label> :<input name="groupId"	class="easyui-textbox" required="false" id="groupId">	</div>
+                    <div class="fitem">	<label>UserId</label> :<input name="userId"	class="easyui-textbox" required="false" id="userId">	</div>
 			
 		</form>
 	</div>
-
 	<div id="dlg-buttons">
 		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="doSave()" style="width: 90px" id="btnSave">Save</a> 
 		<a href="javascript:void(0)" class="easyui-linkbutton" 	iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')"style="width: 90px" id="btnCancel">Cancel</a>
@@ -95,9 +93,10 @@ var branchcode;
 		alert("testtttt..... click");
 	}
 
-/* function untuk list data*/
+/* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
-		var jsonurl = 'userGroupListAll.htm?param=' + $('#idSearch').val()+'&param2='+$('#groupSearch').val();
+		var jsonurl = 'userGroupListAll.htm?'+
+'GroupId='+$('#GroupId').val()+"&"+'UserId='+$('#UserId').val();
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -126,14 +125,9 @@ var branchcode;
 	/* ============FORM FUNCTION ==========*/
 
 	function doAdd() { 
-		$('#dlg').dialog('open').dialog('setTitle', 'Tambah usergrouptambah');
+		$('#dlg').dialog('open').dialog('setTitle', 'Tambah ');
 		$('#fm').form('clear');
 		url = 'userGroupAdd.htm';
-		/*var t = $('#namax');
-		upperCase($('#namax'));
-		upperCase($('#userId'));
-		branchcode = ''; //combobox tidak ada default
-		addComboBranch();*/
 		onAdd();
 	}
 
@@ -141,13 +135,10 @@ var branchcode;
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Edit usergroupedit');
+			$('#dlg').dialog('open').dialog('setTitle', 'Edit ');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'userGroupEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
-			/*upperCase($('#namax'));
-			branchcode = row.branchCode;
-			addComboBranch();*/
+			url = 'userGroupEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -156,13 +147,10 @@ var branchcode;
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Tampil usergrouptampil');
+			$('#dlg').dialog('open').dialog('setTitle', 'Tampil ');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
 			url = 'userGroupEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
-			/*upperCase($('#namax'));
-			branchcode = row.branchCode;
-			addComboBranch();*/
 			onShow();
 		}
 	}
@@ -174,8 +162,8 @@ var branchcode;
 					function(r) {
 						if (r) {
 							$.post('userGroupDelete.htm', {
-								userId : row.userId,
-								groupId : row.groupId
+								GroupId : row.groupId,
+								UserId : row.userId//SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -200,18 +188,11 @@ var branchcode;
 			success : function(result) {
 				var resultx = eval('(' + result + ')');
 				if (resultx === 'fail' || result === null) {
-					alert("Simpan Gagal");
-					$.messager.show({
-						title : 'Error',
-						msg : "Simpan Gagal"
-					});
+					alertError("Simpan Gagal");					
 				} else {
-					alert("Simpan Sukses");
+					alertAll('Simpan Sukses');
 					$('#dlg').dialog('close'); // close the dialog
 					$('#dg').datagrid('reload'); // reload the user data
-					//var kd = $('#kode').val();
-					//$('#kodeProvinsi').val(kd);
-					//                        var jsonurl =  'provinsiAjax.htm?param='+$('#kodeProvinsi').val();
 					$('#dg').datagrid({
 						url : jsonurl
 					});
@@ -243,6 +224,9 @@ var branchcode;
 	function onShow() {
 		//list button
 		//$('#userId').textbox('readonly', true);
+$('#groupId').textbox('readonly', true);
+$('#userId').textbox('readonly', true);
+
 		//form button
 		$('#btnSave').linkbutton('disable');
 	}
@@ -250,7 +234,9 @@ var branchcode;
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
 		//list button
-		//$('#userId').textbox('readonly', false);
+		//$('#userId').textbox('readonly', false);		
+$('#groupId').textbox('readonly', false);
+$('#userId').textbox('readonly', false);
 		
 		//form button
 		$('#btnSave').linkbutton('enable');
@@ -259,8 +245,10 @@ var branchcode;
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
 		//list button
-		//$('#userId').textbox('readonly', true);
-		
+		//$('#userId').textbox('readonly', true);	
+$('#groupId').textbox('readonly', true);
+$('#userId').textbox('readonly', true);
+	
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}

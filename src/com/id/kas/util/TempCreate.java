@@ -286,7 +286,7 @@ public class TempCreate {
 							StringBuffer sbx = null ;
 							sbx= new StringBuffer();
 							for(String t :lSearch){								
-								sbx.append(j1+"if ("+Util.firstUpper(t)+".length()>0){criteria.add(Restrictions.eq("+'"'+Util.firstUpper(t)+'"'+", "+Util.firstUpper(t)+")); 	}\n");
+								sbx.append(j1+"if ("+Util.firstUpper(t)+".length()>0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(t)+'"'+", "+Util.firstUpper(t)+")); 	}\n");
 							}
 							String z = line.replaceAll("XXXgetCriteria",sbx.toString());
 							line =z;
@@ -359,6 +359,7 @@ public class TempCreate {
 	public void createFile(String fileName,String fileText) {
 		try {
 			File file = new File(fileName);
+			System.out.println(file.getAbsolutePath());
 			if(file.createNewFile()){
 				BufferedWriter output = new BufferedWriter(new FileWriter(file));
 				output.write(fileText);

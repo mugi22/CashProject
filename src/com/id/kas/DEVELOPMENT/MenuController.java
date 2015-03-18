@@ -150,8 +150,8 @@ if(reg.getParameter("ParentId").length()>0){
 	 @RequestMapping(value="/menuEdit.htm", method=RequestMethod.POST)
      public @ResponseBody String menuEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		 String menuId="0";
-			if(reg.getParameter("MenuId").length()>0){
-				 menuId = reg.getParameter("MenuId");
+			if(reg.getParameter("menuId").length()>0){
+				 menuId = reg.getParameter("menuId");
 			}		 
 		 TblUser user = getUser(session);
 		 if(!cekValidSession(session)){

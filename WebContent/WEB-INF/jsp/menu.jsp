@@ -142,7 +142,7 @@ var branchcode;
 	/* ============FORM FUNCTION ==========*/
 
 	function doAdd() { 
-		$('#dlg').dialog('open').dialog('setTitle', 'Tambah menutambah');
+		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
 		url = 'menuAdd.htm';
 		onAdd();
@@ -152,7 +152,7 @@ var branchcode;
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Edit menuedit');
+			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
 			url = 'menuEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
@@ -164,7 +164,7 @@ var branchcode;
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Tampil menutampil');
+			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
 			url = 'menuEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
@@ -179,7 +179,7 @@ var branchcode;
 					function(r) {
 						if (r) {
 							$.post('menuDelete.htm', {
-								Id : row.Id //SESUAIKAN 
+								MenuId : row.menuId //SESUAIKAN 
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -240,15 +240,15 @@ var branchcode;
 	function onShow() {
 		//list button
 		//$('#userId').textbox('readonly', true);
-$('#params').textbox('readonly', true);
-$('#menuId').textbox('readonly', true);
-$('#haveChild').textbox('readonly', true);
-$('#menuName').textbox('readonly', true);
-$('#noUrut').textbox('readonly', true);
-$('#parentId').textbox('readonly', true);
-$('#menuPage').textbox('readonly', true);
-$('#screenClass').textbox('readonly', true);
-$('#isUsingGroovy').textbox('readonly', true);
+		$('#params').textbox('readonly', true);
+		$('#menuId').textbox('readonly', true);
+		$('#haveChild').textbox('readonly', true);
+		$('#menuName').textbox('readonly', true);
+		$('#noUrut').textbox('readonly', true);
+		$('#parentId').textbox('readonly', true);
+		$('#menuPage').textbox('readonly', true);
+		$('#screenClass').textbox('readonly', true);
+		$('#isUsingGroovy').textbox('readonly', true);
 
 		//form button
 		$('#btnSave').linkbutton('disable');

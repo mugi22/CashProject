@@ -68,26 +68,30 @@ public class XxxController {
 		}
                 
 		TempCreate tem = new TempCreate();
-//		V I E W
+//		V I E W H:\Workspace\CashProject\WebContent\WEB-INF\jsp
+		String sTemplate="H:\\Workspace\\CashProject\\template\\"; //TEMPLATE FoLDER
+		String sFileDAO="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+daoName+"DAO.java"; //DAO
+		String sFileController="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+conName+".java";//CONTROLER
+		String sFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\"+jspName+".jsp"; //JSP
 		String sFile;
-		sFile="H:\\zzz\\CashProject\\template\\jspTemplate.txt";//baca template
+		sFile=sTemplate+"jspTemplate.txt";//baca template
 		List<String> l = new ArrayList<String>();
 //		System.out.println(tem.readFile(sFile,lForm,lList));
 		String strFile = (tem.readFile(sFile,lForm,lList,jspName,lSearch));
-		String sFileCreate="H:\\zzz\\CashProject\\WebContent\\WEB-INF\\jsp\\"+jspName+".jsp";
+//		String sFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp"+jspName+".jsp";
 		tem.createFile(sFileCreate, strFile);
 		
 		
 //		COTROLLER	
-		String sFileConTemp="H:\\zzz\\CashProject\\template\\controllerTemplate.txt";
-		String sFileController="H:\\zzz\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+conName+".java";
+		String sFileConTemp=sTemplate+"controllerTemplate.txt";
+//		String sFileController="H:\\zzz\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+conName+".java";
 		String strControl = tem.readFileControllerTemp(sFileConTemp,mapName,jspName,conName,daoName,lForm,lSearch,lIds);
 		tem.createFile(sFileController, strControl);
 		      
 //		D A O  mula
 //		COTROLLER	
-		String sFileDAOTemp="H:\\zzz\\CashProject\\template\\daoTemplate.txt";
-		String sFileDAO="H:\\zzz\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+daoName+"DAO.java";
+		String sFileDAOTemp=sTemplate+"daoTemplate.txt";
+//		String sFileDAO="H:\\zzz\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+daoName+"DAO.java";
 		String strDAO = tem.readFileDAOTemp(sFileDAOTemp, daoName,lSearch,lIds);
 		tem.createFile(sFileDAO, strDAO);
 			
@@ -129,25 +133,6 @@ public class XxxController {
 	
 	
 	
-	
-	
-//	public void readFile(){
-//		BufferedReader br = null;
-//				try {
-//					String sCurrentLine;
-//					br = new BufferedReader(new FileReader("C:\\KasProject\\KasTIProject\\template\\jspTemplate.txt"));
-//					while ((sCurrentLine = br.readLine()) != null) {
-//						System.out.println(sCurrentLine);
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				} finally {
-//					try {
-//						if (br != null)br.close();
-//					} catch (IOException ex) {
-//						ex.printStackTrace();
-//					}
-//				}
-//			}
+
 
 }

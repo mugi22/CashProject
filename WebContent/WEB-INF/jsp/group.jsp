@@ -15,6 +15,7 @@
         <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
         <script type="text/javascript" src="css/formater.js"></script>
 
+		<script type="text/javascript" src="css/myalert.js"></script>
 
 <title>User</title>
 </head>
@@ -22,9 +23,9 @@
 
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
-            <form name="FREG" id="formCari" method="post" action="#"  >    
-                <label>User Id</label> : 
-                <input name="idSearch" type="text" id="idSearch" size="30" maxlength="30"><br>
+            <form name="FREG" id="formCari" method="post" action="#"  >                 
+                    <label>GroupId</label> : <input name="GroupId" type="text" id="GroupId" size="30" maxlength="30"><br>
+                    <label>Jabatan</label> : <input name="Jabatan" type="text" id="Jabatan" size="30" maxlength="30"><br>
 
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
@@ -46,13 +47,8 @@
                     
                     <th field="groupId" width="100"sortable="true">GroupId</th> 
                     <th field="groupName" width="100"sortable="true">GroupName</th> 
-                    <th field="jabatan" width="100"sortable="true">Jabatan</th> 
-                    <th field="createBy" width="100"sortable="true">CreateBy</th> 
-                    <th field="createDate" width="100"sortable="true">CreateDate</th> 
-                    <th field="updateBy" width="100"sortable="true">UpdateBy</th>                    
-                    <th field="updateDate" width="100"sortable="true">UpdateDate</th>                     
+                    <th field="jabatan" width="100"sortable="true">Jabatan</th>                     
                     <th field="params" width="100"sortable="true">Params</th> 
-                    <th field="versi" width="100"sortable="true">Versi</th> 
                      
                 </tr>
             </thead>
@@ -68,17 +64,16 @@
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">User Information</div>
+		<div class="ftitle">GROUP</div>
 		<form id="fm" method="post" novalidate>
                     
-                    <div class="fitem">	<label>GroupId</label> :<input name="groupId"	class="easyui-textbox" required="true" id="groupId">	</div>
-                    <div class="fitem">	<label>GroupName</label> :<input name="groupName"	class="easyui-textbox" required="true" id="groupName">	</div>
-                    <div class="fitem">	<label>Jabatan</label> :<input name="jabatan"	class="easyui-textbox"  id="jabatan">	</div>
-                    <div class="fitem">	<label>Params</label> :<input name="params"	class="easyui-textbox"  id="params">	</div>
+                    <div class="fitem">	<label>GroupId</label> :<input name="groupId"	class="easyui-textbox" required="false" id="groupId">	</div>
+                    <div class="fitem">	<label>GroupName</label> :<input name="groupName"	class="easyui-textbox" required="false" id="groupName">	</div>
+                    <div class="fitem">	<label>Jabatan</label> :<input name="jabatan"	class="easyui-textbox" required="false" id="jabatan">	</div>                    
+                    <div class="fitem">	<label>Params</label> :<input name="params"	class="easyui-textbox" required="false" id="params">	</div>
 			
 		</form>
 	</div>
-
 	<div id="dlg-buttons">
 		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="doSave()" style="width: 90px" id="btnSave">Save</a> 
 		<a href="javascript:void(0)" class="easyui-linkbutton" 	iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')"style="width: 90px" id="btnCancel">Cancel</a>
@@ -104,9 +99,10 @@ var branchcode;
 		alert("testtttt..... click");
 	}
 
-/* function untuk list data*/
+/* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
-		var jsonurl = 'groupListAll.htm?param=' + $('#idSearch').val();
+		var jsonurl = 'groupListAll.htm?'+
+'GroupId='+$('#GroupId').val()+"&"+'Jabatan='+$('#Jabatan').val();
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -135,14 +131,9 @@ var branchcode;
 	/* ============FORM FUNCTION ==========*/
 
 	function doAdd() { 
-		$('#dlg').dialog('open').dialog('setTitle', 'Tambah grouptambah');
+		$('#dlg').dialog('open').dialog('setTitle', 'Tambah ');
 		$('#fm').form('clear');
 		url = 'groupAdd.htm';
-		/*var t = $('#namax');
-		upperCase($('#namax'));
-		upperCase($('#userId'));
-		branchcode = ''; //combobox tidak ada default
-		addComboBranch();*/
 		onAdd();
 	}
 
@@ -150,13 +141,10 @@ var branchcode;
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Edit groupedit');
+			$('#dlg').dialog('open').dialog('setTitle', 'Edit ');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'groupEdit.htm?param='+row.groupId; //?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
-			/*upperCase($('#namax'));
-			branchcode = row.branchCode;
-			addComboBranch();*/
+			url = 'groupEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -165,13 +153,10 @@ var branchcode;
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Tampil grouptampil');
+			$('#dlg').dialog('open').dialog('setTitle', 'Tampil ');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'groupEdit.htm?param='+row.groupId; //+'&param2='+row.kodeKabupaten;
-			/*upperCase($('#namax'));
-			branchcode = row.branchCode;
-			addComboBranch();*/
+			url = 'groupEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -183,7 +168,7 @@ var branchcode;
 					function(r) {
 						if (r) {
 							$.post('groupDelete.htm', {
-								groupId : row.groupId
+								GroupId : row.groupId //SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -208,18 +193,11 @@ var branchcode;
 			success : function(result) {
 				var resultx = eval('(' + result + ')');
 				if (resultx === 'fail' || result === null) {
-					alert("Simpan Gagal");
-					$.messager.show({
-						title : 'Error',
-						msg : "Simpan Gagal"
-					});
+					alertError("Simpan Gagal");					
 				} else {
-					alert("Simpan Sukses");
+					alertAll('Simpan Sukses');
 					$('#dlg').dialog('close'); // close the dialog
 					$('#dg').datagrid('reload'); // reload the user data
-					//var kd = $('#kode').val();
-					//$('#kodeProvinsi').val(kd);
-					//                        var jsonurl =  'provinsiAjax.htm?param='+$('#kodeProvinsi').val();
 					$('#dg').datagrid({
 						url : jsonurl
 					});
@@ -251,6 +229,11 @@ var branchcode;
 	function onShow() {
 		//list button
 		//$('#userId').textbox('readonly', true);
+$('#params').textbox('readonly', true);
+$('#groupId').textbox('readonly', true);
+$('#jabatan').textbox('readonly', true);
+$('#groupName').textbox('readonly', true);
+
 		//form button
 		$('#btnSave').linkbutton('disable');
 	}
@@ -258,7 +241,11 @@ var branchcode;
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
 		//list button
-		//$('#userId').textbox('readonly', false);
+		//$('#userId').textbox('readonly', false);		
+$('#params').textbox('readonly', false);
+$('#groupId').textbox('readonly', false);
+$('#jabatan').textbox('readonly', false);
+$('#groupName').textbox('readonly', false);
 		
 		//form button
 		$('#btnSave').linkbutton('enable');
@@ -267,8 +254,12 @@ var branchcode;
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
 		//list button
-		//$('#userId').textbox('readonly', true);
-		
+		//$('#userId').textbox('readonly', true);	
+$('#params').textbox('readonly', false);
+$('#groupId').textbox('readonly', true);
+$('#jabatan').textbox('readonly', false);
+$('#groupName').textbox('readonly', false);
+	
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}

@@ -15,6 +15,7 @@
         <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
         <script type="text/javascript" src="css/formater.js"></script>
 
+		<script type="text/javascript" src="css/myalert.js"></script>
 
 <title>User</title>
 </head>
@@ -22,9 +23,9 @@
 
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
-            <form name="FREG" id="formCari" method="post" action="#"  >    
-                <label>Key </label> : 
-                <input name="idSearch" type="text" id="idSearch" size="30" maxlength="30"><br>
+            <form name="FREG" id="formCari" method="post" action="#"  >                 
+                    <label>Value</label> : <input name="Value" type="text" id="Value" size="30" maxlength="30"><br>
+                    <label>Key</label> : <input name="Key" type="text" id="Key" size="30" maxlength="30"><br>
 
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
@@ -43,10 +44,14 @@
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-                  
+                    <th field="value" width="100"sortable="true">Value</th> 
                     <th field="key" width="100"sortable="true">Key</th> 
-                      <th field="value" width="100"sortable="true">Value</th> 
                     <th field="description" width="100"sortable="true">Description</th> 
+                    <th field="createBy" width="100"sortable="true">CreateBy</th> 
+                    <th field="createDate" width="100"sortable="true">CreateDate</th> 
+                    <th field="updateBy" width="100"sortable="true">UpdateBy</th> 
+                    <th field="updateDate" width="100"sortable="true">UpdateDate</th> 
+                    <th field="versi" width="100"sortable="true">Versi</th> 
                      
                 </tr>
             </thead>
@@ -62,14 +67,14 @@
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">User Information</div>
-		<form id="fm" method="post" novalidate>                    
-                    <div class="fitem">	<label>Key</label> :<input name="key"	class="easyui-textbox" required="false" id="key">	</div>
+		<div class="ftitle">PARAM</div>
+		<form id="fm" method="post" novalidate>
                     <div class="fitem">	<label>Value</label> :<input name="value"	class="easyui-textbox" required="false" id="value">	</div>
-                    <div class="fitem">	<label>Description</label> :<input name="description"	class="easyui-textbox" required="false" id="description">	</div>			
+                    <div class="fitem">	<label>Key</label> :<input name="key"	class="easyui-textbox" required="false" id="key">	</div>
+                    <div class="fitem">	<label>Description</label> :<input name="description"	class="easyui-textbox" required="false" id="description">	</div>
+			
 		</form>
 	</div>
-
 	<div id="dlg-buttons">
 		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="doSave()" style="width: 90px" id="btnSave">Save</a> 
 		<a href="javascript:void(0)" class="easyui-linkbutton" 	iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')"style="width: 90px" id="btnCancel">Cancel</a>
@@ -95,9 +100,10 @@ var branchcode;
 		alert("testtttt..... click");
 	}
 
-/* function untuk list data*/
+/* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
-		var jsonurl = 'paramListAll.htm?param=' + $('#idSearch').val();
+		var jsonurl = 'paramListAll.htm?'+
+'Value='+$('#Value').val()+"&"+'Key='+$('#Key').val();
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -123,46 +129,35 @@ var branchcode;
 
 	/* END function untuk list data*/
 	
-	/* ============FORM FUNCTION ==========*/
+	/* ============FORM FUNCTION ========== paramtambah*/
 
 	function doAdd() { 
-		$('#dlg').dialog('open').dialog('setTitle', 'Tambah paramtambah');
+		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
 		url = 'paramAdd.htm';
-		/*var t = $('#namax');
-		upperCase($('#namax'));
-		upperCase($('#userId'));
-		branchcode = ''; //combobox tidak ada default
-		addComboBranch();*/
 		onAdd();
 	}
-
+/* ---- paramedit*/
 	function doEdit() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Edit paramedit');
+			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'paramEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
-			/*upperCase($('#namax'));
-			branchcode = row.branchCode;
-			addComboBranch();*/
+			url = 'paramEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
-
+/*-- paramtampil*/
 	function doShow() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Tampil paramtampil');
+			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
 			url = 'paramEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
-			/*upperCase($('#namax'));
-			branchcode = row.branchCode;
-			addComboBranch();*/
 			onShow();
 		}
 	}
@@ -174,7 +169,7 @@ var branchcode;
 					function(r) {
 						if (r) {
 							$.post('paramDelete.htm', {
-								key : row.key
+								Key : row.key //SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -199,18 +194,11 @@ var branchcode;
 			success : function(result) {
 				var resultx = eval('(' + result + ')');
 				if (resultx === 'fail' || result === null) {
-					alert("Simpan Gagal");
-					$.messager.show({
-						title : 'Error',
-						msg : "Simpan Gagal"
-					});
+					alertError("Simpan Gagal");					
 				} else {
-					alert("Simpan Sukses");
+					alertAll('Simpan Sukses');
 					$('#dlg').dialog('close'); // close the dialog
 					$('#dg').datagrid('reload'); // reload the user data
-					//var kd = $('#kode').val();
-					//$('#kodeProvinsi').val(kd);
-					//                        var jsonurl =  'provinsiAjax.htm?param='+$('#kodeProvinsi').val();
 					$('#dg').datagrid({
 						url : jsonurl
 					});
@@ -230,51 +218,46 @@ var branchcode;
 		});
 		branchcode = '';
 	}
+	
 	/*Untuk membuat menjadi huruf besar semua */
 	function upperCase(t) {
 		t.textbox('textbox').bind('keyup', function(e) {
 			$(this).val($(this).val().toUpperCase());
 		});
 	}
+	
 	/*inputan readonly atau tidak saat onShow */
 	function onShow() {
 		//list button
-		$('#userId').textbox('readonly', true);
-		$('#namax').textbox('readonly', true);
-		$('#password').textbox('readonly', true);
-		$('#branchCode').textbox('readonly', true);
-		$('#email').textbox('readonly', true);
-		$('#startTime').textbox('readonly', true);
-		$('#endTime').textbox('readonly', true);
-		$('#enabled').combobox('readonly', true);
+		//$('#userId').textbox('readonly', true);
+$('#value').textbox('readonly', true);
+$('#key').textbox('readonly', true);
+$('#description').textbox('readonly', true);
+
 		//form button
 		$('#btnSave').linkbutton('disable');
 	}
+	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
 		//list button
-		$('#userId').textbox('readonly', false);
-		$('#namax').textbox('readonly', false);
-		$('#password').textbox('readonly', false);
-		$('#branchCode').textbox('readonly', false);
-		$('#email').textbox('readonly', false);
-		$('#startTime').textbox('readonly', false);
-		$('#endTime').textbox('readonly', false);
-		$('#enabled').combobox('readonly', false);
+		//$('#userId').textbox('readonly', false);		
+$('#value').textbox('readonly', false);
+$('#key').textbox('readonly', false);
+$('#description').textbox('readonly', false);
+		
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
+	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
 		//list button
-		$('#userId').textbox('readonly', true);
-		$('#namax').textbox('readonly', false);
-		$('#password').textbox('readonly', false);
-		$('#branchCode').textbox('readonly', false);
-		$('#email').textbox('readonly', false);
-		$('#startTime').textbox('readonly', false);
-		$('#endTime').textbox('readonly', false);
-		$('#enabled').combobox('readonly', false);
+		//$('#userId').textbox('readonly', true);	
+$('#value').textbox('readonly', false);
+$('#key').textbox('readonly', true);
+$('#description').textbox('readonly', false);
+	
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}

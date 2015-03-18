@@ -16,7 +16,7 @@ import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblBranch;
 import com.id.kas.pojo.TblProvinsi;
 import com.id.kas.pojo.dao.TblBranchDAO;
-import com.id.kas.pojo.dao.TblProvinsiDAO;
+//import com.id.kas.pojo.dao.TblProvinsiDAO;
 
 @Controller
 public class UtilityController {
@@ -71,29 +71,29 @@ public class UtilityController {
 			 Session sess = null;
 			 String x="";String z ="";
 			 try {
-				sess = HibernateUtil.getSessionFactory().openSession();
-				TblProvinsiDAO dao = new TblProvinsiDAO(sess);
-				List<TblProvinsi> l = dao.getAll();
-				StringBuffer sb = new StringBuffer();
-						sb.append("[");
-				for(TblProvinsi tbl : l){
-					String selected="";
-					if(param.length()>0){
-						if (tbl.getKodeProvinsi().equals(reg.getParameter("param"))){
-							selected = ","+'"'+"selected"+'"'+":true";
-						}else{
-							selected="";
-						}
-					}else{//untuk tambah -> set default combobox nya 0002
-						if(tbl.getKodeProvinsi().equals("00")){
-							selected = ","+'"'+"selected"+'"'+":true";
-						}
-					}
-					String item = "{"+'"'+"id"+'"'+":"+'"'+tbl.getKodeProvinsi()+'"'+","+'"'+"text"+'"'+":"+'"'+tbl.getKodeProvinsi()+" - "+tbl.getNamaProvinsi()+'"'+selected+"},";	
-					sb.append(item);
-				}
-				x = (sb.toString()).substring(0,sb.toString().length()-1);
-				 z = x+"]";
+//				sess = HibernateUtil.getSessionFactory().openSession();
+//				TblProvinsiDAO dao = new TblProvinsiDAO(sess);
+//				List<TblProvinsi> l = dao.getAll();
+//				StringBuffer sb = new StringBuffer();
+//						sb.append("[");
+//				for(TblProvinsi tbl : l){
+//					String selected="";
+//					if(param.length()>0){
+//						if (tbl.getKodeProvinsi().equals(reg.getParameter("param"))){
+//							selected = ","+'"'+"selected"+'"'+":true";
+//						}else{
+//							selected="";
+//						}
+//					}else{//untuk tambah -> set default combobox nya 0002
+//						if(tbl.getKodeProvinsi().equals("00")){
+//							selected = ","+'"'+"selected"+'"'+":true";
+//						}
+//					}
+//					String item = "{"+'"'+"id"+'"'+":"+'"'+tbl.getKodeProvinsi()+'"'+","+'"'+"text"+'"'+":"+'"'+tbl.getKodeProvinsi()+" - "+tbl.getNamaProvinsi()+'"'+selected+"},";	
+//					sb.append(item);
+//				}
+//				x = (sb.toString()).substring(0,sb.toString().length()-1);
+//				 z = x+"]";
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

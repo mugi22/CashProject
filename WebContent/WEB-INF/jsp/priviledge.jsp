@@ -26,10 +26,6 @@
             <form name="FREG" id="formCari" method="post" action="#"  >                 
                     <label>GroupId</label> : <input name="GroupId" type="text" id="GroupId" size="30" maxlength="30"><br>
                     <label>MenuId</label> : <input name="MenuId" type="text" id="MenuId" size="30" maxlength="30"><br>
-                    <!-- label>IsAdd</label> : <input name="IsAdd" type="text" id="IsAdd" size="30" maxlength="30"><br>
-                    <label>IsDelete</label> : <input name="IsDelete" type="text" id="IsDelete" size="30" maxlength="30"><br>
-                    <label>IsUpdate</label> : <input name="IsUpdate" type="text" id="IsUpdate" size="30" maxlength="30"><br>
-                    <label>IsView</label> : <input name="IsView" type="text" id="IsView" size="30" maxlength="30"><br -->
 
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
@@ -48,10 +44,8 @@
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-                    <th field="groupId" width="100"sortable="true">GroupId</th>
-                    <th field="groupName" width="100"sortable="true">groupName</th>
+                    <th field="groupId" width="100"sortable="true">GroupId</th> 
                     <th field="menuId" width="100"sortable="true">MenuId</th> 
-                    <th field="menuName" width="100"sortable="true">MenuName</th> 
                     <th field="isAdd" width="100"sortable="true">IsAdd</th> 
                     <th field="isDelete" width="100"sortable="true">IsDelete</th> 
                     <th field="isUpdate" width="100"sortable="true">IsUpdate</th> 
@@ -73,12 +67,8 @@
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
 		<div class="ftitle">PRIVILEDGE</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>GroupId</label> :<input name="groupId" class="easyui-textbox"  id="groupId" style="width: 30px">	
-                    					<label>Nama GroupId</label>:<input name="groupName"	class="easyui-textbox" id="groupName" style="width: 30px">
-                    </div>
-                    <div class="fitem">	<label>MenuId</label> :<input name="menuId"	class="easyui-textbox" id="menuId">
-                    				
-                    </div>
+                    <div class="fitem">	<label>GroupId</label> :<input name="groupId"	class="easyui-textbox" required="false" id="groupId">	</div>
+                    <div class="fitem">	<label>MenuId</label> :<input name="menuId"	class="easyui-textbox" required="false" id="menuId">	</div>
                     <div class="fitem">	<label>IsAdd</label> :<input name="isAdd"	class="easyui-textbox" required="false" id="isAdd">	</div>
                     <div class="fitem">	<label>IsDelete</label> :<input name="isDelete"	class="easyui-textbox" required="false" id="isDelete">	</div>
                     <div class="fitem">	<label>IsUpdate</label> :<input name="isUpdate"	class="easyui-textbox" required="false" id="isUpdate">	</div>
@@ -114,7 +104,7 @@ var branchcode;
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
 		var jsonurl = 'priviledgeListAll.htm?'+
-'GroupId='+$('#GroupId').val()+"&"+'MenuId='+$('#MenuId').val()+"&"+'IsAdd='+$('#IsAdd').val()+"&"+'IsDelete='+$('#IsDelete').val()+"&"+'IsUpdate='+$('#IsUpdate').val()+"&"+'IsView='+$('#IsView').val();
+'GroupId='+$('#GroupId').val()+"&"+'MenuId='+$('#MenuId').val();
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -143,7 +133,7 @@ var branchcode;
 	/* ============FORM FUNCTION ==========*/
 
 	function doAdd() { 
-		$('#dlg').dialog('open').dialog('setTitle', 'Tambah priviledgetambah');
+		$('#dlg').dialog('open').dialog('setTitle', 'Tambah ');
 		$('#fm').form('clear');
 		url = 'priviledgeAdd.htm';
 		onAdd();
@@ -153,7 +143,7 @@ var branchcode;
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Edit priviledgeedit');
+			$('#dlg').dialog('open').dialog('setTitle', 'Edit ');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
 			url = 'priviledgeEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
@@ -165,7 +155,7 @@ var branchcode;
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Tampil priviledgetampil');
+			$('#dlg').dialog('open').dialog('setTitle', 'Tampil ');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
 			url = 'priviledgeEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
@@ -180,7 +170,8 @@ var branchcode;
 					function(r) {
 						if (r) {
 							$.post('priviledgeDelete.htm', {
-								Id : row.Id //SESUAIKAN 
+								GroupId : row.groupId,
+								MenuId : row.MenuIdMenuId//SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -241,6 +232,13 @@ var branchcode;
 	function onShow() {
 		//list button
 		//$('#userId').textbox('readonly', true);
+$('#groupId').textbox('readonly', true);
+$('#menuId').textbox('readonly', true);
+$('#isAdd').textbox('readonly', true);
+$('#isDelete').textbox('readonly', true);
+$('#isUpdate').textbox('readonly', true);
+$('#isView').textbox('readonly', true);
+
 		//form button
 		$('#btnSave').linkbutton('disable');
 	}
@@ -249,6 +247,13 @@ var branchcode;
 	function onAdd() {
 		//list button
 		//$('#userId').textbox('readonly', false);		
+$('#groupId').textbox('readonly', false);
+$('#menuId').textbox('readonly', false);
+$('#isAdd').textbox('readonly', false);
+$('#isDelete').textbox('readonly', false);
+$('#isUpdate').textbox('readonly', false);
+$('#isView').textbox('readonly', false);
+		
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
@@ -256,7 +261,14 @@ var branchcode;
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
 		//list button
-		//$('#userId').textbox('readonly', true);		
+		//$('#userId').textbox('readonly', true);	
+$('#groupId').textbox('readonly', true);
+$('#menuId').textbox('readonly', true);
+$('#isAdd').textbox('readonly', false);
+$('#isDelete').textbox('readonly', false);
+$('#isUpdate').textbox('readonly', false);
+$('#isView').textbox('readonly', false);
+	
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
