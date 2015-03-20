@@ -33,13 +33,10 @@
 		<property name="default_batch_fetch_size">16</property>
 		<property name="use_streams_for_binary">true</property>
 		<property name="connection.isolation">2</property>
-		<!-- property name="hibernate.transaction.flush_before_completion">true</property-->
+		<property name="hibernate.transaction.flush_before_completion">true</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
       
-    
-    
-    
-    
+   
     <property name="hibernate.hbm2ddl.auto">update</property> <!-- untuk pembentukan/update table <property name="propertyName">propertyValue</property>-->
     
     <!-- property name="hibernate.ejb.event.post-insert">org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener</property>
@@ -69,6 +66,8 @@
     <mapping class="com.id.kas.pojo.TblProvinsi"/>
     <mapping class="com.id.kas.pojo.TblKabupaten"/>
     <mapping class="com.id.kas.pojo.TblSeq"/>
+    <mapping class="com.id.kas.pojo.TblPegawai"/>
+     
      
     
   </session-factory>

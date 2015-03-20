@@ -15,6 +15,7 @@
         <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
         <script type="text/javascript" src="css/formater.js"></script>
 
+		<script type="text/javascript" src="css/myalert.js"></script>
 
 <title>User</title>
 </head>
@@ -22,9 +23,9 @@
 
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
-            <form name="FREG" id="formCari" method="post" action="#"  >    
-                <label>User Id</label> : 
-                <input name="userId" type="text" id="userIdSearch" size="30" maxlength="30"><br>
+            <form name="FREG" id="formCari" method="post" action="#"  >                 
+                    <label>Nik</label> : <input name="Nik" type="text" id="Nik" size="30" maxlength="30"><br>
+                    <label>Nama</label> : <input name="Nama" type="text" id="Nama" size="30" maxlength="30"><br>
 
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
@@ -37,25 +38,26 @@
 <!-- ******************************END  FORM PENCARIAN******************************* -->  
 
 <!-- **********************TABLE RESULT************************************** -->
-        <table id="dg" title="Daftar User" class="easyui-datagrid" style="width:100%;"
+        <table id="dg" title="PEGAWAI" class="easyui-datagrid" style="width:100%;"
                toolbar="#toolbar" pagination="true"
                data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-                    <th field="userId" width="100" sortable="true">User ID</th> 
-                    <th field="name" width="250" sortable="true">Nama</th>
-                    <th field="branchCode" width="100" sortable="true">Kode Unit</th> 
-                    <th field="createBy" width="100" sortable="true">Di Buat</th> 
-                    <th field="createDate" width="100" sortable="true">Tgl Buat</th>
-                    <th field="updateBy" width="100" sortable="true">Di Ubah</th> 
-                    <th field="updateDate" width="100" sortable="true">Tgl Ubah</th>
-                    <th field="endTime" width="100" sortable="true">endTime</th>
+                    <th field="statusPegawai" width="100"sortable="true">StatusPegawai</th> 
+                    <th field="statusAktif" width="100"sortable="true">StatusAktif</th> 
+                    <th field="branchCode" width="100"sortable="true">BranchCode</th> 
+                    <th field="nik" width="100"sortable="true">Nik</th> 
+                    <th field="cif" width="100"sortable="true">Cif</th> 
+                    <th field="nama" width="100"sortable="true">Nama</th> 
+                    <th field="tglLahir" width="100"sortable="true">TglLahir</th> 
+                    <th field="grade" width="100"sortable="true">Grade</th> 
+                     
                 </tr>
             </thead>
         </table>        
         <div id="toolbar">
-            <a href="javascript:void(0)"  class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="doAdd()" id="btnAdd" >Tambah</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="doAdd()" id="btnAdd" >Tambah</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="doEdit()" id="btnEdit">Edit</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="doDelete()" id="btnDelete">Hapus</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="doShow()" id="btnShow">Tampil</a>
@@ -65,105 +67,51 @@
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">User Information</div>
+		<div class="ftitle">PEGAWAI</div>
 		<form id="fm" method="post" novalidate>
-			<div class="fitem">
-				<label>User ID</label> :<input name="userId"	class="easyui-textbox" required="true" id="userId">
-				<input type="button" name="btnKirim" id="btnCariUser" value="Cari" onclick="cariUser()"> 
-			</div>
-			<div class="fitem">
-				<label>Nama User</label> :<input name="name" class="easyui-textbox" required="true"  id="namax">	
-							
-			</div>
+                    <div class="fitem">	<label>StatusPegawai</label> :<input name="statusPegawai"	class="easyui-textbox" id="statusPegawai">	</div>
+                    <div class="fitem">	<label>StatusAktif</label> :<input name="statusAktif"	class="easyui-textbox" id="statusAktif">	</div>
+                    <div class="fitem">	<label>BranchCode</label> :<input name="branchCode"	class="easyui-textbox" id="branchCode">	</div>
+                    <div class="fitem">	<label>Nik</label> :<input name="nik"	class="easyui-textbox" required="false" id="nik">	</div>
+                    <div class="fitem">	<label>Cif</label> :<input name="cif"	class="easyui-textbox"  id="cif">	</div>
+                    <div class="fitem">	<label>Nama</label> :<input name="nama"	class="easyui-textbox" required="false" id="nama">	</div>
+                    
+                    <div class="fitem">	<label>TglLahir</label> :<input name="tglLahir"	class="easyui-datebox" required="false" id="tglLahir"
+                    data-options="formatter:myformatter,parser:myparser">	</div>
+                    
+                    <div class="fitem">	<label>Grade</label> :<input name="grade"	class="easyui-textbox" required="false" id="grade">	</div>
 			
-			<div class="fitem">
-				<label>Password</label> :<input type="password" name="password" class="easyui-textbox" required="true" id="password">
-			</div>			
-			
-			<div class="fitem">
-				<label>Kode Cabang</label> :<input id="branchCode" name="branchCode" value="aa" style="width: 300px;" id="branchCode">
-			</div>
-			
-			<div class="fitem">
-				<label>Email</label> :<input name="email" class="easyui-textbox" validType="email" id="email">
-			</div>
-			
-			<div class="fitem">
-				<label>Start Time</label> :<input class="easyui-datebox" name="startTime" id="startTime" 
-				data-options="formatter:myformatter,parser:myparser"/>
-			</div>
-			<div class="fitem">
-				<label>End Time  </label> :<input name="endTime" class="easyui-datebox" id="endTime" data-options="formatter:myformatter,parser:myparser"/>
-			</div>
-			<div class="fitem">
-				<label>Enable</label> : 
-				<select class="easyui-combobox" name="enabled" id="enabled" style="width:60px;" data-options="panelHeight:'auto'">
-							<option value="Y">Ya</option>
-							<option value="N">Tidak</option>
-				</select>
-			</div>			
 		</form>
 	</div>
-
 	<div id="dlg-buttons">
 		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="doSave()" style="width: 90px" id="btnSave">Save</a> 
 		<a href="javascript:void(0)" class="easyui-linkbutton" 	iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')"style="width: 90px" id="btnCancel">Cancel</a>
 	</div>
 	<!-- ************************************************END FORM******************* -->
 
-<div id="win"></div>
 </body>
 </html>
 
 
 
 <script>
-//window pencarian
-function cariUser() {
-	//alert("testtttt..... click");
-	$('#win').window({
-        width:600,
-        height:400,
-        href:'cariUser.htm',
-        modal:true,
-        minimizable:false,
-        maximizable:false,
-        collapsible:false
-        
-        });
-    //$('#cari').show();
-}
-
-
-function doAmbil(){ //ambil key dari row yang dipilih/klik
-	var row = $('#dg2').datagrid('getSelected');
-	//alert(row.userId);
-	$('#userId').textbox('setValue',row.userId);
-	$('#win').window('close'); 
-}
-
-
-
-	var url;
-	var branchcode;
+var url;
+var branchcode;
 	$("document").ready(function() {
 		$("#btnAdd").linkbutton('${btnAdd}');
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
-		$("#btnShow").linkbutton('${btnShow}');
-		$('#cari').hide();
-//		$('#toolbar2').hide();
-		$('#cc').layout('panel', 'west').panel('tittle', 'abc');
-		
-		doClear();
+		$("#btnShow").linkbutton('${btnShow}');		
 	});
 
-	
-	
-	
-	/* function untuk list data*/
-	function retrieve() {
-		var jsonurl = 'userListAll.htm?param=' + $('#userIdSearch').val();
+	function test() {
+		alert("testtttt..... click");
+	}
+
+/* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
+	function retrieve() {		
+		var jsonurl = 'pegawaiListAll.htm?'+
+'Nik='+$('#Nik').val()+"&"+'Nama='+$('#Nama').val();
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -188,59 +136,48 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 	}
 
 	/* END function untuk list data*/
+	
+	/* ============FORM FUNCTION ========== pegawaitambah*/
 
-	/* ============FORM FUNCTION ==========*/
-
-	function doAdd() {
-		$('#dlg').dialog('open').dialog('setTitle', 'Tambah User');
+	function doAdd() { 
+		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'userAdd.htm';
-		/*var t = $('#namax');*/
-		upperCase($('#namax'));
-		upperCase($('#userId'));
-		branchcode = ''; //combobox tidak ada default
-		addComboBranch();
+		url = 'pegawaiAdd.htm';
 		onAdd();
 	}
-
+/* ---- pegawaiedit*/
 	function doEdit() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Edit User');
+			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'userEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
-			upperCase($('#namax'));
-			branchcode = row.branchCode;
-			addComboBranch();
+			url = 'pegawaiEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
-
+/*-- pegawaitampil*/
 	function doShow() {
 		$('#fm').form('clear');
-		var row = $('#dg').datagrid('getSelected');
+		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Edit User');
+			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'userEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
-			upperCase($('#namax'));
-			branchcode = row.branchCode;
-			addComboBranch();
+			url = 'pegawaiEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
-
+	
 	function doDelete() {
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
 					function(r) {
 						if (r) {
-							$.post('userDelete.htm', {
-								userId : row.userId
+							$.post('pegawaiDelete.htm', {
+								nik : row.nik //SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -265,18 +202,11 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 			success : function(result) {
 				var resultx = eval('(' + result + ')');
 				if (resultx === 'fail' || result === null) {
-					alert("Simpan Gagal");
-					$.messager.show({
-						title : 'Error',
-						msg : "Simpan Gagal"
-					});
+					alertError("Simpan Gagal");					
 				} else {
-					alert("Simpan Sukses");
+					alertAll('Simpan Sukses');
 					$('#dlg').dialog('close'); // close the dialog
 					$('#dg').datagrid('reload'); // reload the user data
-					var kd = $('#kode').val();
-					$('#kodeProvinsi').val(kd);
-					//                        var jsonurl =  'provinsiAjax.htm?param='+$('#kodeProvinsi').val();
 					$('#dg').datagrid({
 						url : jsonurl
 					});
@@ -284,7 +214,8 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 			}
 		});
 	}
-
+	
+	
 	/* ================TAMBAHAN=================*/
 	//untuk mengisi combobox kode cabang keseluruhan dengan default value sesuai parameter
 	function addComboBranch() {
@@ -295,56 +226,64 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 		});
 		branchcode = '';
 	}
+	
 	/*Untuk membuat menjadi huruf besar semua */
 	function upperCase(t) {
 		t.textbox('textbox').bind('keyup', function(e) {
 			$(this).val($(this).val().toUpperCase());
 		});
 	}
+	
 	/*inputan readonly atau tidak saat onShow */
 	function onShow() {
 		//list button
-		$('#btnCariUser').hide();
-		$('#userId').textbox('readonly', true);
-		$('#namax').textbox('readonly', true);
-		$('#password').textbox('readonly', true);
-		$('#branchCode').textbox('readonly', true);
-		$('#email').textbox('readonly', true);
-		$('#startTime').textbox('readonly', true);
-		$('#endTime').textbox('readonly', true);
-		$('#enabled').combobox('readonly', true);
+		//$('#userId').textbox('readonly', true);
+$('#statusPegawai').textbox('readonly', true);
+$('#statusAktif').textbox('readonly', true);
+$('#branchCode').textbox('readonly', true);
+$('#nik').textbox('readonly', true);
+$('#cif').textbox('readonly', true);
+$('#nama').textbox('readonly', true);
+$('#tglLahir').textbox('readonly', true);
+$('#grade').textbox('readonly', true);
+
 		//form button
 		$('#btnSave').linkbutton('disable');
 	}
+	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
 		//list button
-		$('#btnCariUser').show();
-		$('#userId').textbox('readonly', false);
-		$('#namax').textbox('readonly', false);
-		$('#password').textbox('readonly', false);
-		$('#branchCode').textbox('readonly', false);
-		$('#email').textbox('readonly', false);
-		$('#startTime').textbox('readonly', false);
-		$('#endTime').textbox('readonly', false);
-		$('#enabled').combobox('readonly', false);
+		//$('#userId').textbox('readonly', false);		
+$('#statusPegawai').textbox('readonly', false);
+$('#statusAktif').textbox('readonly', false);
+$('#branchCode').textbox('readonly', false);
+$('#nik').textbox('readonly', false);
+$('#cif').textbox('readonly', false);
+$('#nama').textbox('readonly', false);
+$('#tglLahir').textbox('readonly', false);
+$('#grade').textbox('readonly', false);
+		
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
+	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		//list buttonbtn CariUser
-		$('#btnCariUser').hide();
-		$('#userId').textbox('readonly', true);
-		$('#namax').textbox('readonly', false);
-		$('#password').textbox('readonly', false);
-		$('#branchCode').textbox('readonly', false);
-		$('#email').textbox('readonly', false);
-		$('#startTime').textbox('readonly', false);
-		$('#endTime').textbox('readonly', false);
-		$('#enabled').combobox('readonly', false);
+		//list button
+		//$('#userId').textbox('readonly', true);	
+$('#statusPegawai').textbox('readonly', false);
+$('#statusAktif').textbox('readonly', false);
+$('#branchCode').textbox('readonly', false);
+$('#nik').textbox('readonly', true); //Key
+$('#cif').textbox('readonly', false);
+$('#nama').textbox('readonly', false);
+$('#tglLahir').textbox('readonly', false);
+$('#grade').textbox('readonly', false);
+	
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
 
+	
 </script>

@@ -16,7 +16,7 @@
 				<textElement textAlignment="Center">
 					<font size="24" isBold="true"/>
 				</textElement>
-				<text><![CDATA[JUDUL 0007]]></text>
+				<text><![CDATA[Daftar  User]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -30,28 +30,28 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="26" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="8344801e-1e4a-4390-a818-b7ebc2b2d616" x="0" y="0" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[name]]></text>
+				<reportElement uuid="8344801e-1e4a-4390-a818-b7ebc2b2d616" x="106" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nama User]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="be4032f2-3f0a-4af5-8bf2-8d59c86abd5d" x="100" y="0" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[userId]]></text>
+				<reportElement uuid="be4032f2-3f0a-4af5-8bf2-8d59c86abd5d" x="6" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[User ID]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="24" splitType="Stretch">
 			<textField>
-				<reportElement uuid="80fd765f-bbed-4a67-961d-d734a4284bc2" x="0" y="0" width="100" height="20"/>
+				<reportElement uuid="80fd765f-bbed-4a67-961d-d734a4284bc2" x="106" y="0" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="c6c78718-df9a-4dd2-a5d2-cdc685cefffc" x="100" y="4" width="100" height="20"/>
+				<reportElement uuid="c6c78718-df9a-4dd2-a5d2-cdc685cefffc" x="6" y="0" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{userId}]]></textFieldExpression>
 			</textField>
