@@ -212,7 +212,7 @@ public class TempCreate {
 							sbx= new StringBuffer();
 //							String x = "";
 							for(String t :lIds){								
-								sbx.append( "String "+Util.firstUpper(t)+"=reg.getParameter("+'"'+Util.firstUpper(t)+'"'+");\n");								
+								sbx.append( "String "+Util.firstLowerr(t)+"=reg.getParameter("+'"'+Util.firstLowerr(t)+'"'+");\n");								
 							}
 //							x = (sbx.toString()).substring(0,sbx.toString().length()-1);
 							String z = line.replaceAll("XXXByIdParam",sbx.toString());

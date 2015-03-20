@@ -278,7 +278,7 @@ $('#isUsingGroovy').textbox('readonly', true);
 		//$('#userId').textbox('readonly', true);	
 $('#params').textbox('readonly', false);
 $('#menuId').textbox('readonly', true);
-$('#haveChild').textbox('readonly', true);
+$('#haveChild').textbox('readonly', false);
 $('#menuName').textbox('readonly', false);
 $('#noUrut').textbox('readonly', false);
 $('#parentId').textbox('readonly', false);

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a0292c06-68db-4733-8dc3-1572b8f073b7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     TBL_MENU.`MENU_ID` AS TBL_MENU_MENU_ID,
+     TBL_MENU.`create_by` AS TBL_MENU_create_by,
+     TBL_MENU.`create_date` AS TBL_MENU_create_date,
+     TBL_MENU.`update_by` AS TBL_MENU_update_by,
+     TBL_MENU.`update_date` AS TBL_MENU_update_date,
+     TBL_MENU.`versi` AS TBL_MENU_versi,
+     TBL_MENU.`HAVE_CHILD` AS TBL_MENU_HAVE_CHILD,
+     TBL_MENU.`IS_USING_GROOVY` AS TBL_MENU_IS_USING_GROOVY,
+     TBL_MENU.`MENU_NAME` AS TBL_MENU_MENU_NAME,
+     TBL_MENU.`MENU_PAGE` AS TBL_MENU_MENU_PAGE,
+     TBL_MENU.`NO_URUT` AS TBL_MENU_NO_URUT,
+     TBL_MENU.`PARAMS` AS TBL_MENU_PARAMS,
+     TBL_MENU.`PARENT_ID` AS TBL_MENU_PARENT_ID,
+     TBL_MENU.`SCREEN_CLASS` AS TBL_MENU_SCREEN_CLASS
+FROM
+     `TBL_MENU` TBL_MENU]]>
+	</queryString>
+	<field name="TBL_MENU_MENU_ID" class="java.math.BigDecimal"/>
+	<field name="TBL_MENU_create_by" class="java.lang.String"/>
+	<field name="TBL_MENU_create_date" class="java.sql.Timestamp"/>
+	<field name="TBL_MENU_update_by" class="java.lang.String"/>
+	<field name="TBL_MENU_update_date" class="java.sql.Timestamp"/>
+	<field name="TBL_MENU_versi" class="java.math.BigDecimal"/>
+	<field name="TBL_MENU_HAVE_CHILD" class="java.lang.String"/>
+	<field name="TBL_MENU_IS_USING_GROOVY" class="java.lang.String"/>
+	<field name="TBL_MENU_MENU_NAME" class="java.lang.String"/>
+	<field name="TBL_MENU_MENU_PAGE" class="java.lang.String"/>
+	<field name="TBL_MENU_NO_URUT" class="java.math.BigDecimal"/>
+	<field name="TBL_MENU_PARAMS" class="java.lang.String"/>
+	<field name="TBL_MENU_PARENT_ID" class="java.math.BigDecimal"/>
+	<field name="TBL_MENU_SCREEN_CLASS" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d4682b62-4e90-412a-9213-cb16d01498dc" x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[TBL_MENU_MENU_ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1d55b8b7-1bc5-4efa-b245-60e7ef973427" x="112" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[TBL_MENU_MENU_NAME]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6777ad83-7ed4-405e-afce-400dad161812" x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{TBL_MENU_MENU_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0fb85388-4bc6-4c59-975b-c1268da34651" x="112" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{TBL_MENU_MENU_NAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

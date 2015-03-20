@@ -159,7 +159,7 @@ XXFormFild
 	 @RequestMapping(value="/XXXmapDelete.htm", method=RequestMethod.POST)
      public @ResponseBody String XXXmapDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 XXXByIdParam	
-		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
+//		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 TblUser user = getUser(session);
 		 
 		 if(!cekValidSession(session)){

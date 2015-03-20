@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>Cari User</h1>
+
        <div id="parameter">
             <form name="FREG" id="formCari" method="post" action="#"  >    
                 <label>User Id</label> : 
