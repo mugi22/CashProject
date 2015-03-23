@@ -28,9 +28,25 @@
 	
 	<div style="margin: 20px 0;"></div> 
 	<div id="cc" class="easyui-layout" style="width: 100%; height: 650px;">
-		<div data-options="region:'north'" style="height: 100px">
-			<h2>Basic Layout</h2>${key}
-			<a href="logout.htm">Logout</a>
+		<div data-options="region:'north'" style="height: 110px; background-color:aqua;">
+			<h2>Cash Project</h2>
+			<table width="100%">
+			<tr>
+				<td align="left" width="10%"><a href="logout.htm">Logout</a></td>
+				<td align="right">
+					<img alt="" src="image/java.jpg"  height="42" width="60">
+					<img alt="" src="image/eclipse.png"  height="42" width="100">
+					<img alt="" src= "image/hibernate.png" height="42" width="70">
+					<img alt="" src="image/mysql.png"  height="42" width="60">
+					<img alt="" src= "image/easyui.jpg" height="42" width="60">
+					<img alt="" src= "image/jquery.png" height="42" width="50">
+					<img alt="" src="image/json.png"  height="42" width="60">
+					<img alt="" src= "image/javascript.jpg" height="42" width="60">
+					<img alt="" src="image/ajax.jpg"  height="42" width="60">
+				</td>
+			</tr>
+			</table>
+			
 		</div>
 			<!-- div data-options="region:'south',split:true" style="height: 50px;"></div-->
 		<div data-options="region:'west',split:true" title="Menu" style="width: 200px;">		

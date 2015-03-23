@@ -8,6 +8,14 @@
 </head>
 <body style="background-image: url('css/bg_top.jpg')">
 <h1>Main Page</h1>
-<a href="userList.htm">User </a>
+Develop:<br>
+<!-- img alt="" src="image/java.jpg"  height="42" width="60">
+<img alt="" src="image/eclipse.png"  height="42" width="100">
+<img alt="" src= "image/hibernate.png" height="42" width="70">
+<img alt="" src="image/mysql.png"  height="42" width="60">
+<img alt="" src= "image/easyui.jpg" height="42" width="60">
+<img alt="" src= "image/jquery.png" height="42" width="50">
+<img alt="" src="image/json.png"  height="42" width="60">
+<img alt="" src= "image/javascript.jpg" height="42" width="60"-->
 </body>
 </html>

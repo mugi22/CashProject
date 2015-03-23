@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "TBL_GROUP", schema = "TESTDB")
 public class TblGroup implements java.io.Serializable {
+	
 
 	private BigDecimal groupId;
 	private String createBy;
@@ -27,6 +28,7 @@ public class TblGroup implements java.io.Serializable {
 	private String groupName;
 	private String jabatan;
 	private String params;
+	
 
 	public TblGroup() {
 	}

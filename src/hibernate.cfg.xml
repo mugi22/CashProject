@@ -68,7 +68,7 @@
     <mapping class="com.id.kas.pojo.TblSeq"/>
     <mapping class="com.id.kas.pojo.TblPegawai"/>
      
-     
+    <mapping class="com.id.kas.DEVELOPMENT.TblTest"/>
     
   </session-factory>
     
