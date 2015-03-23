@@ -1,4 +1,4 @@
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.pojo.dao;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

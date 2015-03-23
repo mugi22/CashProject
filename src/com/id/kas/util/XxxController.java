@@ -77,7 +77,7 @@ public class XxxController {
 		sFile=sTemplate+"jspTemplate.txt";//baca template
 		List<String> l = new ArrayList<String>();
 //		System.out.println(tem.readFile(sFile,lForm,lList));
-		String strFile = (tem.readFile(sFile,lForm,lList,jspName,lSearch));
+		String strFile = (tem.readFile(sFile,lForm,lList,jspName,lSearch,lIds));
 //		String sFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp"+jspName+".jsp";
 		tem.createFile(sFileCreate, strFile);
 		

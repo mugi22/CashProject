@@ -40,7 +40,7 @@ public class TempCreate {
 		
 	}
 //JSP
-	public String readFile(String s,List<String> lForm,List<String> lList,String jspName,List<String> lSearch){
+	public String readFile(String s,List<String> lForm,List<String> lList,String jspName,List<String> lSearch,List<String>  lIds){
 		StringBuffer sb = new StringBuffer();
 		BufferedReader br = null;	
 				try {
@@ -98,21 +98,65 @@ public class TempCreate {
 						}	
 						
 						//ENABLE/DISABLE FIELD FORM XXXenableField
-						//$('#userId').textbox('readonly', false);		
-						if (sCurrentLine.contains("XXXenableField")){
+						//XXXenableOnShowField                  $('#userId').textbox('readonly', false);		
+						if (sCurrentLine.contains("XXXenableOnShowField")){
 							StringBuffer sbField = new StringBuffer();
 							for(String t :lForm){
 								if(t.equals("CreateDate")||t.equals("CreateBy")||t.equals("UpdateDate")||t.equals("UpdateBy")||t.equals("Versi")||t.equals("")){									
 								}else{
-									sbField.append("\\$('#"+Util.firstLowerr(t)+"').textbox('readonly', true);"+"\n");
+									sbField.append(j1+"\\$('#"+Util.firstLowerr(t)+"').textbox('readonly', true);"+"\n");
 								}								
 							}
-							String z = line.replaceAll("XXXenableField", sbField.toString());
+							String z = line.replaceAll("XXXenableOnShowField", sbField.toString());
+							line =z;
+						}
+						
+						//XXXenableOnAddField                  $('#userId').textbox('readonly', false);		
+						if (sCurrentLine.contains("XXXenableOnAddField")){
+							StringBuffer sbField = new StringBuffer();
+							for(String t :lForm){
+								if(t.equals("CreateDate")||t.equals("CreateBy")||t.equals("UpdateDate")||t.equals("UpdateBy")||t.equals("Versi")||t.equals("")){									
+								}else{
+									sbField.append(j1+"\\$('#"+Util.firstLowerr(t)+"').textbox('readonly', false);"+"\n");
+								}								
+							}
+							String z = line.replaceAll("XXXenableOnAddField", sbField.toString());
+							line =z;
+						}
+						
+						//XXXenableOnEditField
+						if (sCurrentLine.contains("XXXenableOnEditField")){
+							StringBuffer sbField = new StringBuffer();
+							for(String t :lForm){
+								if(t.equals("CreateDate")||t.equals("CreateBy")||t.equals("UpdateDate")||t.equals("UpdateBy")||t.equals("Versi")||t.equals("")){									
+								}else{
+									String z =j1+"\\$('#"+Util.firstLowerr(t)+"').textbox('readonly', false);"+"\n";
+									for(String k :lIds){
+										System.out.println("t  : "+" k ");
+										if(t.equals(k)){
+											z =j1+"\\$('#"+Util.firstLowerr(t)+"').textbox('readonly', true);"+"\n";
+										}
+									}
+									sbField.append(z);
+								}								
+							}
+							String z = line.replaceAll("XXXenableOnEditField", sbField.toString());
 							line =z;
 						}
 						
 						
-						
+						//XXXrowDelete Id : row.Id
+						if (sCurrentLine.contains("XXXrowDelete")){
+							StringBuffer sbField = new StringBuffer();
+							String x="";
+							for(String k :lIds){
+								sbField.append(j1+Util.firstLowerr(k)+" : row."+Util.firstLowerr(k)+",\n");
+							}
+							x = (sbField.toString()).substring(0,sbField.toString().length()-1);
+							String z = line.replaceAll("XXXrowDelete", x);
+							line =z;
+						}
+						//=======================================
 						
 						
 						if (sCurrentLine.contains("XXXZ")){//XXXZ nama file jsp 
@@ -212,7 +256,7 @@ public class TempCreate {
 							sbx= new StringBuffer();
 //							String x = "";
 							for(String t :lIds){								
-								sbx.append( "String "+Util.firstLowerr(t)+"=reg.getParameter("+'"'+Util.firstLowerr(t)+'"'+");\n");								
+								sbx.append( "String "+Util.firstUpper(t)+"=reg.getParameter("+'"'+Util.firstLowerr(t)+'"'+");\n");								
 							}
 //							x = (sbx.toString()).substring(0,sbx.toString().length()-1);
 							String z = line.replaceAll("XXXByIdParam",sbx.toString());

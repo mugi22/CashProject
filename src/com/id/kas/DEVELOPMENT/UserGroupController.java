@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
 import com.id.kas.pojo.TblUserGroup;//harap tambahain coyyy
+import com.id.kas.pojo.dao.TblUserGroupDAO;
 import com.id.kas.util.AbstractListScreen;
 
 

@@ -1,4 +1,4 @@
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.controller;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -23,6 +23,7 @@ import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
 import com.id.kas.pojo.TblMenu;//harap tambahain coyyy
+import com.id.kas.pojo.dao.TblMenuDAO;
 import com.id.kas.util.AbstractListScreen;
 
 

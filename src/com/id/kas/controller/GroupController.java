@@ -1,5 +1,6 @@
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.controller;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,19 +21,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
-import com.id.kas.pojo.TblParam;//harap tambahain coyyy
+import com.id.kas.pojo.TblGroup;//harap tambahain coyyy
+import com.id.kas.pojo.dao.TblGroupDAO;
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class ParamController  extends AbstractListScreen{
-	@RequestMapping(value="/param.htm",method=RequestMethod.GET)
+public class GroupController  extends AbstractListScreen{
+	@RequestMapping(value="/group.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg){ 
 	 	return super.doGet(model, session, reg);
 	}
 	
 	
-	 @RequestMapping(value="/param.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/group.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session) {
 		 super.doPost(model, session);
 		return getView();		 
@@ -41,14 +43,20 @@ public class ParamController  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "param";
+		return "group";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/paramListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String paramListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Value=reg.getParameter("Value");
-String Key=reg.getParameter("Key");		 
+	 @RequestMapping(value="/groupListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String groupListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+		 String GroupId="0";//reg.getParameter("GroupId");
+		 if(reg.getParameter("GroupId").length()>0){
+		 	GroupId = reg.getParameter("GroupId");
+		 }
+
+
+
+String Jabatan=reg.getParameter("Jabatan");		 
          String ses = (String) session.getAttribute("session");
          TblUser user = (TblUser) session.getAttribute("user");
          model.put("session", ses);
@@ -64,10 +72,10 @@ String Key=reg.getParameter("Key");
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblParamDAO dao = new TblParamDAO(sess);
+			TblGroupDAO dao = new TblGroupDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<TblParam> l = new ArrayList<TblParam>();
-				h = dao.getByPerPage(Value,Key,loffset, row);
+			List<TblGroup> l = new ArrayList<TblGroup>();
+				h = dao.getByPerPage(new BigDecimal(GroupId),Jabatan,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -87,7 +95,7 @@ String Key=reg.getParameter("Key");
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/paramAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/groupAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		 TblUser user = getUser(session);		 
 		 if(!cekValidSession(session)){
@@ -100,11 +108,12 @@ String Key=reg.getParameter("Key");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblParamDAO dao = new TblParamDAO(ses);
-               TblParam tbl = new TblParam();
-                    tbl.setValue(reg.getParameter("value"));
-                    tbl.setKey(reg.getParameter("key"));
-                    tbl.setDescription(reg.getParameter("description"));
+               TblGroupDAO dao = new TblGroupDAO(ses);
+               TblGroup tbl = new TblGroup();
+                    tbl.setParams(reg.getParameter("params"));
+                    tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
+                    tbl.setJabatan(reg.getParameter("jabatan"));
+                    tbl.setGroupName(reg.getParameter("groupName"));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
@@ -124,10 +133,12 @@ String Key=reg.getParameter("Key");
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/paramEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String paramEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Key=reg.getParameter("key");
-		 
+	 @RequestMapping(value="/groupEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String groupEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String GroupId="0";//reg.getParameter("GroupId");
+if(reg.getParameter("groupId").length()>0){
+	GroupId = reg.getParameter("groupId");
+}			 
 		 TblUser user = getUser(session);
 		 if(!cekValidSession(session)){
         	 return "fail";
@@ -140,12 +151,13 @@ String Key=reg.getParameter("key");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblParamDAO dao = new TblParamDAO(ses);
-               TblParam tbl = dao.getById(Key);
+               TblGroupDAO dao = new TblGroupDAO(ses);
+               TblGroup tbl = dao.getById(new BigDecimal(GroupId));
                 String tblOld = gson.toJson(tbl);
-                    tbl.setValue(reg.getParameter("value"));
-                    tbl.setKey(reg.getParameter("key"));
-                    tbl.setDescription(reg.getParameter("description"));
+                    tbl.setParams(reg.getParameter("params"));
+                    tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
+                    tbl.setJabatan(reg.getParameter("jabatan"));
+                    tbl.setGroupName(reg.getParameter("groupName"));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -164,11 +176,14 @@ String Key=reg.getParameter("key");
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/paramDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String paramDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Key=reg.getParameter("Key");
+	 @RequestMapping(value="/groupDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String groupDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+		 String GroupId="0";//reg.getParameter("GroupId");
+		 if(reg.getParameter("GroupId").length()>0){
+		 	GroupId = reg.getParameter("GroupId");
+		 }
 	
-		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
+//		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 TblUser user = getUser(session);
 		 
 		 if(!cekValidSession(session)){
@@ -180,8 +195,8 @@ String Key=reg.getParameter("Key");
          Gson gson = new Gson();
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblParamDAO dao = new TblParamDAO(ses);
-               TblParam tbl = dao.getById(Key);
+               TblGroupDAO dao = new TblGroupDAO(ses);
+               TblGroup tbl = dao.getById(new BigDecimal(GroupId));
                String tblDel = gson.toJson(tbl);
                ses.beginTransaction();
                dao.delete(tbl);

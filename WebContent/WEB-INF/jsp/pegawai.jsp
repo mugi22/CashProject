@@ -44,9 +44,9 @@
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
+                    <th field="branchCode" width="100"sortable="true">BranchCode</th> 
                     <th field="statusPegawai" width="100"sortable="true">StatusPegawai</th> 
                     <th field="statusAktif" width="100"sortable="true">StatusAktif</th> 
-                    <th field="branchCode" width="100"sortable="true">BranchCode</th> 
                     <th field="nik" width="100"sortable="true">Nik</th> 
                     <th field="cif" width="100"sortable="true">Cif</th> 
                     <th field="nama" width="100"sortable="true">Nama</th> 
@@ -69,16 +69,13 @@
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
 		<div class="ftitle">PEGAWAI</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>StatusPegawai</label> :<input name="statusPegawai"	class="easyui-textbox" id="statusPegawai">	</div>
-                    <div class="fitem">	<label>StatusAktif</label> :<input name="statusAktif"	class="easyui-textbox" id="statusAktif">	</div>
-                    <div class="fitem">	<label>BranchCode</label> :<input name="branchCode"	class="easyui-textbox" id="branchCode">	</div>
+                    <div class="fitem">	<label>BranchCode</label> :<input name="branchCode"	class="easyui-textbox" required="false" id="branchCode">	</div>
+                    <div class="fitem">	<label>StatusPegawai</label> :<input name="statusPegawai"	class="easyui-textbox" required="false" id="statusPegawai">	</div>
+                    <div class="fitem">	<label>StatusAktif</label> :<input name="statusAktif"	class="easyui-textbox" required="false" id="statusAktif">	</div>
                     <div class="fitem">	<label>Nik</label> :<input name="nik"	class="easyui-textbox" required="false" id="nik">	</div>
-                    <div class="fitem">	<label>Cif</label> :<input name="cif"	class="easyui-textbox"  id="cif">	</div>
+                    <div class="fitem">	<label>Cif</label> :<input name="cif"	class="easyui-textbox" required="false" id="cif">	</div>
                     <div class="fitem">	<label>Nama</label> :<input name="nama"	class="easyui-textbox" required="false" id="nama">	</div>
-                    
-                    <div class="fitem">	<label>TglLahir</label> :<input name="tglLahir"	class="easyui-datebox" required="false" id="tglLahir"
-                    data-options="formatter:myformatter,parser:myparser">	</div>
-                    
+                    <div class="fitem">	<label>TglLahir</label> :<input name="tglLahir"	class="easyui-textbox" required="false" id="tglLahir">	</div>
                     <div class="fitem">	<label>Grade</label> :<input name="grade"	class="easyui-textbox" required="false" id="grade">	</div>
 			
 		</form>
@@ -177,7 +174,7 @@ var branchcode;
 					function(r) {
 						if (r) {
 							$.post('pegawaiDelete.htm', {
-								nik : row.nik //SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
+							                    nik : row.nik,
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -234,18 +231,18 @@ var branchcode;
 		});
 	}
 	
-	/*inputan readonly atau tidak saat onShow */
+	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
 		//list button
 		//$('#userId').textbox('readonly', true);
-$('#statusPegawai').textbox('readonly', true);
-$('#statusAktif').textbox('readonly', true);
-$('#branchCode').textbox('readonly', true);
-$('#nik').textbox('readonly', true);
-$('#cif').textbox('readonly', true);
-$('#nama').textbox('readonly', true);
-$('#tglLahir').textbox('readonly', true);
-$('#grade').textbox('readonly', true);
+                    $('#branchCode').textbox('readonly', true);
+                    $('#statusPegawai').textbox('readonly', true);
+                    $('#statusAktif').textbox('readonly', true);
+                    $('#nik').textbox('readonly', true);
+                    $('#cif').textbox('readonly', true);
+                    $('#nama').textbox('readonly', true);
+                    $('#tglLahir').textbox('readonly', true);
+                    $('#grade').textbox('readonly', true);
 
 		//form button
 		$('#btnSave').linkbutton('disable');
@@ -255,14 +252,14 @@ $('#grade').textbox('readonly', true);
 	function onAdd() {
 		//list button
 		//$('#userId').textbox('readonly', false);		
-$('#statusPegawai').textbox('readonly', false);
-$('#statusAktif').textbox('readonly', false);
-$('#branchCode').textbox('readonly', false);
-$('#nik').textbox('readonly', false);
-$('#cif').textbox('readonly', false);
-$('#nama').textbox('readonly', false);
-$('#tglLahir').textbox('readonly', false);
-$('#grade').textbox('readonly', false);
+                    $('#branchCode').textbox('readonly', false);
+                    $('#statusPegawai').textbox('readonly', false);
+                    $('#statusAktif').textbox('readonly', false);
+                    $('#nik').textbox('readonly', false);
+                    $('#cif').textbox('readonly', false);
+                    $('#nama').textbox('readonly', false);
+                    $('#tglLahir').textbox('readonly', false);
+                    $('#grade').textbox('readonly', false);
 		
 		//form button
 		$('#btnSave').linkbutton('enable');
@@ -272,14 +269,14 @@ $('#grade').textbox('readonly', false);
 	function onEdit() {
 		//list button
 		//$('#userId').textbox('readonly', true);	
-$('#statusPegawai').textbox('readonly', false);
-$('#statusAktif').textbox('readonly', false);
-$('#branchCode').textbox('readonly', false);
-$('#nik').textbox('readonly', true); //Key
-$('#cif').textbox('readonly', false);
-$('#nama').textbox('readonly', false);
-$('#tglLahir').textbox('readonly', false);
-$('#grade').textbox('readonly', false);
+                    $('#branchCode').textbox('readonly', false);
+                    $('#statusPegawai').textbox('readonly', false);
+                    $('#statusAktif').textbox('readonly', false);
+                    $('#nik').textbox('readonly', true);
+                    $('#cif').textbox('readonly', false);
+                    $('#nama').textbox('readonly', false);
+                    $('#tglLahir').textbox('readonly', false);
+                    $('#grade').textbox('readonly', false);
 	
 		//form button
 		$('#btnSave').linkbutton('enable');

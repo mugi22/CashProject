@@ -156,7 +156,7 @@ XXXparamSearch
 					function(r) {
 						if (r) {
 							$.post('XXXZDelete.htm', {
-								Id : row.Id //SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
+							XXXrowDelete
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -213,11 +213,11 @@ XXXparamSearch
 		});
 	}
 	
-	/*inputan readonly atau tidak saat onShow */
+	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
 		//list button
 		//$('#userId').textbox('readonly', true);
-XXXenableField
+XXXenableOnShowField
 		//form button
 		$('#btnSave').linkbutton('disable');
 	}
@@ -226,7 +226,7 @@ XXXenableField
 	function onAdd() {
 		//list button
 		//$('#userId').textbox('readonly', false);		
-XXXenableField		
+XXXenableOnAddField		
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
@@ -235,7 +235,7 @@ XXXenableField
 	function onEdit() {
 		//list button
 		//$('#userId').textbox('readonly', true);	
-XXXenableField	
+XXXenableOnEditField	
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}

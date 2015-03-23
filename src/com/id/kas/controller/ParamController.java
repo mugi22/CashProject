@@ -1,6 +1,5 @@
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.controller;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,19 +20,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
-import com.id.kas.pojo.TblPriviledge;//harap tambahain coyyy
+import com.id.kas.pojo.TblParam;//harap tambahain coyyy
+import com.id.kas.pojo.dao.TblParamDAO;
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class PriviledgeController  extends AbstractListScreen{
-	@RequestMapping(value="/priviledge.htm",method=RequestMethod.GET)
+public class ParamController  extends AbstractListScreen{
+	@RequestMapping(value="/param.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg){ 
 	 	return super.doGet(model, session, reg);
 	}
 	
 	
-	 @RequestMapping(value="/priviledge.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/param.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session) {
 		 super.doPost(model, session);
 		return getView();		 
@@ -42,21 +42,14 @@ public class PriviledgeController  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "priviledge";
+		return "param";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/priviledgeListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String priviledgeListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String GroupId="0";//reg.getParameter("GroupId");
-if(reg.getParameter("GroupId").length()>0){
-	GroupId = reg.getParameter("GroupId");
-}	
-
-String MenuId="0";//reg.getParameter("MenuId");		
-if(reg.getParameter("MenuId").length()>0){
-	MenuId = reg.getParameter("MenuId");
-}	
+	 @RequestMapping(value="/paramListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String paramListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Value=reg.getParameter("Value");
+String Key=reg.getParameter("Key");		 
          String ses = (String) session.getAttribute("session");
          TblUser user = (TblUser) session.getAttribute("user");
          model.put("session", ses);
@@ -72,10 +65,10 @@ if(reg.getParameter("MenuId").length()>0){
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblPriviledgeDAO dao = new TblPriviledgeDAO(sess);
+			TblParamDAO dao = new TblParamDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<TblPriviledge> l = new ArrayList<TblPriviledge>();
-				h = dao.getByPerPage(new BigDecimal(GroupId),new BigDecimal(MenuId),loffset, row);
+			List<TblParam> l = new ArrayList<TblParam>();
+				h = dao.getByPerPage(Value,Key,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -95,7 +88,7 @@ if(reg.getParameter("MenuId").length()>0){
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/priviledgeAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/paramAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		 TblUser user = getUser(session);		 
 		 if(!cekValidSession(session)){
@@ -108,14 +101,11 @@ if(reg.getParameter("MenuId").length()>0){
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblPriviledgeDAO dao = new TblPriviledgeDAO(ses);
-               TblPriviledge tbl = new TblPriviledge();
-                    tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
-                    tbl.setMenuId(new BigDecimal(reg.getParameter("menuId")));
-                    tbl.setIsAdd(reg.getParameter("isAdd").charAt(0));
-                    tbl.setIsDelete(reg.getParameter("isDelete").charAt(0));
-                    tbl.setIsUpdate(reg.getParameter("isUpdate").charAt(0));
-                    tbl.setIsView(reg.getParameter("isView").charAt(0));
+               TblParamDAO dao = new TblParamDAO(ses);
+               TblParam tbl = new TblParam();
+                    tbl.setValue(reg.getParameter("value"));
+                    tbl.setKey(reg.getParameter("key"));
+                    tbl.setDescription(reg.getParameter("description"));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
@@ -135,17 +125,9 @@ if(reg.getParameter("MenuId").length()>0){
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/priviledgeEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String priviledgeEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 String GroupId="0";//reg.getParameter("GroupId");
-		 if(reg.getParameter("groupId").length()>0){
-		 	GroupId = reg.getParameter("groupId");
-		 }	
-
-		 String MenuId="0";//reg.getParameter("MenuId");		
-		 if(reg.getParameter("menuId").length()>0){
-			 MenuId = reg.getParameter("menuId");
-		 }	
+	 @RequestMapping(value="/paramEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String paramEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Key=reg.getParameter("key");
 		 
 		 TblUser user = getUser(session);
 		 if(!cekValidSession(session)){
@@ -159,15 +141,12 @@ if(reg.getParameter("MenuId").length()>0){
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblPriviledgeDAO dao = new TblPriviledgeDAO(ses);
-               TblPriviledge tbl = dao.getById(new BigDecimal(GroupId),new BigDecimal(MenuId));
+               TblParamDAO dao = new TblParamDAO(ses);
+               TblParam tbl = dao.getById(Key);
                 String tblOld = gson.toJson(tbl);
-                tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
-                tbl.setMenuId(new BigDecimal(reg.getParameter("menuId")));
-                tbl.setIsAdd(reg.getParameter("isAdd").charAt(0));
-                tbl.setIsDelete(reg.getParameter("isDelete").charAt(0));
-                tbl.setIsUpdate(reg.getParameter("isUpdate").charAt(0));
-                tbl.setIsView(reg.getParameter("isView").charAt(0));
+                    tbl.setValue(reg.getParameter("value"));
+                    tbl.setKey(reg.getParameter("key"));
+                    tbl.setDescription(reg.getParameter("description"));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -186,18 +165,10 @@ if(reg.getParameter("MenuId").length()>0){
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/priviledgeDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String priviledgeDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 String GroupId="0";//reg.getParameter("GroupId");
-		 if(reg.getParameter("GroupId").length()>0){
-		 	GroupId = reg.getParameter("GroupId");
-		 }	
-
-		 String MenuId="0";//reg.getParameter("MenuId");		
-		 if(reg.getParameter("MenuId").length()>0){
-		 	GroupId = reg.getParameter("MenuId");
-		 }	
-		 
+	 @RequestMapping(value="/paramDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String paramDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Key=reg.getParameter("Key");
+	
 		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 TblUser user = getUser(session);
 		 
@@ -210,8 +181,8 @@ if(reg.getParameter("MenuId").length()>0){
          Gson gson = new Gson();
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblPriviledgeDAO dao = new TblPriviledgeDAO(ses);
-               TblPriviledge tbl = dao.getById(new BigDecimal(GroupId),new BigDecimal(MenuId));
+               TblParamDAO dao = new TblParamDAO(ses);
+               TblParam tbl = dao.getById(Key);
                String tblDel = gson.toJson(tbl);
                ses.beginTransaction();
                dao.delete(tbl);

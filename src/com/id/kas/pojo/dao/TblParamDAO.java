@@ -1,4 +1,4 @@
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.pojo.dao;
 
 import java.util.HashMap;
 import java.util.List;
