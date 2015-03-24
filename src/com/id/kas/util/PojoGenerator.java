@@ -1,5 +1,9 @@
 package com.id.kas.util;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
@@ -18,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.id.kas.pojo.AuditTrail;
 @Controller
 public class PojoGenerator {
-
+	String sFile="";//"H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+daoName+".java"; //DAO
 	/**
 	 * @param args
 	 */
@@ -35,6 +39,10 @@ public class PojoGenerator {
 
 	@RequestMapping(value="/pojogen.htm",method=RequestMethod.POST)
 	public String doPost(HttpServletRequest reg){
+		sFile="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+reg.getParameter("pojoName")+".java"; //DAO
+		
+		
+		
 		String col[] = reg.getParameterValues("col");
 		String types[] = reg.getParameterValues("types");
 		String length[] = reg.getParameterValues("length");
@@ -140,7 +148,30 @@ public class PojoGenerator {
 		sbGet.append("\n}");
 		sb.append(sbGet.toString());
 		System.out.println(sb.toString());
-		
+		createFile(sFile, sb.toString());
+	}
+	
+	
+	
+	
+	public void createFile(String fileName,String fileText) {
+		try {
+			File file = new File(fileName);
+			System.out.println(file.getAbsolutePath());
+			if(file.createNewFile()){
+				BufferedWriter output = new BufferedWriter(new FileWriter(file));
+				output.write(fileText);
+				output.close();
+		        System.out.println("Success..........................................!");
+			}
+		         else{
+		         System.out.println("Error, file already exists.");
+		    }
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
