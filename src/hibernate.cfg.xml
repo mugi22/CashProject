@@ -68,7 +68,9 @@
     <mapping class="com.id.kas.pojo.TblSeq"/>
     <mapping class="com.id.kas.pojo.TblPegawai"/>
      
+     <!-- package sesuaikan -->
     <mapping class="com.id.kas.DEVELOPMENT.TblTest"/>
+    <mapping class="com.id.kas.DEVELOPMENT.TblKaryawan"/> 
      
   </session-factory>
     
