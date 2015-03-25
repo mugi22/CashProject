@@ -1,5 +1,6 @@
 package com.id.kas.DEVELOPMENT;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,19 +21,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
-//import com.id.kas.pojo.TblKaryawan;//harap tambahain coyyy
+//import com.id.kas.pojo.TblTarif;//harap tambahain coyyy
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class KaryawanController  extends AbstractListScreen{
-	@RequestMapping(value="/karyawan.htm",method=RequestMethod.GET)
+public class TarifController  extends AbstractListScreen{
+	@RequestMapping(value="/tarif.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg){ 
 	 	return super.doGet(model, session, reg);
 	}
 	
 	
-	 @RequestMapping(value="/karyawan.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/tarif.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session) {
 		 super.doPost(model, session);
 		return getView();		 
@@ -41,14 +42,14 @@ public class KaryawanController  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "karyawan";
+		return "tarif";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/karyawanListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String karyawanListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Nik=reg.getParameter("Nik");
-String Nama=reg.getParameter("Nama");		 
+	 @RequestMapping(value="/tarifListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String tarifListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Grade=reg.getParameter("Grade");
+String IdTarif=reg.getParameter("IdTarif");		 
          String ses = (String) session.getAttribute("session");
          TblUser user = (TblUser) session.getAttribute("user");
          model.put("session", ses);
@@ -64,10 +65,10 @@ String Nama=reg.getParameter("Nama");
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblKaryawanDAO dao = new TblKaryawanDAO(sess);
+			TblTarifDAO dao = new TblTarifDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<TblKaryawan> l = new ArrayList<TblKaryawan>();
-				h = dao.getByPerPage(Nik,Nama,loffset, row);
+			List<TblTarif> l = new ArrayList<TblTarif>();
+				h = dao.getByPerPage(Grade,IdTarif,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -87,7 +88,7 @@ String Nama=reg.getParameter("Nama");
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/karyawanAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/tarifAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		 TblUser user = getUser(session);		 
 		 if(!cekValidSession(session)){
@@ -100,11 +101,12 @@ String Nama=reg.getParameter("Nama");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblKaryawanDAO dao = new TblKaryawanDAO(ses);
-               TblKaryawan tbl = new TblKaryawan();
-                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
-                    tbl.setNik(reg.getParameter("nik"));
-                    tbl.setNama(reg.getParameter("nama"));
+               TblTarifDAO dao = new TblTarifDAO(ses);
+               TblTarif tbl = new TblTarif();
+                    tbl.setGrade(reg.getParameter("grade"));
+                    tbl.setIdTarif(reg.getParameter("idTarif"));
+                    tbl.setStartDate(formatter.parse((reg.getParameter("startDate"))));
+                    tbl.setTarif(new BigDecimal(reg.getParameter("tarif")));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
@@ -124,9 +126,10 @@ String Nama=reg.getParameter("Nama");
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/karyawanEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String karyawanEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Nik=reg.getParameter("nik");
+	 @RequestMapping(value="/tarifEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String tarifEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Grade=reg.getParameter("grade");
+String IdTarif=reg.getParameter("idTarif");
 		 
 		 TblUser user = getUser(session);
 		 if(!cekValidSession(session)){
@@ -140,12 +143,13 @@ String Nik=reg.getParameter("nik");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblKaryawanDAO dao = new TblKaryawanDAO(ses);
-               TblKaryawan tbl = dao.getById(Nik);
+               TblTarifDAO dao = new TblTarifDAO(ses);
+               TblTarif tbl = dao.getById(Grade,IdTarif);
                 String tblOld = gson.toJson(tbl);
-                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
-                    tbl.setNik(reg.getParameter("nik"));
-                    tbl.setNama(reg.getParameter("nama"));
+                    tbl.setGrade(reg.getParameter("grade"));
+                    tbl.setIdTarif(reg.getParameter("idTarif"));
+                    tbl.setStartDate(formatter.parse((reg.getParameter("startDate"))));
+                    tbl.setTarif(new BigDecimal(reg.getParameter("tarif")));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -164,9 +168,10 @@ String Nik=reg.getParameter("nik");
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/karyawanDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String karyawanDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Nik=reg.getParameter("nik");
+	 @RequestMapping(value="/tarifDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String tarifDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Grade=reg.getParameter("grade");
+String IdTarif=reg.getParameter("idTarif");
 	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 TblUser user = getUser(session);
@@ -180,8 +185,8 @@ String Nik=reg.getParameter("nik");
          Gson gson = new Gson();
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblKaryawanDAO dao = new TblKaryawanDAO(ses);
-               TblKaryawan tbl = dao.getById(Nik);
+               TblTarifDAO dao = new TblTarifDAO(ses);
+               TblTarif tbl = dao.getById(Grade,IdTarif);
                String tblDel = gson.toJson(tbl);
                ses.beginTransaction();
                dao.delete(tbl);

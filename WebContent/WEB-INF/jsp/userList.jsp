@@ -291,7 +291,8 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 		$('#branchCode').combobox({
 			url : 'comboAllBranch.htm?param=' + branchcode,
 			valueField : 'id',
-			textField : 'text'
+			textField : 'text',
+			panelHeight:'auto'
 		});
 		branchcode = '';
 	}

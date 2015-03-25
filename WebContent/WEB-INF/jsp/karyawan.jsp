@@ -44,9 +44,9 @@
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
+                    <th field="unitKerja" width="100"sortable="true">UnitKerja</th> 
                     <th field="nik" width="100"sortable="true">Nik</th> 
                     <th field="nama" width="100"sortable="true">Nama</th> 
-                    <th field="unitKerja" width="100"sortable="true">UnitKerja</th> 
                      
                 </tr>
             </thead>
@@ -64,9 +64,9 @@
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
 		<div class="ftitle">KARYAWAN</div>
 		<form id="fm" method="post" novalidate>
+                    <div class="fitem">	<label>UnitKerja</label> :<input name="unitKerja"	class="easyui-textbox" required="false" id="unitKerja">	</div>
                     <div class="fitem">	<label>Nik</label> :<input name="nik"	class="easyui-textbox" required="false" id="nik">	</div>
                     <div class="fitem">	<label>Nama</label> :<input name="nama"	class="easyui-textbox" required="false" id="nama">	</div>
-                    <div class="fitem">	<label>UnitKerja</label> :<input name="unitKerja"	class="easyui-textbox" required="false" id="unitKerja">	</div>
 			
 		</form>
 	</div>
@@ -225,9 +225,9 @@ var branchcode;
 	function onShow() {
 		//list button
 		//$('#userId').textbox('readonly', true);
+                    $('#unitKerja').textbox('readonly', true);
                     $('#nik').textbox('readonly', true);
                     $('#nama').textbox('readonly', true);
-                    $('#unitKerja').textbox('readonly', true);
 
 		//form button
 		$('#btnSave').linkbutton('disable');
@@ -237,9 +237,9 @@ var branchcode;
 	function onAdd() {
 		//list button
 		//$('#userId').textbox('readonly', false);		
+                    $('#unitKerja').textbox('readonly', false);
                     $('#nik').textbox('readonly', false);
                     $('#nama').textbox('readonly', false);
-                    $('#unitKerja').textbox('readonly', false);
 		
 		//form button
 		$('#btnSave').linkbutton('enable');
@@ -249,9 +249,9 @@ var branchcode;
 	function onEdit() {
 		//list button
 		//$('#userId').textbox('readonly', true);	
+                    $('#unitKerja').textbox('readonly', false);
                     $('#nik').textbox('readonly', true);
                     $('#nama').textbox('readonly', false);
-                    $('#unitKerja').textbox('readonly', false);
 	
 		//form button
 		$('#btnSave').linkbutton('enable');

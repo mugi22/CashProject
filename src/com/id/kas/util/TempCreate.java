@@ -152,7 +152,8 @@ public class TempCreate {
 							for(String k :lIds){
 								sbField.append(j1+Util.firstLowerr(k)+" : row."+Util.firstLowerr(k)+",\n");
 							}
-							x = (sbField.toString()).substring(0,sbField.toString().length()-1);
+							System.out.println("======= "+sbField.toString()+"|");
+							x = (sbField.toString()).substring(0,sbField.toString().length()-2);
 							String z = line.replaceAll("XXXrowDelete", x);
 							line =z;
 						}

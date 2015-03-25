@@ -43,6 +43,7 @@
 					<img alt="" src="image/json.png"  height="42" width="60">
 					<img alt="" src= "image/javascript.jpg" height="42" width="60">
 					<img alt="" src="image/ajax.jpg"  height="42" width="60">
+					<img alt="" src="image/accounting-js.png" height="42" width="60">
 				</td>
 			</tr>
 			</table>

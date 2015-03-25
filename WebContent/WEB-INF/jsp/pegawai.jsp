@@ -44,12 +44,12 @@
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
+                	<th field="nik" width="100"sortable="true">Nik</th>
+                    <th field="nama" width="100"sortable="true">Nama</th>
+                    <th field="cif" width="100"sortable="true">Cif</th> 
                     <th field="branchCode" width="100"sortable="true">BranchCode</th> 
                     <th field="statusPegawai" width="100"sortable="true">StatusPegawai</th> 
                     <th field="statusAktif" width="100"sortable="true">StatusAktif</th> 
-                    <th field="nik" width="100"sortable="true">Nik</th> 
-                    <th field="cif" width="100"sortable="true">Cif</th> 
-                    <th field="nama" width="100"sortable="true">Nama</th> 
                     <th field="tglLahir" width="100"sortable="true">TglLahir</th> 
                     <th field="grade" width="100"sortable="true">Grade</th> 
                      
@@ -69,14 +69,14 @@
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
 		<div class="ftitle">PEGAWAI</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>BranchCode</label> :<input name="branchCode"	class="easyui-textbox" required="false" id="branchCode">	</div>
-                    <div class="fitem">	<label>StatusPegawai</label> :<input name="statusPegawai"	class="easyui-textbox" required="false" id="statusPegawai">	</div>
-                    <div class="fitem">	<label>StatusAktif</label> :<input name="statusAktif"	class="easyui-textbox" required="false" id="statusAktif">	</div>
-                    <div class="fitem">	<label>Nik</label> :<input name="nik"	class="easyui-textbox" required="false" id="nik">	</div>
-                    <div class="fitem">	<label>Cif</label> :<input name="cif"	class="easyui-textbox" required="false" id="cif">	</div>
-                    <div class="fitem">	<label>Nama</label> :<input name="nama"	class="easyui-textbox" required="false" id="nama">	</div>
-                    <div class="fitem">	<label>TglLahir</label> :<input name="tglLahir"	class="easyui-textbox" required="false" id="tglLahir">	</div>
-                    <div class="fitem">	<label>Grade</label> :<input name="grade"	class="easyui-textbox" required="false" id="grade">	</div>
+		            <div class="fitem">	<label>Nik</label> :<input name="nik"	class="easyui-textbox" required="true" id="nik">	</div>                    
+                    <div class="fitem">	<label>Nama</label> :<input name="nama"	class="easyui-textbox" required="true" id="nama">	</div>
+					<div class="fitem">	<label>Cif</label> :<input name="cif"	class="easyui-textbox" id="cif">	</div>
+                    <div class="fitem">	<label>BranchCode</label> :<input name="branchCode"	class="easyui-textbox"  id="branchCode">	</div>
+                    <div class="fitem">	<label>StatusPegawai</label> :<input name="statusPegawai"	class="easyui-textbox"  id="statusPegawai">	</div>
+                    <div class="fitem">	<label>StatusAktif</label> :<input name="statusAktif"	class="easyui-textbox" id="statusAktif">	</div>
+                    <div class="fitem">	<label>TglLahir</label> :<input name="tglLahir"	class="easyui-datebox" required="true" id="tglLahir" data-options="formatter:myformatter,parser:myparser">	</div>
+                    <div class="fitem">	<label>Grade</label> :<input name="grade"	class="easyui-textbox"  id="grade">	</div>
 			
 		</form>
 	</div>
@@ -94,11 +94,19 @@
 <script>
 var url;
 var branchcode;
+var statusPegawai;
+var statusAktif;
+var grade;
 	$("document").ready(function() {
 		$("#btnAdd").linkbutton('${btnAdd}');
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
-		$("#btnShow").linkbutton('${btnShow}');		
+		$("#btnShow").linkbutton('${btnShow}');	
+		branchcode = ''; //combobox tidak ada default
+		addComboBranch();
+		addComboStatusPegawai();
+		addComboStatusAktif();
+		addComboGrade();
 	});
 
 	function test() {
@@ -140,6 +148,7 @@ var branchcode;
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
 		url = 'pegawaiAdd.htm';
+		
 		onAdd();
 	}
 /* ---- pegawaiedit*/
@@ -219,10 +228,48 @@ var branchcode;
 		$('#branchCode').combobox({
 			url : 'comboAllBranch.htm?param=' + branchcode,
 			valueField : 'id',
-			textField : 'text'
+			textField : 'text',
+			panelHeight:'auto'
 		});
 		branchcode = '';
 	}
+	
+	
+	//satatus pegawai
+	function addComboStatusPegawai() {
+		$('#statusPegawai').combobox({
+			url : 'comboLookup.htm?param=' + statusPegawai+'&param2=STATUS-PEG',
+			valueField : 'id',
+			textField : 'text',
+			panelHeight:'auto'
+		});
+		statusPegawai = '';
+	}
+	
+	//satatus pegawai
+	function addComboStatusAktif() {
+		$('#statusAktif').combobox({
+			url : 'comboLookup.htm?param=' + statusAktif+'&param2=STATUS-AKTIF',
+			valueField : 'id',
+			textField : 'text',
+			panelHeight:'auto'
+		});
+		statusAktif = '';
+	}
+	
+	//grade
+	function addComboGrade() {
+		$('#grade').combobox({
+			url : 'comboLookup.htm?param=' + grade+'&param2=GRADE',
+			valueField : 'id',
+			textField : 'text',
+			panelHeight:'auto'
+		});
+		grade = '';
+	}
+	
+	
+	
 	
 	/*Untuk membuat menjadi huruf besar semua */
 	function upperCase(t) {

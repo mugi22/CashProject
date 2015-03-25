@@ -10,8 +10,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
-//import com.id.kas.pojo.TblKaryawan; //kesalahan import
-import com.id.kas.DEVELOPMENT.TblKaryawan;
+//import com.id.kas.pojo.TblKaryawan;
 
 public class TblKaryawanDAO {
 	private Session session;

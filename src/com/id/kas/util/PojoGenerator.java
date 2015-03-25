@@ -128,12 +128,21 @@ public class PojoGenerator {
 				sbGet.append(sid);
 				sbGet.append(stemporal);
 				sbGet.append("@Column(name = "+'"'+col[i].toUpperCase()+'"'+','+"unique ="+sUniq);
+				String snull="nullable = false";
 				if(nulable[i].equals("Yes")){
-					sbGet.append("nullable = true, scale = 0)\n");
+					snull="nullable = true";					
+				}				
+				sbGet.append(snull);
+				
+				sbGet.append(",length ="+length[i]+" ");
+				
+				String sScale = "";
+				if(types[i].equals("Date")){
+					sScale=")\n";
 				}else{
-					sbGet.append("nullable = false, scale = 0)\n");
+					sScale=", scale = 0)\n";
 				}
-			
+				sbGet.append(sScale);
 				sbGet.append("public "+types[i]+" get"+Util.firstUpper(col[i])+"(){\n");
 				sbGet.append("return this."+Util.firstLowerr(col[i])+";\n}");
 				

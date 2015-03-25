@@ -24,8 +24,8 @@
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
             <form name="FREG" id="formCari" method="post" action="#"  >                 
-                    <label>GroupId</label> : <input name="GroupId" type="text" id="GroupId" size="30" maxlength="30"><br>
-                    <label>MenuId</label> : <input name="MenuId" type="text" id="MenuId" size="30" maxlength="30"><br>
+                    <label>Name</label> : <input name="Name" type="text" id="Name" size="30" maxlength="30"><br>
+                    <label>Status</label> : <input name="Status" type="text" id="Status" size="30" maxlength="30"><br>
 
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
@@ -38,18 +38,16 @@
 <!-- ******************************END  FORM PENCARIAN******************************* -->  
 
 <!-- **********************TABLE RESULT************************************** -->
-        <table id="dg" title="PRIVILEDGE" class="easyui-datagrid" style="width:100%;"
+        <table id="dg" title="BRANCH" class="easyui-datagrid" style="width:100%;"
                toolbar="#toolbar" pagination="true"
                data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-                    <th field="groupId" width="100"sortable="true">GroupId</th> 
-                    <th field="menuId" width="100"sortable="true">MenuId</th> 
-                    <th field="isAdd" width="100"sortable="true">IsAdd</th> 
-                    <th field="isDelete" width="100"sortable="true">IsDelete</th> 
-                    <th field="isUpdate" width="100"sortable="true">IsUpdate</th> 
-                    <th field="isView" width="100"sortable="true">IsView</th> 
+                    <th field="name" width="100"sortable="true">Name</th> 
+                    <th field="status" width="100"sortable="true">Status</th> 
+                    <th field="branchCode" width="100"sortable="true">BranchCode</th> 
+                    <th field="lvl" width="100"sortable="true">Lvl</th> 
                      
                 </tr>
             </thead>
@@ -65,14 +63,13 @@
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">PRIVILEDGE</div>
+		<div class="ftitle">BRANCH</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>GroupId</label> :<input name="groupId"	class="easyui-numberbox" required="false" id="groupId">	</div>
-                    <div class="fitem">	<label>MenuId</label> :<input name="menuId"	class="easyui-textbox" required="false" id="menuId">	</div>
-                    <div class="fitem">	<label>IsAdd</label> :<input name="isAdd"	class="easyui-textbox" required="false" id="isAdd">	</div>
-                    <div class="fitem">	<label>IsDelete</label> :<input name="isDelete"	class="easyui-textbox" required="false" id="isDelete">	</div>
-                    <div class="fitem">	<label>IsUpdate</label> :<input name="isUpdate"	class="easyui-textbox" required="false" id="isUpdate">	</div>
-                    <div class="fitem">	<label>IsView</label> :<input name="isView"	class="easyui-textbox" required="false" id="isView">	</div>
+                    <div class="fitem">	<label>Name</label> :<input name="name"	class="easyui-textbox" required="false" id="name">	</div>
+                    <div class="fitem">	<label>Status</label> :<input name="status"	class="easyui-textbox" required="false" id="status">	</div>
+                    <div class="fitem">	<label>BranchCode</label> :<input name="branchCode"	class="easyui-textbox" required="false" id="branchCode">	</div>
+                    <div class="fitem">	<label>Lvl</label> :<input name="lvl"	class="easyui-textbox" required="false" id="lvl">	</div>
+                    <div class="fitem">	<label>Telp</label> :<input name="telp"	class="easyui-textbox" required="false" id="telp">	</div>
 			
 		</form>
 	</div>
@@ -90,13 +87,11 @@
 <script>
 var url;
 var branchcode;
-var groupId;
 	$("document").ready(function() {
 		$("#btnAdd").linkbutton('${btnAdd}');
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
 		$("#btnShow").linkbutton('${btnShow}');		
-		addComboGroup();
 	});
 
 	function test() {
@@ -105,8 +100,8 @@ var groupId;
 
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
-		var jsonurl = 'priviledgeListAll.htm?'+
-'GroupId='+$('#GroupId').val()+"&"+'MenuId='+$('#MenuId').val();
+		var jsonurl = 'branchListAll.htm?'+
+'Name='+$('#Name').val()+"&"+'Status='+$('#Status').val();
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -132,35 +127,35 @@ var groupId;
 
 	/* END function untuk list data*/
 	
-	/* ============FORM FUNCTION ==========*/
+	/* ============FORM FUNCTION ========== branchtambah*/
 
 	function doAdd() { 
-		$('#dlg').dialog('open').dialog('setTitle', 'Tambah ');
+		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'priviledgeAdd.htm';
+		url = 'branchAdd.htm';
 		onAdd();
 	}
-
+/* ---- branchedit*/
 	function doEdit() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Edit ');
+			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'priviledgeEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'branchEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
-
+/*-- branchtampil*/
 	function doShow() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Tampil ');
+			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'priviledgeEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'branchEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -171,9 +166,8 @@ var groupId;
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
 					function(r) {
 						if (r) {
-							$.post('priviledgeDelete.htm', {
-								GroupId : row.groupId,
-								MenuId : row.MenuIdMenuId//SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
+							$.post('branchDelete.htm', {
+							                    branchCode : row.branchCode
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -218,7 +212,8 @@ var groupId;
 		$('#branchCode').combobox({
 			url : 'comboAllBranch.htm?param=' + branchcode,
 			valueField : 'id',
-			textField : 'text'
+			textField : 'text',
+			panelHeight:'auto'
 		});
 		branchcode = '';
 	}
@@ -230,16 +225,15 @@ var groupId;
 		});
 	}
 	
-	/*inputan readonly atau tidak saat onShow */
+	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
 		//list button
 		//$('#userId').textbox('readonly', true);
-$('#groupId').textbox('readonly', true);
-$('#menuId').textbox('readonly', true);
-$('#isAdd').textbox('readonly', true);
-$('#isDelete').textbox('readonly', true);
-$('#isUpdate').textbox('readonly', true);
-$('#isView').textbox('readonly', true);
+                    $('#name').textbox('readonly', true);
+                    $('#status').textbox('readonly', true);
+                    $('#branchCode').textbox('readonly', true);
+                    $('#lvl').textbox('readonly', true);
+                    $('#telp').textbox('readonly', true);
 
 		//form button
 		$('#btnSave').linkbutton('disable');
@@ -249,12 +243,11 @@ $('#isView').textbox('readonly', true);
 	function onAdd() {
 		//list button
 		//$('#userId').textbox('readonly', false);		
-$('#groupId').textbox('readonly', false);
-$('#menuId').textbox('readonly', false);
-$('#isAdd').textbox('readonly', false);
-$('#isDelete').textbox('readonly', false);
-$('#isUpdate').textbox('readonly', false);
-$('#isView').textbox('readonly', false);
+                    $('#name').textbox('readonly', false);
+                    $('#status').textbox('readonly', false);
+                    $('#branchCode').textbox('readonly', false);
+                    $('#lvl').textbox('readonly', false);
+                    $('#telp').textbox('readonly', false);
 		
 		//form button
 		$('#btnSave').linkbutton('enable');
@@ -264,26 +257,15 @@ $('#isView').textbox('readonly', false);
 	function onEdit() {
 		//list button
 		//$('#userId').textbox('readonly', true);	
-$('#groupId').textbox('readonly', true);
-$('#menuId').textbox('readonly', true);
-$('#isAdd').textbox('readonly', false);
-$('#isDelete').textbox('readonly', false);
-$('#isUpdate').textbox('readonly', false);
-$('#isView').textbox('readonly', false);
+                    $('#name').textbox('readonly', false);
+                    $('#status').textbox('readonly', false);
+                    $('#branchCode').textbox('readonly', true);
+                    $('#lvl').textbox('readonly', false);
+                    $('#telp').textbox('readonly', false);
 	
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
-//	comboGroup
-//satatus pegawai
-	function addComboGroup() {
-		$('#groupId').combobox({
-			url : 'comboGroup.htm?param=' + groupId,
-			valueField : 'id',
-			textField : 'text',
-			panelHeight:'auto'
-		});
-		groupId = '';
-	}
+
 	
 </script>

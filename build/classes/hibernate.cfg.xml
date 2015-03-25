@@ -70,7 +70,9 @@
      
      <!-- package sesuaikan -->
     <mapping class="com.id.kas.DEVELOPMENT.TblTest"/>
+    <!-- -->
     <mapping class="com.id.kas.DEVELOPMENT.TblKaryawan"/> 
+    <mapping class="com.id.kas.DEVELOPMENT.TblTarif"/> 
      
   </session-factory>
     

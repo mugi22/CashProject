@@ -14,7 +14,7 @@
         <script type="text/javascript" src="css/jquery-1.11.2.js"></script>
         <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
         <script type="text/javascript" src="css/formater.js"></script>
-
+<script type="text/javascript" src="css/accounting.min.js"></script>
 		<script type="text/javascript" src="css/myalert.js"></script>
 
 <title>User</title>
@@ -24,8 +24,8 @@
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
             <form name="FREG" id="formCari" method="post" action="#"  >                 
-                    <label>GroupId</label> : <input name="GroupId" type="text" id="GroupId" size="30" maxlength="30"><br>
-                    <label>MenuId</label> : <input name="MenuId" type="text" id="MenuId" size="30" maxlength="30"><br>
+                    <label>Grade</label> : <input name="Grade" type="text" id="Grade" size="30" maxlength="30"><br>
+                    <label>IdTarif</label> : <input name="IdTarif" type="text" id="IdTarif" size="30" maxlength="30"><br>
 
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
@@ -38,19 +38,20 @@
 <!-- ******************************END  FORM PENCARIAN******************************* -->  
 
 <!-- **********************TABLE RESULT************************************** -->
-        <table id="dg" title="PRIVILEDGE" class="easyui-datagrid" style="width:100%;"
+        <table id="dg" title="TARIF" class="easyui-datagrid" style="width:100%;"
                toolbar="#toolbar" pagination="true"
                data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-                    <th field="groupId" width="100"sortable="true">GroupId</th> 
-                    <th field="menuId" width="100"sortable="true">MenuId</th> 
-                    <th field="isAdd" width="100"sortable="true">IsAdd</th> 
-                    <th field="isDelete" width="100"sortable="true">IsDelete</th> 
-                    <th field="isUpdate" width="100"sortable="true">IsUpdate</th> 
-                    <th field="isView" width="100"sortable="true">IsView</th> 
-                     
+                    <th field="grade" width="100"sortable="true">Grade</th> 
+                    <th field="idTarif" width="100"sortable="true">IdTarif</th> 
+                    <th field="startDate" width="100"sortable="true">StartDate</th> 
+                    <th field="tarif" width="100"sortable="true"   data-options="
+					      formatter:function(value, row){					      
+					      return accounting.formatNumber(row.tarif,0,'.',',');
+					}" align="right">Tarif</th> 
+					                     
                 </tr>
             </thead>
         </table>        
@@ -65,14 +66,12 @@
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">PRIVILEDGE</div>
+		<div class="ftitle">TARIF</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>GroupId</label> :<input name="groupId"	class="easyui-numberbox" required="false" id="groupId">	</div>
-                    <div class="fitem">	<label>MenuId</label> :<input name="menuId"	class="easyui-textbox" required="false" id="menuId">	</div>
-                    <div class="fitem">	<label>IsAdd</label> :<input name="isAdd"	class="easyui-textbox" required="false" id="isAdd">	</div>
-                    <div class="fitem">	<label>IsDelete</label> :<input name="isDelete"	class="easyui-textbox" required="false" id="isDelete">	</div>
-                    <div class="fitem">	<label>IsUpdate</label> :<input name="isUpdate"	class="easyui-textbox" required="false" id="isUpdate">	</div>
-                    <div class="fitem">	<label>IsView</label> :<input name="isView"	class="easyui-textbox" required="false" id="isView">	</div>
+                    <div class="fitem">	<label>Grade</label> :<input name="grade"	class="easyui-textbox" required="true" id="grade">	</div>
+                    <div class="fitem">	<label>IdTarif</label> :<input name="idTarif"	class="easyui-textbox" required="true" id="idTarif">	</div>
+                    <div class="fitem">	<label>StartDate</label> :<input name="startDate"	class="easyui-datebox" required="true" id="startDate" data-options="formatter:myformatter,parser:myparser">	</div>
+                    <div class="fitem">	<label>Tarif</label> :<input name="tarif"   class="easyui-numberbox"  data-options="align:'right',min:0,precision:0,groupSeparator:','" required="true" id="tarif">	</div>
 			
 		</form>
 	</div>
@@ -90,13 +89,12 @@
 <script>
 var url;
 var branchcode;
-var groupId;
 	$("document").ready(function() {
 		$("#btnAdd").linkbutton('${btnAdd}');
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
-		$("#btnShow").linkbutton('${btnShow}');		
-		addComboGroup();
+		$("#btnShow").linkbutton('${btnShow}');	
+		addComboGrade();
 	});
 
 	function test() {
@@ -105,8 +103,8 @@ var groupId;
 
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
-		var jsonurl = 'priviledgeListAll.htm?'+
-'GroupId='+$('#GroupId').val()+"&"+'MenuId='+$('#MenuId').val();
+		var jsonurl = 'tarifListAll.htm?'+
+'Grade='+$('#Grade').val()+"&"+'IdTarif='+$('#IdTarif').val();
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -132,35 +130,35 @@ var groupId;
 
 	/* END function untuk list data*/
 	
-	/* ============FORM FUNCTION ==========*/
+	/* ============FORM FUNCTION ========== tariftambah*/
 
 	function doAdd() { 
-		$('#dlg').dialog('open').dialog('setTitle', 'Tambah ');
+		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'priviledgeAdd.htm';
+		url = 'tarifAdd.htm';
 		onAdd();
 	}
-
+/* ---- tarifedit*/
 	function doEdit() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Edit ');
+			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'priviledgeEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'tarifEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
-
+/*-- tariftampil*/
 	function doShow() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
-			$('#dlg').dialog('open').dialog('setTitle', 'Tampil ');
+			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'priviledgeEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'tarifEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -171,9 +169,9 @@ var groupId;
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
 					function(r) {
 						if (r) {
-							$.post('priviledgeDelete.htm', {
-								GroupId : row.groupId,
-								MenuId : row.MenuIdMenuId//SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
+							$.post('tarifDelete.htm', {
+							                    grade : row.grade,
+                    idTarif : row.idTarif
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -218,7 +216,8 @@ var groupId;
 		$('#branchCode').combobox({
 			url : 'comboAllBranch.htm?param=' + branchcode,
 			valueField : 'id',
-			textField : 'text'
+			textField : 'text',
+			panelHeight:'auto'
 		});
 		branchcode = '';
 	}
@@ -230,60 +229,43 @@ var groupId;
 		});
 	}
 	
-	/*inputan readonly atau tidak saat onShow */
+	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		//list button
-		//$('#userId').textbox('readonly', true);
-$('#groupId').textbox('readonly', true);
-$('#menuId').textbox('readonly', true);
-$('#isAdd').textbox('readonly', true);
-$('#isDelete').textbox('readonly', true);
-$('#isUpdate').textbox('readonly', true);
-$('#isView').textbox('readonly', true);
-
-		//form button
+                  $('#grade').textbox('readonly', true);
+                    $('#idTarif').textbox('readonly', true);
+                    $('#startDate').textbox('readonly', true);
+                    $('#tarif').textbox('readonly', true);
 		$('#btnSave').linkbutton('disable');
 	}
 	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		//list button
-		//$('#userId').textbox('readonly', false);		
-$('#groupId').textbox('readonly', false);
-$('#menuId').textbox('readonly', false);
-$('#isAdd').textbox('readonly', false);
-$('#isDelete').textbox('readonly', false);
-$('#isUpdate').textbox('readonly', false);
-$('#isView').textbox('readonly', false);
-		
-		//form button
+                    $('#grade').textbox('readonly', false);
+                    $('#idTarif').textbox('readonly', false);
+                    $('#startDate').textbox('readonly', false);
+                    $('#tarif').textbox('readonly', false);
 		$('#btnSave').linkbutton('enable');
 	}
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		//list button
-		//$('#userId').textbox('readonly', true);	
-$('#groupId').textbox('readonly', true);
-$('#menuId').textbox('readonly', true);
-$('#isAdd').textbox('readonly', false);
-$('#isDelete').textbox('readonly', false);
-$('#isUpdate').textbox('readonly', false);
-$('#isView').textbox('readonly', false);
-	
-		//form button
+                    $('#grade').textbox('readonly', true);
+                    $('#idTarif').textbox('readonly', true);
+                    $('#startDate').textbox('readonly', false);
+                    $('#tarif').textbox('readonly', false);
 		$('#btnSave').linkbutton('enable');
 	}
-//	comboGroup
-//satatus pegawai
-	function addComboGroup() {
-		$('#groupId').combobox({
-			url : 'comboGroup.htm?param=' + groupId,
+
+	
+	//grade
+	function addComboGrade() {
+		$('#grade').combobox({
+			url : 'comboLookup.htm?param=' + grade+'&param2=GRADE',
 			valueField : 'id',
 			textField : 'text',
 			panelHeight:'auto'
 		});
-		groupId = '';
+		grade = '';
 	}
 	
 </script>

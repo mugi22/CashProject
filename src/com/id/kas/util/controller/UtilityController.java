@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblBranch;
+import com.id.kas.pojo.TblGroup;
+import com.id.kas.pojo.TblLookup;
 import com.id.kas.pojo.TblProvinsi;
 import com.id.kas.pojo.dao.TblBranchDAO;
+import com.id.kas.pojo.dao.TblGroupDAO;
 //import com.id.kas.pojo.dao.TblProvinsiDAO;
+import com.id.kas.pojo.dao.TblLookupDAO;
 
 @Controller
 public class UtilityController {
@@ -122,4 +126,88 @@ public class UtilityController {
 	 public String cariUser(){
 		 return "cariUser";
 	 }
+	 
+	 
+//status pegawai
+	 @RequestMapping(value="/comboLookup.htm", method=RequestMethod.POST)
+	    public @ResponseBody String comboStatusPeg(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+			 String param =reg.getParameter("param");
+			 String param2 =reg.getParameter("param2");
+			 System.out.println("param2 : "+param2);
+			 Session sess = null;
+			 String x="";String z ="";
+			 try {
+				sess = HibernateUtil.getSessionFactory().openSession();
+				TblLookupDAO dao = new TblLookupDAO(sess);
+				List<TblLookup> l = dao.getBy(param2);
+				StringBuffer sb = new StringBuffer();
+						sb.append("[");
+				for(TblLookup tbl : l){
+					String selected="";
+					if(param.length()>0){
+						if (tbl.getLookupName().equals(reg.getParameter("param2"))){
+							selected = ","+'"'+"selected"+'"'+":true";
+						}else{
+							selected="";
+						}
+					}else{//untuk tambah -> set default combobox nya 0002
+						if(tbl.getLookupName().equals("00002")){
+							selected = ","+'"'+"selected"+'"'+":true";
+						}
+					}
+					String item = "{"+'"'+"id"+'"'+":"+'"'+tbl.getLookupValue()+'"'+","+'"'+"text"+'"'+":"+'"'+tbl.getLookupValue()+" - "+tbl.getLookupLabel()+'"'+selected+"},";	
+					sb.append(item);
+				}
+				x = (sb.toString()).substring(0,sb.toString().length()-1);
+				 z = x+"]";
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		 return z;
+		 }
+		 
+
+//	 group
+	 @RequestMapping(value="/comboGroup.htm", method=RequestMethod.POST)
+	  public @ResponseBody String comboGroup(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+			 String param =reg.getParameter("param");
+//			 String param2 =reg.getParameter("param2");
+//			 System.out.println("param2 : "+param2);
+			 Session sess = null;
+			 String x="";String z ="";
+			 try {
+				sess = HibernateUtil.getSessionFactory().openSession();
+				TblGroupDAO dao = new TblGroupDAO(sess);
+				List<TblGroup> l = dao.getAll();//getBy(param2);
+				StringBuffer sb = new StringBuffer();
+						sb.append("[");
+				for(TblGroup tbl : l){
+					String selected="";
+					if(param.length()>0){
+						if (tbl.getGroupId().equals(reg.getParameter("param"))){
+							selected = ","+'"'+"selected"+'"'+":true";
+						}else{
+							selected="";
+						}
+					}else{//untuk tambah -> set default combobox nya 0002
+						if(tbl.getGroupId().equals("00002")){
+							selected = ","+'"'+"selected"+'"'+":true";
+						}
+					}
+					String item = "{"+'"'+"id"+'"'+":"+'"'+tbl.getGroupId()+'"'+","+'"'+"text"+'"'+":"+'"'+tbl.getGroupName()+'"'+selected+"},";	
+					sb.append(item);
+				}
+				x = (sb.toString()).substring(0,sb.toString().length()-1);
+				 z = x+"]";
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		 return z;
+		 }
+		
+	 
+	 
+	 
+	 
+	 
 }

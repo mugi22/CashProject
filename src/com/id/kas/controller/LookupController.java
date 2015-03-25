@@ -1,4 +1,4 @@
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.controller;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -21,20 +21,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
-import com.id.kas.pojo.TblUserGroup;//harap tambahain coyyy
-import com.id.kas.pojo.dao.TblUserGroupDAO;
+import com.id.kas.pojo.TblLookup;//harap tambahain coyyy
+import com.id.kas.pojo.dao.TblLookupDAO;
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class UserGroupController  extends AbstractListScreen{
-	@RequestMapping(value="/userGroup.htm",method=RequestMethod.GET)
+public class LookupController  extends AbstractListScreen{
+	@RequestMapping(value="/lookup.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg){ 
 	 	return super.doGet(model, session, reg);
 	}
 	
 	
-	 @RequestMapping(value="/userGroup.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/lookup.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session) {
 		 super.doPost(model, session);
 		return getView();		 
@@ -43,19 +43,14 @@ public class UserGroupController  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "userGroup";
+		return "lookup";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/userGroupListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String userGroupListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String GroupId="0";//reg.getParameter("GroupId");
-if (reg.getParameter("GroupId").length()>0){
-	GroupId=reg.getParameter("GroupId");
-}
-
-
-String UserId=reg.getParameter("UserId");		 
+	 @RequestMapping(value="/lookupListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String lookupListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String LookupValue=reg.getParameter("LookupValue");
+String LookupName=reg.getParameter("LookupName");		 
          String ses = (String) session.getAttribute("session");
          TblUser user = (TblUser) session.getAttribute("user");
          model.put("session", ses);
@@ -71,10 +66,10 @@ String UserId=reg.getParameter("UserId");
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblUserGroupDAO dao = new TblUserGroupDAO(sess);
+			TblLookupDAO dao = new TblLookupDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<TblUserGroup> l = new ArrayList<TblUserGroup>();
-				h = dao.getByPerPage(new BigDecimal(GroupId),UserId,loffset, row);
+			List<TblLookup> l = new ArrayList<TblLookup>();
+				h = dao.getByPerPage(LookupValue,LookupName,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -94,7 +89,7 @@ String UserId=reg.getParameter("UserId");
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/userGroupAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/lookupAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		 TblUser user = getUser(session);		 
 		 if(!cekValidSession(session)){
@@ -107,10 +102,12 @@ String UserId=reg.getParameter("UserId");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblUserGroupDAO dao = new TblUserGroupDAO(ses);
-               TblUserGroup tbl = new TblUserGroup();
-                    tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
-                    tbl.setUserId(reg.getParameter("userId"));
+               TblLookupDAO dao = new TblLookupDAO(ses);
+               TblLookup tbl = new TblLookup();
+                    tbl.setLookupLabel(reg.getParameter("lookupLabel"));
+                    tbl.setLookupValue(reg.getParameter("lookupValue"));
+                    tbl.setNoUrut(new BigDecimal(reg.getParameter("noUrut")));
+                    tbl.setLookupName(reg.getParameter("lookupName"));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
@@ -130,14 +127,10 @@ String UserId=reg.getParameter("UserId");
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/userGroupEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String userGroupEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String GroupId="0";//reg.getParameter("GroupId");
-if (reg.getParameter("GroupId").length()>0){
-	GroupId=reg.getParameter("GroupId");
-}
-
-String UserId=reg.getParameter("UserId");
+	 @RequestMapping(value="/lookupEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String lookupEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String LookupValue=reg.getParameter("lookupValue");
+String LookupName=reg.getParameter("lookupName");
 		 
 		 TblUser user = getUser(session);
 		 if(!cekValidSession(session)){
@@ -151,11 +144,13 @@ String UserId=reg.getParameter("UserId");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblUserGroupDAO dao = new TblUserGroupDAO(ses);
-               TblUserGroup tbl = dao.getById(new BigDecimal(GroupId),UserId);
+               TblLookupDAO dao = new TblLookupDAO(ses);
+               TblLookup tbl = dao.getById(LookupValue,LookupName);
                 String tblOld = gson.toJson(tbl);
-                tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
-                    tbl.setUserId(reg.getParameter("userId"));
+                    tbl.setLookupLabel(reg.getParameter("lookupLabel"));
+                    tbl.setLookupValue(reg.getParameter("lookupValue"));
+                    tbl.setNoUrut(new BigDecimal(reg.getParameter("noUrut")));
+                    tbl.setLookupName(reg.getParameter("lookupName"));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -174,17 +169,12 @@ String UserId=reg.getParameter("UserId");
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/userGroupDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String userGroupDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String GroupId="0";//reg.getParameter("GroupId");
-if (reg.getParameter("GroupId").length()>0){
-	GroupId=reg.getParameter("GroupId");
-}
-
-
-String UserId=reg.getParameter("UserId");
+	 @RequestMapping(value="/lookupDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String lookupDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String LookupValue=reg.getParameter("lookupValue");
+String LookupName=reg.getParameter("lookupName");
 	
-		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
+//		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 TblUser user = getUser(session);
 		 
 		 if(!cekValidSession(session)){
@@ -196,8 +186,8 @@ String UserId=reg.getParameter("UserId");
          Gson gson = new Gson();
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblUserGroupDAO dao = new TblUserGroupDAO(ses);
-               TblUserGroup tbl = dao.getById(new BigDecimal(GroupId),UserId);
+               TblLookupDAO dao = new TblLookupDAO(ses);
+               TblLookup tbl = dao.getById(LookupValue,LookupName);
                String tblDel = gson.toJson(tbl);
                ses.beginTransaction();
                dao.delete(tbl);

@@ -13,24 +13,14 @@ import com.id.kas.pojo.AuditTrail;
 @Entity
 @Table(name = "TBL_KARYAWAN", schema = "TESTDB")
 public class TblKaryawan extends AuditTrail implements java.io.Serializable {
-	private String nik;
 	private String nama;
+	private String nik;
 	private String unitKerja;
 
 	public TblKaryawan() {
 	}
 
-	@Id
-	@Column(name = "NIK", unique = true, nullable = false, scale = 0)
-	public String getNik() {
-		return this.nik;
-	}
-
-	public void setNik(String nik) {
-		this.nik = nik;
-	}
-
-	@Column(name = "NAMA", unique = false, nullable = false, scale = 0)
+	@Column(name = "NAMA", unique = false, nullable = false, length = 40, scale = 0)
 	public String getNama() {
 		return this.nama;
 	}
@@ -39,7 +29,17 @@ public class TblKaryawan extends AuditTrail implements java.io.Serializable {
 		this.nama = nama;
 	}
 
-	@Column(name = "UNITKERJA", unique = false, nullable = true, scale = 0)
+	@Id
+	@Column(name = "NIK", unique = true, nullable = false, length = 6, scale = 0)
+	public String getNik() {
+		return this.nik;
+	}
+
+	public void setNik(String nik) {
+		this.nik = nik;
+	}
+
+	@Column(name = "UNIT_KERJA", unique = false, nullable = true, length = 5, scale = 0)
 	public String getUnitKerja() {
 		return this.unitKerja;
 	}
