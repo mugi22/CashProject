@@ -90,6 +90,8 @@ var branchcode;
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
 		$("#btnShow").linkbutton('${btnShow}');		
+		upperCase($('#lookupName'));
+		//lookupName
 	});
 
 	function test() {

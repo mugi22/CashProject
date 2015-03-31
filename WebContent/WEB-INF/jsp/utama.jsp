@@ -32,7 +32,7 @@
 			<h2>Cash Project</h2>
 			<table width="100%">
 			<tr>
-				<td align="left" width="10%"><a href="logout.htm">Logout</a></td>
+				<td align="left" width="20%"><a href="logout.htm">Logout</a><br> ${user.userId} ${user.name} ${user.branchCode}</td>
 				<td align="right">
 					<img alt="" src="image/java.jpg"  height="42" width="60">
 					<img alt="" src="image/eclipse.png"  height="42" width="100">
@@ -51,8 +51,8 @@
 		</div>
 			<!-- div data-options="region:'south',split:true" style="height: 50px;"></div-->
 		<div data-options="region:'west',split:true" title="Menu" style="width: 200px;">		
-	        ${menu}
-			<input type="button" value="test" onclick="test()">
+	        ${menu} 
+			
 		</div>
 		<div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
 			<iframe src="utamaMain.htm" style="width: 100%; height: 100%" id="iframe" frameborder="0"></iframe>			

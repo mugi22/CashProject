@@ -1,6 +1,5 @@
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.controller;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.Session;
@@ -21,35 +21,36 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
-//import com.id.kas.pojo.TblTarif;//harap tambahain coyyy
+import com.id.kas.pojo.TblBranch;//harap tambahain coyyy
+import com.id.kas.pojo.dao.TblBranchDAO;
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class TarifController  extends AbstractListScreen{
-	@RequestMapping(value="/tarif.htm",method=RequestMethod.GET)
-	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg){ 
-	 	return super.doGet(model, session, reg);
+public class BranchController  extends AbstractListScreen{
+	@RequestMapping(value="/branch.htm",method=RequestMethod.GET)
+	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg,HttpServletResponse res){ 
+	 	return super.doGet(model, session, reg, res);
 	}
 	
 	
-	 @RequestMapping(value="/tarif.htm", method=RequestMethod.POST)
-	 public String doPost(Map<String, Object> model,HttpSession session) {
-		 super.doPost(model, session);
+	 @RequestMapping(value="/branch.htm", method=RequestMethod.POST)
+	 public String doPost(Map<String, Object> model,HttpSession session,HttpServletRequest reg,HttpServletResponse res) {
+		 super.doPost(model, session,reg, res);
 		return getView();		 
 	 }
 	 
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "tarif";
+		return "branch";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/tarifListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String tarifListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Grade=reg.getParameter("Grade");
-String IdTarif=reg.getParameter("IdTarif");		 
+	 @RequestMapping(value="/branchListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String branchListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Name=reg.getParameter("Name");
+String Status=reg.getParameter("Status");		 
          String ses = (String) session.getAttribute("session");
          TblUser user = (TblUser) session.getAttribute("user");
          model.put("session", ses);
@@ -65,10 +66,10 @@ String IdTarif=reg.getParameter("IdTarif");
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblTarifDAO dao = new TblTarifDAO(sess);
+			TblBranchDAO dao = new TblBranchDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<TblTarif> l = new ArrayList<TblTarif>();
-				h = dao.getByPerPage(Grade,IdTarif,loffset, row);
+			List<TblBranch> l = new ArrayList<TblBranch>();
+				h = dao.getByPerPage(Name,Status,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -88,7 +89,7 @@ String IdTarif=reg.getParameter("IdTarif");
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/tarifAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/branchAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		 TblUser user = getUser(session);		 
 		 if(!cekValidSession(session)){
@@ -101,12 +102,13 @@ String IdTarif=reg.getParameter("IdTarif");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblTarifDAO dao = new TblTarifDAO(ses);
-               TblTarif tbl = new TblTarif();
-                    tbl.setGrade(reg.getParameter("grade"));
-                    tbl.setIdTarif(reg.getParameter("idTarif"));
-                    tbl.setStartDate(formatter.parse((reg.getParameter("startDate"))));
-                    tbl.setTarif(new BigDecimal(reg.getParameter("tarif")));
+               TblBranchDAO dao = new TblBranchDAO(ses);
+               TblBranch tbl = new TblBranch();
+                    tbl.setName(reg.getParameter("name"));
+                    tbl.setStatus(reg.getParameter("status"));
+                    tbl.setBranchCode(reg.getParameter("branchCode"));
+                    tbl.setLvl(reg.getParameter("lvl"));
+                    tbl.setTelp(reg.getParameter("telp"));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
@@ -126,10 +128,9 @@ String IdTarif=reg.getParameter("IdTarif");
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/tarifEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String tarifEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Grade=reg.getParameter("grade");
-String IdTarif=reg.getParameter("idTarif");
+	 @RequestMapping(value="/branchEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String branchEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String BranchCode=reg.getParameter("branchCode");
 		 
 		 TblUser user = getUser(session);
 		 if(!cekValidSession(session)){
@@ -143,13 +144,14 @@ String IdTarif=reg.getParameter("idTarif");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblTarifDAO dao = new TblTarifDAO(ses);
-               TblTarif tbl = dao.getById(Grade,IdTarif);
+               TblBranchDAO dao = new TblBranchDAO(ses);
+               TblBranch tbl = dao.getById(BranchCode);
                 String tblOld = gson.toJson(tbl);
-                    tbl.setGrade(reg.getParameter("grade"));
-                    tbl.setIdTarif(reg.getParameter("idTarif"));
-                    tbl.setStartDate(formatter.parse((reg.getParameter("startDate"))));
-                    tbl.setTarif(new BigDecimal(reg.getParameter("tarif")));
+                    tbl.setName(reg.getParameter("name"));
+                    tbl.setStatus(reg.getParameter("status"));
+                    tbl.setBranchCode(reg.getParameter("branchCode"));
+                    tbl.setLvl(reg.getParameter("lvl"));
+                    tbl.setTelp(reg.getParameter("telp"));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -168,10 +170,9 @@ String IdTarif=reg.getParameter("idTarif");
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/tarifDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String tarifDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Grade=reg.getParameter("grade");
-String IdTarif=reg.getParameter("idTarif");
+	 @RequestMapping(value="/branchDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String branchDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String BranchCode=reg.getParameter("branchCode");
 	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 TblUser user = getUser(session);
@@ -185,8 +186,8 @@ String IdTarif=reg.getParameter("idTarif");
          Gson gson = new Gson();
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblTarifDAO dao = new TblTarifDAO(ses);
-               TblTarif tbl = dao.getById(Grade,IdTarif);
+               TblBranchDAO dao = new TblBranchDAO(ses);
+               TblBranch tbl = dao.getById(BranchCode);
                String tblDel = gson.toJson(tbl);
                ses.beginTransaction();
                dao.delete(tbl);

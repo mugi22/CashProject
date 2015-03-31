@@ -32,7 +32,8 @@ DAO : <input type="text" style="width: 300px" id="dao" name="dao" value="TblSeq"
                 
             </tbody>
         </table>
-        <input type="submit" value="Submit"> <input type="reset" value="Reset">
+        <input type="submit" value="Submit"> 
+        <input type="reset" value="Reset">
 </form>
  <input type="button" value="test" onclick="test()">
 

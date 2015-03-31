@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
+import com.id.kas.pojo.TblUserGroup;
 import com.id.kas.pojo.dao.TblUserDAO;
+import com.id.kas.pojo.dao.TblUserGroupDAO;
+import com.id.kas.util.AppContant;
+import com.id.kas.util.MyVariable;
 import com.id.kas.util.RandomString;
+import com.id.kas.util.Util;
 import com.id.kas.util.log.LogClass;
 
 @Controller
@@ -25,7 +30,8 @@ public class LoginController {
 	
 	@RequestMapping(value="/login",method=RequestMethod.GET)
 	public String doGet(){
-		logger.info("Login.....................");
+//		if(MyVariable.getsAppStatus().equals("OPEN")){
+		logger.info(" Login.....................");
 		return "login";
 	}
 
@@ -34,7 +40,7 @@ public class LoginController {
 	public String doPost(Map<String, Object> model,HttpSession session,HttpServletRequest req, HttpServletResponse res){
 		String userName =  req.getParameter("USERNAME");
 		String password = req.getParameter("Password");
-		logger.info(userName + "Login.....................");
+		logger.info(userName + " Login.....................");
 		Session sess = null;
 		int valid = 0;
 		try{
@@ -49,6 +55,11 @@ public class LoginController {
 					session.setAttribute("user", tblUser);
 					RandomString rs = new RandomString();
 					session.setAttribute("key", rs.randomString());
+					if(MyVariable.getsAppStatus().equals(AppContant.AdminMode.AdminModeClose)){						
+						if(!Util.cekUserAdminMode(tblUser.getUserId(), sess)){
+							valid = 2;
+						}
+					}
 				}
 				
 			}else{
@@ -61,6 +72,9 @@ public class LoginController {
 		if (valid==1){
 			logger.info(userName + "Login.....................Success");
 	         return "redirect:/utama.htm";
+	    }else if (valid==2){
+			logger.info(userName + " Login..................... APP STATUS : ADMIN MODE");
+	         return "redirect:/appstatus.htm";
 	    }else{
 	         return "loginGagal";
 	    }
@@ -74,6 +88,18 @@ public class LoginController {
 		session.invalidate();
 		return "logout";
 	}
+	
+	
+//	public boolean cekUserAdminMode(String userId, Session sess){
+//		TblUserGroupDAO userGroupDAO = new TblUserGroupDAO(sess);
+//		TblUserGroup tblUserGroup = userGroupDAO.getById(AppContant.AdminModeGroup.AdminModeGroup, userId);
+//		if (tblUserGroup==null){
+//			return false;
+//		}else
+//		{
+//			return true;
+//		}
+//	}
 	
 	
 }

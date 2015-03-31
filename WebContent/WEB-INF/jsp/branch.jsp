@@ -66,10 +66,12 @@
 		<div class="ftitle">BRANCH</div>
 		<form id="fm" method="post" novalidate>
                     <div class="fitem">	<label>Name</label> :<input name="name"	class="easyui-textbox" required="false" id="name">	</div>
-                    <div class="fitem">	<label>Status</label> :<input name="status"	class="easyui-textbox" required="false" id="status">	</div>
+                    
                     <div class="fitem">	<label>BranchCode</label> :<input name="branchCode"	class="easyui-textbox" required="false" id="branchCode">	</div>
                     <div class="fitem">	<label>Lvl</label> :<input name="lvl"	class="easyui-textbox" required="false" id="lvl">	</div>
                     <div class="fitem">	<label>Telp</label> :<input name="telp"	class="easyui-textbox" required="false" id="telp">	</div>
+                    
+                    <div class="fitem">	<label>Status</label> :<input name="status"	class="easyui-textbox" required="false" id="status">	</div>
 			
 		</form>
 	</div>
@@ -91,7 +93,8 @@ var branchcode;
 		$("#btnAdd").linkbutton('${btnAdd}');
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
-		$("#btnShow").linkbutton('${btnShow}');		
+		$("#btnShow").linkbutton('${btnShow}');	
+		addComboStatusUnit();
 	});
 
 	function test() {
@@ -267,5 +270,14 @@ var branchcode;
 		$('#btnSave').linkbutton('enable');
 	}
 
-	
+	//satatus Unit kerja
+	function addComboStatusUnit() {
+		$('#status').combobox({
+			url : 'comboLookup.htm?param=' + status+'&param2=STATUS-BRANCH',
+			valueField : 'id',
+			textField : 'text',
+			panelHeight:'auto'
+		});
+		status = '';
+	}
 </script>

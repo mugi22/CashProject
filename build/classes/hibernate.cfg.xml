@@ -15,15 +15,15 @@
     <!--  -->
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://10.2.21.62:3306/TESTDB?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/TESTDB?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">server</property>
+    <property name="hibernate.connection.password">password</property>
     
     <property name="hibernate.show_sql">true</property>
     
     <!-- property name="connection.autocommit">false</property-->
 		
-		<!-- Optional configuration -->
+		<!-- Optional configuration 
 		<property name="show_sql">true</property>
 		<property name="format_sql">false</property>
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -36,7 +36,7 @@
 		<property name="hibernate.transaction.flush_before_completion">true</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
       
-   
+   -->
     <property name="hibernate.hbm2ddl.auto">update</property> <!-- untuk pembentukan/update table <property name="propertyName">propertyValue</property>-->
     
     <!-- property name="hibernate.ejb.event.post-insert">org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener</property>
@@ -72,7 +72,9 @@
     <mapping class="com.id.kas.DEVELOPMENT.TblTest"/>
     <!-- -->
     <mapping class="com.id.kas.DEVELOPMENT.TblKaryawan"/> 
-    <mapping class="com.id.kas.DEVELOPMENT.TblTarif"/> 
+    <mapping class="com.id.kas.DEVELOPMENT.TblTagihan"/>
+   
+    <mapping class="com.id.kas.pojo.TblTarif"/> 
      
   </session-factory>
     

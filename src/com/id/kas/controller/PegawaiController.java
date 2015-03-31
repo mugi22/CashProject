@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.Session;
@@ -28,14 +29,14 @@ import com.id.kas.util.AbstractListScreen;
 @Controller
 public class PegawaiController  extends AbstractListScreen{
 	@RequestMapping(value="/pegawai.htm",method=RequestMethod.GET)
-	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg){ 
-	 	return super.doGet(model, session, reg);
+	 public String doGet(java.util.Map<String,Object> model, HttpSession session,  HttpServletRequest reg, HttpServletResponse res){ 
+	 	return super.doGet(model, session, reg,res);
 	}
 	
 	
 	 @RequestMapping(value="/pegawai.htm", method=RequestMethod.POST)
-	 public String doPost(Map<String, Object> model,HttpSession session) {
-		 super.doPost(model, session);
+	 public String doPost(Map<String, Object> model,HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
+		 super.doPost(model, session,reg, res);
 		return getView();		 
 	 }
 	 

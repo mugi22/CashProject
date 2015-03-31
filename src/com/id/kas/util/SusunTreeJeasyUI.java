@@ -103,7 +103,7 @@ public class SusunTreeJeasyUI {
     private String user;
     
     public String susunMenuByUser(String userId,String skey){
-    	System.out.println("Skey 11111   "+sKey);
+//    	System.out.println("Skey 11111   "+sKey);
     	this.user = userId;
     	this.sKey = skey;
     	rs = new RandomString();
@@ -125,7 +125,7 @@ public class SusunTreeJeasyUI {
         }else{
         
 //        susunTree.menuByUser(ses,"P81035");
-        susunTree(ses, BigInteger.valueOf(0), jrk, l);
+        susunTree(ses, BigInteger.valueOf(1), jrk, l);//menu paling awal
         ses.close();
         sb.append("</ul>"+"\n\r");
         String x = sb.toString();

@@ -4,6 +4,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+
+	.numberbox .textbox-text{
+	  text-align: right;
+	  color: black;
+	}
+</style>
+
+
 
    <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
@@ -71,7 +80,7 @@
                     <div class="fitem">	<label>Grade</label> :<input name="grade"	class="easyui-textbox" required="true" id="grade">	</div>
                     <div class="fitem">	<label>IdTarif</label> :<input name="idTarif"	class="easyui-textbox" required="true" id="idTarif">	</div>
                     <div class="fitem">	<label>StartDate</label> :<input name="startDate"	class="easyui-datebox" required="true" id="startDate" data-options="formatter:myformatter,parser:myparser">	</div>
-                    <div class="fitem">	<label>Tarif</label> :<input name="tarif"   class="easyui-numberbox"  data-options="align:'right',min:0,precision:0,groupSeparator:','" required="true" id="tarif">	</div>
+                    <div class="fitem">	<label>Tarif</label> :<input name="tarif"   class="easyui-numberbox"  data-options="min:0,precision:0,groupSeparator:','" required="true" id="tarif">	</div>
 			
 		</form>
 	</div>

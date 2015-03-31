@@ -4,12 +4,16 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.id.kas.db.HibernateUtil;
+import com.id.kas.pojo.TblBranch;
 import com.id.kas.pojo.TblUser;
+import com.id.kas.pojo.dao.TblBranchDAO;
 import com.id.kas.util.SusunTree;
 import com.id.kas.util.SusunTreeJeasyUI;
 
@@ -22,10 +26,27 @@ public class UtamaController {
        try {
            String ses = (String) session.getAttribute("valid");
            if(ses.equals("valid")){
-        	   SusunTreeJeasyUI st = new SusunTreeJeasyUI();              
+        	                
+        	   
+        	   //cek unit status
+        	   Session sesdb=null;
+        	   sesdb = HibernateUtil.getSessionFactory().openSession();
+        	   TblBranchDAO branchDAO = new TblBranchDAO(sesdb);
+        	   TblBranch branch = branchDAO.getById(user.getBranchCode());
+        	   sesdb.close();
+        	   //cek apakah user punya hak untuk buka/tutup cabang ????????????????
+        	   if(branch.getStatus().equals("C")){
+        		   return "redirect:/bukatutup.htm"; 
+        	   }
+        	   
+        	   //cek unit status akhir======
+        	   SusunTreeJeasyUI st = new SusunTreeJeasyUI(); 
                String menu = st.susunMenuByUser(user.getUserId(),(String) session.getAttribute("key"));
+               
+               
                model.put("menu", menu);
                model.put("key", session.getAttribute("key"));
+               model.put("user", user);
                return "utama";
            }else{
               return "redirect:/login.htm"; 

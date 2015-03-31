@@ -24,8 +24,8 @@
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
             <form name="FREG" id="formCari" method="post" action="#"  >                 
-                    <label>Nik</label> : <input name="Nik" type="text" id="Nik" size="30" maxlength="30"><br>
-                    <label>Nama</label> : <input name="Nama" type="text" id="Nama" size="30" maxlength="30"><br>
+                    <label>Nik</label> : <input name="Nik" type="text" id="Nik" class="easyui-textbox"  size="30" maxlength="30"><br>
+                    <label>Nama</label> : <input name="Nama" type="text" id="Nama" class="easyui-textbox" size="30" maxlength="30"><br>
 
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
@@ -107,8 +107,16 @@ var grade;
 		addComboStatusPegawai();
 		addComboStatusAktif();
 		addComboGrade();
+		upperCase($('#nama'));
+		upperCase($('#nik'));
+		upperCase($('#Nik'));
+		upperCase($('#Nama'));
+		
+		
 	});
-
+	
+	
+	
 	function test() {
 		alert("testtttt..... click");
 	}
@@ -148,7 +156,9 @@ var grade;
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
 		url = 'pegawaiAdd.htm';
-		
+		//keyEnter($('#nik'));
+		//upperCase($('#nik'));
+		//upperCase($('#nama'));
 		onAdd();
 	}
 /* ---- pegawaiedit*/
@@ -268,8 +278,10 @@ var grade;
 		grade = '';
 	}
 	
-	
-	
+	//
+	if (e.keyCode == 13){	// when press ENTER key, accept the inputed value.
+		t.textbox('setValue', $(this).val());
+	}
 	
 	/*Untuk membuat menjadi huruf besar semua */
 	function upperCase(t) {
@@ -277,11 +289,20 @@ var grade;
 			$(this).val($(this).val().toUpperCase());
 		});
 	}
+
+	/*Untuk membuat menjadi huruf besar semua */
+	function keyEnter(t) {
+		t.textbox('textbox').bind('keyup', function(e) {
+			if (e.keyCode == 13){	// when press ENTER key, accept the inputed value.
+				t.textbox('setValue', $(this).val());
+			alert($(this).val());
+			}
+		});
+	}
+	
 	
 	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		//list button
-		//$('#userId').textbox('readonly', true);
                     $('#branchCode').textbox('readonly', true);
                     $('#statusPegawai').textbox('readonly', true);
                     $('#statusAktif').textbox('readonly', true);
@@ -297,8 +318,6 @@ var grade;
 	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		//list button
-		//$('#userId').textbox('readonly', false);		
                     $('#branchCode').textbox('readonly', false);
                     $('#statusPegawai').textbox('readonly', false);
                     $('#statusAktif').textbox('readonly', false);
@@ -307,16 +326,12 @@ var grade;
                     $('#nama').textbox('readonly', false);
                     $('#tglLahir').textbox('readonly', false);
                     $('#grade').textbox('readonly', false);
-		
-		//form button
 		$('#btnSave').linkbutton('enable');
 	}
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		//list button
-		//$('#userId').textbox('readonly', true);	
-                    $('#branchCode').textbox('readonly', false);
+                   $('#branchCode').textbox('readonly', false);
                     $('#statusPegawai').textbox('readonly', false);
                     $('#statusAktif').textbox('readonly', false);
                     $('#nik').textbox('readonly', true);
@@ -324,8 +339,6 @@ var grade;
                     $('#nama').textbox('readonly', false);
                     $('#tglLahir').textbox('readonly', false);
                     $('#grade').textbox('readonly', false);
-	
-		//form button
 		$('#btnSave').linkbutton('enable');
 	}
 

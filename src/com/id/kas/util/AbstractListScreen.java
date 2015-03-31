@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -28,56 +29,89 @@ public abstract class AbstractListScreen {
 	private HttpSession session;
 	//=========================
 	
-	 public String doGet(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+	 public String doGet(Map<String, Object> model,HttpSession session,HttpServletRequest reg,HttpServletResponse res) {
 		 String param =reg.getParameter("param");//.replace(" ", "");
-		 if(param.contains(" ")){
-			 String z = param.replace(" ", "+");
-			 param = z;
-		 }
 		 String param2 =reg.getParameter("param2");
-		 System.out.println(param);
-		 JCrypto crypto = new JCrypto(param2);
-//		 System.out.println("key:  "+param2+" param : "+param+ "  dec param : "+crypto.decrypt(param));
-		 String sPriv = crypto.decrypt(param);
-		 System.out.println(sPriv);
-		 String sDec[] =sPriv.split("&");//==
-		 String sIsAdd ="";
-		 String sIsEdit ="";
-		 String sIsDelete ="";
-		 String sIsView="";
-				 
-		 for(String s: sDec){
-			if (s.contains("isAdd=")){
-				sIsAdd = /*crypto.decrypt*/(((s.replace("isAdd=", ""))));
-//				System.out.println("isAdd : "+sIsAdd+" : "+" param2 : "+param2);
-			}
-			if (s.contains("isEdit=")){
-				sIsEdit = /*crypto.decrypt*/(((s.replace("isEdit=", ""))));
-			}
-			if (s.contains("isDelete=")){
-				sIsDelete = /*crypto.decrypt*/(((s.replace("isDelete=", ""))));
-			}
-			if (s.contains("isView=")){
-				sIsView = /*crypto.decrypt*/(((s.replace("isView=", ""))));
-			}
-			 
+		 if (param==null) {
+			 param="ud5QqNn792ilaMP05ijYm8/uVEYl3fND5MVdd9WTr35xDpucRJe3bcM3K8S2kbi0WbUfbvyFpQZer47TYkhJ2g==";
+			 param2="xntldrqmbpqwhrry";
 		 }
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
-         if(cekValidSession(session)){
-        	 System.out.println(sIsAdd+"*==========================");
-	         model.put("btnAdd",sIsAdd);// "disable");
-	         model.put("btnEdit",sIsEdit);//reg.getParameter("isEdit") );//"disable");
-	         model.put("btnDelete",sIsDelete);//reg.getParameter("isDelete"));//"disable");   isShow
-	         model.put("btnShow",sIsView);//reg.getParameter("isView"));//"disable");
-	         return getView();
+			 if(param.contains(" ")){
+				 String z = param.replace(" ", "+");
+				 param = z;
+			 }
+			
+			 
+			 
+			 System.out.println(param);
+			 JCrypto crypto = new JCrypto(param2);
+			 String sPriv = crypto.decrypt(param);
+			 System.out.println("sPriv    : "+sPriv);
+			 String sDec[] =sPriv.split("&");//==
+			 String sIsAdd ="";		 String sIsEdit ="";		 String sIsDelete ="";		 String sIsView="";				 
+			 for(String s: sDec){
+				if (s.contains("isAdd=")){
+					sIsAdd = /*crypto.decrypt*/(((s.replace("isAdd=", ""))));
+				}
+				if (s.contains("isEdit=")){
+					sIsEdit = /*crypto.decrypt*/(((s.replace("isEdit=", ""))));
+				}
+				if (s.contains("isDelete=")){
+					sIsDelete = /*crypto.decrypt*/(((s.replace("isDelete=", ""))));
+				}
+				if (s.contains("isView=")){
+					sIsView = /*crypto.decrypt*/(((s.replace("isView=", ""))));
+				}
+				 
+			 }
+		 
+		 
+	         String ses = (String) session.getAttribute("session");
+	         TblUser user = (TblUser) session.getAttribute("user");
+         if(MyVariable.getsAppStatus().equals(AppContant.AdminMode.AdminModeOpen)){
+	         if(cekValidSession(session)){
+//	        	 System.out.println(sIsAdd+"*==========================");
+		         model.put("btnAdd",sIsAdd);// "disable");
+		         model.put("btnEdit",sIsEdit);//reg.getParameter("isEdit") );//"disable");
+		         model.put("btnDelete",sIsDelete);//reg.getParameter("isDelete"));//"disable");   isShow
+		         model.put("btnShow",sIsView);//reg.getParameter("isView"));//"disable");
+		         return getView();
+	         }else{
+	        	 return  "redirect:/logout.htm";
+	         }
          }else{
-        	 return  "redirect:/logout.htm";
+        	 //cek apakah user punya group adminmode
+        	 Session sess = null;
+        	 String ret = null;
+        	 try{
+        	 sess = HibernateUtil.getSessionFactory().openSession();
+        	 if(Util.cekUserAdminMode(user.getUserId(), sess)){//cek apakah user punya group adminmode
+        		sess.close();
+	        		 if(cekValidSession(session)){
+	    	        	 //System.out.println(sIsAdd+"*==========================");
+	    		         model.put("btnAdd",sIsAdd);// "disable");
+	    		         model.put("btnEdit",sIsEdit);//reg.getParameter("isEdit") );//"disable");
+	    		         model.put("btnDelete",sIsDelete);//reg.getParameter("isDelete"));//"disable");   isShow
+	    		         model.put("btnShow",sIsView);//reg.getParameter("isView"));//"disable");
+	    		         ret =  getView();
+	    	         }else{
+	    	        	 ret =  "redirect:/logout.htm";
+	    	         }
+				}else{
+					ret =  "redirect:/appstatus.htm";
+				}
+        	 
+        	 }catch (Exception e){
+        		 e.printStackTrace();
+        	 }
+        	 return ret;
          }
+         
+         //ppppp
      }
 	
 	
-	public String doPost(Map<String, Object> model, HttpSession session) {
+	public String doPost(Map<String, Object> model, HttpSession session,HttpServletRequest reg, HttpServletResponse res) {
 		String ses = (String) session.getAttribute("session");
 		TblUser user = (TblUser) session.getAttribute("user");
 		model.put("session", ses);
@@ -89,7 +123,7 @@ public abstract class AbstractListScreen {
 	    TblUser user = (TblUser) session.getAttribute("user");
 	    String valid =  (String) session.getAttribute("valid");
 	    if(session.getAttribute("valid") == null){
-	    	System.out.println(user.getUserId()+"  "+user.getName()+"  "+"Anda Tidak Punya Hak........");
+	    	//System.out.println(user.getUserId()+"  "+user.getName()+"  "+"Anda Tidak Punya Hak........");
 	    	return false;
 	    }else{
 		    if (valid.equals("valid")){

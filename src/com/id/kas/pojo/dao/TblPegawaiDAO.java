@@ -59,7 +59,7 @@ public class TblPegawaiDAO {
 		Criteria criteria =null;
 		criteria = session.createCriteria(TblPegawai.class);
                     if (Nik.length()>0){criteria.add(Restrictions.eq("nik", Nik)); 	}
-                    if (Nama.length()>0){criteria.add(Restrictions.eq("nama", Nama)); 	}
+                    if (Nama.length()>0){criteria.add(Restrictions.like("nama", '%'+Nama+'%')); 	}
 		
 		return criteria;
 	}
@@ -83,7 +83,12 @@ public class TblPegawaiDAO {
 		return map;
 	}
 
-
+	public List<TblPegawai> getAllByUnit(String Unit){
+		Criteria criteria = null;//getCriteria(Nik,Nama);
+		criteria = session.createCriteria(TblPegawai.class);
+		criteria.add(Restrictions.eq("branchCode", Unit)); 
+		return (List<TblPegawai>) criteria.list();
+	}
 
 
 }

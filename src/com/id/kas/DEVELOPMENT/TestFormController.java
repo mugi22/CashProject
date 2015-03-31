@@ -3,6 +3,7 @@ package com.id.kas.DEVELOPMENT;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -16,17 +17,17 @@ import com.id.kas.util.AbstractListScreen;
 public class TestFormController extends AbstractListScreen {
 	@RequestMapping(value="/testForm.htm",method=RequestMethod.GET)
 	@Override
-	public String doGet(Map<String, Object> model, HttpSession session,	HttpServletRequest reg) {
+	public String doGet(Map<String, Object> model, HttpSession session,	 HttpServletRequest reg, HttpServletResponse res ){
 		// TODO Auto-generated method stub
-		return super.doGet(model, session, reg);
+		return super.doGet(model, session, reg,res);
 	}
 
 	@RequestMapping(value="/testForm.htm",method=RequestMethod.POST)
 	@Override
-	public String doPost(Map<String, Object> model, HttpSession session) {
+	public String doPost(Map<String, Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
 		// TODO Auto-generated method stub
 		System.out.println("DO POST");
-		return super.doPost(model, session);
+		return super.doPost(model, session,reg,res);
 	}
 	
 	

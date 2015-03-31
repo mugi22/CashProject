@@ -1,5 +1,6 @@
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.controller;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.Session;
@@ -19,36 +21,39 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
+import com.id.kas.pojo.TblTagihan;
 import com.id.kas.pojo.TblUser;
-import com.id.kas.pojo.TblBranch;//harap tambahain coyyy
+import com.id.kas.pojo.dao.TblTagihanDAO;
+//import com.id.kas.pojo.TblTagihan;//harap tambahain coyyy
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class BranchController  extends AbstractListScreen{
-	@RequestMapping(value="/branch.htm",method=RequestMethod.GET)
-	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg){ 
-	 	return super.doGet(model, session, reg);
+public class TagihanController  extends AbstractListScreen{
+	@RequestMapping(value="/tagihan.htm",method=RequestMethod.GET)
+	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
+	 	return super.doGet(model, session, reg,res);
 	}
 	
 	
-	 @RequestMapping(value="/branch.htm", method=RequestMethod.POST)
-	 public String doPost(Map<String, Object> model,HttpSession session) {
-		 super.doPost(model, session);
+	 @RequestMapping(value="/tagihan.htm", method=RequestMethod.POST)
+	 public String doPost(Map<String, Object> model,HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
+		 super.doPost(model, session,reg,res);
 		return getView();		 
 	 }
 	 
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "branch";
+		return "tagihan";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/branchListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String branchListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Name=reg.getParameter("Name");
-String Status=reg.getParameter("Status");		 
+	 @RequestMapping(value="/tagihanListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String tagihanListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Nik=reg.getParameter("Nik");
+String Yemm=reg.getParameter("Yemm");
+String Branchcode=reg.getParameter("Branchcode");		 
          String ses = (String) session.getAttribute("session");
          TblUser user = (TblUser) session.getAttribute("user");
          model.put("session", ses);
@@ -64,10 +69,10 @@ String Status=reg.getParameter("Status");
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblBranchDAO dao = new TblBranchDAO(sess);
+			TblTagihanDAO dao = new TblTagihanDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<TblBranch> l = new ArrayList<TblBranch>();
-				h = dao.getByPerPage(Name,Status,loffset, row);
+			List<TblTagihan> l = new ArrayList<TblTagihan>();
+				h = dao.getByPerPage(Nik,Yemm,Branchcode,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -87,7 +92,7 @@ String Status=reg.getParameter("Status");
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/branchAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/tagihanAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		 TblUser user = getUser(session);		 
 		 if(!cekValidSession(session)){
@@ -100,13 +105,16 @@ String Status=reg.getParameter("Status");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblBranchDAO dao = new TblBranchDAO(ses);
-               TblBranch tbl = new TblBranch();
-                    tbl.setName(reg.getParameter("name"));
-                    tbl.setStatus(reg.getParameter("status"));
-                    tbl.setBranchCode(reg.getParameter("branchCode"));
-                    tbl.setLvl(reg.getParameter("lvl"));
-                    tbl.setTelp(reg.getParameter("telp"));
+               TblTagihanDAO dao = new TblTagihanDAO(ses);
+               TblTagihan tbl = new TblTagihan();
+                    tbl.setNik(reg.getParameter("nik"));
+                    tbl.setGrade(reg.getParameter("grade"));
+                    tbl.setJumlah(new BigDecimal(reg.getParameter("jumlah")));
+                    tbl.setYemm(reg.getParameter("yemm"));
+                    tbl.setBranchcode(reg.getParameter("branchcode"));
+                    tbl.setTglBayar(formatter.parse(reg.getParameter("tglBayar")));
+                    tbl.setSatusBayar(reg.getParameter("satusBayar"));
+                    tbl.setKasir(reg.getParameter("kasir"));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
@@ -126,9 +134,11 @@ String Status=reg.getParameter("Status");
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/branchEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String branchEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String BranchCode=reg.getParameter("branchCode");
+	 @RequestMapping(value="/tagihanEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String tagihanEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Nik=reg.getParameter("nik");
+String Yemm=reg.getParameter("yemm");
+String Branchcode=reg.getParameter("branchcode");
 		 
 		 TblUser user = getUser(session);
 		 if(!cekValidSession(session)){
@@ -142,14 +152,17 @@ String BranchCode=reg.getParameter("branchCode");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblBranchDAO dao = new TblBranchDAO(ses);
-               TblBranch tbl = dao.getById(BranchCode);
+               TblTagihanDAO dao = new TblTagihanDAO(ses);
+               TblTagihan tbl = dao.getById(Nik,Yemm,Branchcode);
                 String tblOld = gson.toJson(tbl);
-                    tbl.setName(reg.getParameter("name"));
-                    tbl.setStatus(reg.getParameter("status"));
-                    tbl.setBranchCode(reg.getParameter("branchCode"));
-                    tbl.setLvl(reg.getParameter("lvl"));
-                    tbl.setTelp(reg.getParameter("telp"));
+                    tbl.setNik(reg.getParameter("nik"));
+                    tbl.setGrade(reg.getParameter("grade"));
+                    tbl.setJumlah(new BigDecimal(reg.getParameter("jumlah")));
+                    tbl.setYemm(reg.getParameter("yemm"));
+                    tbl.setBranchcode(reg.getParameter("branchcode"));
+                    tbl.setTglBayar(formatter.parse(reg.getParameter("tglBayar")));
+                    tbl.setSatusBayar(reg.getParameter("satusBayar"));
+                    tbl.setKasir(reg.getParameter("kasir"));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -168,10 +181,13 @@ String BranchCode=reg.getParameter("branchCode");
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/branchDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String branchDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String BranchCode=reg.getParameter("branchCode");
-	
+	 @RequestMapping(value="/tagihanDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String tagihanDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Nik=reg.getParameter("nik");
+String Yemm=reg.getParameter("yemm");
+String Branchcode=reg.getParameter("branchcode");
+
+System.out.println("nik "+Nik+" yemm : "+Yemm+" Branchcode :"+Branchcode);
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 TblUser user = getUser(session);
 		 
@@ -184,8 +200,8 @@ String BranchCode=reg.getParameter("branchCode");
          Gson gson = new Gson();
          try {
                ses = HibernateUtil.getSessionFactory().openSession();
-               TblBranchDAO dao = new TblBranchDAO(ses);
-               TblBranch tbl = dao.getById(BranchCode);
+               TblTagihanDAO dao = new TblTagihanDAO(ses);
+               TblTagihan tbl = dao.getById(Nik,Yemm,Branchcode);
                String tblDel = gson.toJson(tbl);
                ses.beginTransaction();
                dao.delete(tbl);
