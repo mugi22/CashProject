@@ -23,7 +23,7 @@
     
     <!-- property name="connection.autocommit">false</property-->
 		
-		<!-- Optional configuration 
+		<!-- Optional configuration -->
 		<property name="show_sql">true</property>
 		<property name="format_sql">false</property>
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -36,7 +36,7 @@
 		<property name="hibernate.transaction.flush_before_completion">true</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
       
-   -->
+   
     <property name="hibernate.hbm2ddl.auto">update</property> <!-- untuk pembentukan/update table <property name="propertyName">propertyValue</property>-->
     
     <!-- property name="hibernate.ejb.event.post-insert">org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener</property>
@@ -67,14 +67,13 @@
     <mapping class="com.id.kas.pojo.TblKabupaten"/>
     <mapping class="com.id.kas.pojo.TblSeq"/>
     <mapping class="com.id.kas.pojo.TblPegawai"/>
-     
+    <mapping class="com.id.kas.pojo.TblTagihan"/>   
+    <mapping class="com.id.kas.pojo.TblTarif"/> 
      <!-- package sesuaikan -->
     <mapping class="com.id.kas.DEVELOPMENT.TblTest"/>
     <!-- -->
     <mapping class="com.id.kas.DEVELOPMENT.TblKaryawan"/> 
-    <mapping class="com.id.kas.DEVELOPMENT.TblTagihan"/>
-   
-    <mapping class="com.id.kas.pojo.TblTarif"/> 
+    
      
   </session-factory>
     

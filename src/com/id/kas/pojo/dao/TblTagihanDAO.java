@@ -44,6 +44,17 @@ public class TblTagihanDAO {
 		return (TblTagihan)  criteria.uniqueResult();//session.get(TblTagihan.class, id);
 	}
 	
+	public List<TblTagihan> getByIdAndBranch(String nik,String branchcode,String statBayar){
+		Criteria criteria =null;
+		criteria = session.createCriteria(TblTagihan.class);
+                    criteria.add(Restrictions.eq("nik", nik));                     
+                    criteria.add(Restrictions.eq("branchcode", branchcode)); 
+                    criteria.add(Restrictions.eq("satusBayar", statBayar)); 
+		return   criteria.list();
+	}
+	
+	
+	
 	public List<TblTagihan> getAll(){
 		return (List<TblTagihan>) session.createCriteria(TblTagihan.class).list();
 	}

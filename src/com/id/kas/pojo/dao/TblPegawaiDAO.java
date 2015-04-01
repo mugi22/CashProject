@@ -35,7 +35,7 @@ public class TblPegawaiDAO {
 	public TblPegawai getById(String nik){
 		Criteria criteria =null;
 		criteria = session.createCriteria(TblPegawai.class);
-                    if (nik.length()>0){criteria.add(Restrictions.eq("nik", nik)); 	}
+                    /*if (nik.length()>0)*/{criteria.add(Restrictions.eq("nik", nik)); 	}
 
 		return (TblPegawai)  criteria.uniqueResult();//session.get(TblPegawai.class, id);
 	}
