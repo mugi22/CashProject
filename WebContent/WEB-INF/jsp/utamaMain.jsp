@@ -17,5 +17,7 @@ Develop:<br>
 <img alt="" src= "image/jquery.png" height="42" width="50">
 <img alt="" src="image/json.png"  height="42" width="60">
 <img alt="" src= "image/javascript.jpg" height="42" width="60"-->
+ <a href="logout.htm" target="_parent">logout</a> 
+
 </body>
 </html>

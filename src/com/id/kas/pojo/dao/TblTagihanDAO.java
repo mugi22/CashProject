@@ -51,9 +51,17 @@ public class TblTagihanDAO {
                     criteria.add(Restrictions.eq("branchcode", branchcode)); 
                     criteria.add(Restrictions.eq("satusBayar", statBayar)); 
 		return   criteria.list();
+	} 
+	
+	public TblTagihan getByIdAndBranchAndYemm(String nik,String branchcode,String statBayar,String yemm){
+		Criteria criteria =null;
+		criteria = session.createCriteria(TblTagihan.class);
+                    criteria.add(Restrictions.eq("nik", nik));                     
+                    criteria.add(Restrictions.eq("branchcode", branchcode)); 
+                    criteria.add(Restrictions.eq("satusBayar", statBayar)); 
+                    criteria.add(Restrictions.eq("yemm", yemm)); 
+		return   (TblTagihan) criteria.uniqueResult();
 	}
-	
-	
 	
 	public List<TblTagihan> getAll(){
 		return (List<TblTagihan>) session.createCriteria(TblTagihan.class).list();
