@@ -4,10 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Session Expired</title>
 </head>
 <body>
-<h1>Logout</h1><br>
-<a href="login.htm" target="_parent">Login</a>
+<h1>Session Expired</h1>
 </body>
 </html>
