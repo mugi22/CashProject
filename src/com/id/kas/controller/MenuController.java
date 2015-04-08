@@ -65,10 +65,12 @@ if(reg.getParameter("ParentId").length()>0){
 
 
 
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
-         model.put("session", ses);
-         if(!cekValidSession(session)){
+String userId = reg.getParameter("userId");
+//String ses = (String) session.getAttribute("session"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+
+//model.put("session", ses);
+if(!cekValidSession(session,userId)){
         	 return "[]";
          }
          String result="";
@@ -109,18 +111,22 @@ if(reg.getParameter("ParentId").length()>0){
 // *********************ADD***********************
  @RequestMapping(value="/menuAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 TblUser user = getUser(session);		 
-		 if(!cekValidSession(session)){
+	 String userId = reg.getParameter("userId");
+     //String ses = (String) session.getAttribute("session"+userId);
+     TblUser user = (TblUser) session.getAttribute("user"+userId);
+     
+     //model.put("session", ses);
+     if(!cekValidSession(session,userId)){
         	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblMenuDAO dao = new TblMenuDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblMenuDAO dao = new TblMenuDAO(sess);
                TblMenu tbl = new TblMenu();
                     tbl.setParams(reg.getParameter("params"));
                     tbl.setMenuId(new BigDecimal(reg.getParameter("menuId")));
@@ -135,10 +141,10 @@ if(reg.getParameter("ParentId").length()>0){
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.insert(tbl);
-               ses.getTransaction().commit();
-               ses.close();
+               sess.getTransaction().commit();
+               sess.close();
                x=gson.toJson("SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -155,19 +161,24 @@ if(reg.getParameter("ParentId").length()>0){
 			if(reg.getParameter("menuId").length()>0){
 				 menuId = reg.getParameter("menuId");
 			}		 
-		 TblUser user = getUser(session);
-		 if(!cekValidSession(session)){
+			String userId = reg.getParameter("userId");
+	         //String ses = (String) session.getAttribute("session"+userId);
+	         TblUser user = (TblUser) session.getAttribute("user"+userId);
+	         
+	         //model.put("session", ses);
+	     if(!cekValidSession(session,userId)){
+		 
         	 return "fail";
          }
          
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblMenuDAO dao = new TblMenuDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblMenuDAO dao = new TblMenuDAO(sess);
                TblMenu tbl = dao.getById(new BigDecimal(menuId));
                     tbl.setParams(reg.getParameter("params"));
                     tbl.setMenuId(new BigDecimal(reg.getParameter("menuId")));
@@ -182,10 +193,10 @@ if(reg.getParameter("ParentId").length()>0){
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.update(tbl);
-               ses.getTransaction().commit();
-               ses.close();
+               sess.getTransaction().commit();
+               sess.close();
                x=gson.toJson("UPDATE SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -202,23 +213,26 @@ if(reg.getParameter("ParentId").length()>0){
 				 menuId = reg.getParameter("MenuId");
 			}	
 		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
-		 TblUser user = getUser(session);
-		 
-		 if(!cekValidSession(session)){
-        	 return "fail";
+		 String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         //model.put("session", ses);
+         if(!cekValidSession(session,userId)){
+		     	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblMenuDAO dao = new TblMenuDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblMenuDAO dao = new TblMenuDAO(sess);
                TblMenu tbl = dao.getById(new BigDecimal(menuId));
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.delete(tbl);
-               ses.getTransaction().commit();
-               ses.close();
+               sess.getTransaction().commit();
+               sess.close();
                h.put("success", true);
                x=gson.toJson(h);
          }catch(Exception e){

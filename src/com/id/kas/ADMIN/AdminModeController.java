@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.id.kas.login.LoginController;
 import com.id.kas.pojo.TblUser;
 import com.id.kas.util.AbstractListScreen;
-import com.id.kas.util.MyVariable;
+import com.id.kas.util.AppProp;
 @Controller
 public class AdminModeController extends AbstractListScreen {
 	final static Logger logger = Logger.getLogger(AdminModeController.class);
 	
 	@RequestMapping(value="/adminmode.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg,HttpServletResponse res){ 
-		model.put("AdminMode",MyVariable.getsAppStatus());
+		model.put("AdminMode",AppProp.getsAppStatus());
 	 	return super.doGet(model, session, reg,res);
 	}
 	
@@ -29,10 +29,10 @@ public class AdminModeController extends AbstractListScreen {
 	 @RequestMapping(value="/adminmode.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session,HttpServletRequest reg,HttpServletResponse res) {
 //		 System.out.println("Do Post................."+reg.getParameter("mode"));
-		 MyVariable.setsAppStatus(reg.getParameter("mode"));
+		 AppProp.setsAppStatus(reg.getParameter("mode"));
 		 TblUser user = (TblUser) session.getAttribute("user");
 		 simpanLog(user.getUserId(), " SET ADMIN MODE "+reg.getParameter("mode"));
-		 model.put("AdminMode",MyVariable.getsAppStatus());
+		 model.put("AdminMode",AppProp.getsAppStatus());
 		 super.doPost(model, session, reg,res);
 		return getView();		 
 	 }

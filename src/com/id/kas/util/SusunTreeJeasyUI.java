@@ -58,15 +58,15 @@ public class SusunTreeJeasyUI {
 
             if(tblmenu.getHaveChild() =='0'){
             	//tambahkan parameter menu_id//            	prililedge
-            	sb.append(jarak+"<li"+" id='"+tblmenu.getMenuPage()+"?param="+priv+"&"+"param2="+this.sKey+"'"+">");
+            	sb.append(jarak+"<li"+" id='"+tblmenu.getMenuPage()+"?param="+priv+"&"+"param2="+this.sKey+"&userId="+this.user+"'"+">");
                 x=null;
                 sb.append(tblmenu.getMenuName());
                 SusunTreeJeasyUI susunTree = new SusunTreeJeasyUI();
                 susunTree(session,BigInteger.valueOf(tblmenu.getMenuId().longValue()),jarak,l);
             }else{
-                sb.append(jarak+"<li "+" id='"+"utamaMain.htm"+"?param="+priv+"&"+"param2="+this.sKey+"'"+"><span>");
+                sb.append(jarak+"<li "+" id='"+"utamaMain.htm"+"?param="+priv+"&"+"param2="+this.sKey+"&userId="+this.user+"'"+"><span>");
                 sb.append(tblmenu.getMenuName()+"</span>");
-                sb.append("\r\n"+jarak+"<ul"+" id='"+"utamaMain.htm"+"?param="+priv+"&"+"param2="+this.sKey+"'"+">\r\n");
+                sb.append("\r\n"+jarak+"<ul"+" id='"+"utamaMain.htm"+"?param="+priv+"&"+"param2="+this.sKey+"&userId="+this.user+"'"+">\r\n");
                 SusunTreeJeasyUI susunTree = new SusunTreeJeasyUI();
                 susunTree(session,BigInteger.valueOf(tblmenu.getMenuId().longValue()),jarak,l);           
                 sb.append(jarak+"</ul>\r\n");
@@ -101,13 +101,15 @@ public class SusunTreeJeasyUI {
     
     
     private String user;
-    
+    /*
+     * userid dan key nya
+     */
     public String susunMenuByUser(String userId,String skey){
 //    	System.out.println("Skey 11111   "+sKey);
     	this.user = userId;
     	this.sKey = skey;
     	rs = new RandomString();
-    	sKey = rs.randomString();
+    	//sKey = rs.randomString();//engga usah di random lagi
     	System.out.println("Skey    "+sKey);
     	crypto = new JCrypto(sKey);
     	String menu ="";// " onclick="+'"'+"window.open("+"'"+"utamaMain.htm"+"'"+","+"'"+"MAIN"+"'"+")"+'"';

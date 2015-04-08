@@ -2,6 +2,7 @@ package com.id.kas.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.Session;
@@ -14,6 +15,7 @@ import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblBranch;
 import com.id.kas.pojo.TblUser;
 import com.id.kas.pojo.dao.TblBranchDAO;
+import com.id.kas.util.JCrypto;
 import com.id.kas.util.SusunTree;
 import com.id.kas.util.SusunTreeJeasyUI;
 
@@ -21,13 +23,20 @@ import com.id.kas.util.SusunTreeJeasyUI;
 public class UtamaController {
 
 	@RequestMapping(value="/utama.htm",method = RequestMethod.GET)
-    public String viewHalamanUtama(Map<String, Object> model,HttpSession session) {
-		 TblUser user = (TblUser) session.getAttribute("user");//"user", tblUser
-       try {
-           String ses = (String) session.getAttribute("valid");
+    public String viewHalamanUtama(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+		
+		String encUid = reg.getParameter("paramA");//userId yang terencript
+		String sKey = reg.getParameter("paramB");//ramdom string
+		JCrypto crip = new JCrypto(sKey);
+		String decUid = crip.decrypt(encUid); //decrip unyuk user
+		
+		 TblUser user = (TblUser) session.getAttribute("user"+decUid);//ambil object TblUser dari session
+		 String ses = (String) session.getAttribute("valid"+decUid);
+		 if(user==null){
+			 return "redirect:/login.htm"; 
+		 }
+       try {          
            if(ses.equals("valid")){
-        	                
-        	   
         	   //cek unit status
         	   Session sesdb=null;
         	   sesdb = HibernateUtil.getSessionFactory().openSession();
@@ -36,16 +45,14 @@ public class UtamaController {
         	   sesdb.close();
         	   //cek apakah user punya hak untuk buka/tutup cabang ????????????????
         	   if(branch.getStatus().equals("C")){
-        		   return "redirect:/bukatutup.htm"; 
+        		   return "redirect:/bukatutup.htm?paramA="+encUid+"&paramB="+sKey; 
         	   }
-        	   
+//        	   System.out.println("++++++++++++++++++++ 2 :"+(String) session.getAttribute("key"+decUid));
         	   //cek unit status akhir======
         	   SusunTreeJeasyUI st = new SusunTreeJeasyUI(); 
-               String menu = st.susunMenuByUser(user.getUserId(),(String) session.getAttribute("key"));
-               
-               
+               String menu = st.susunMenuByUser(user.getUserId(),reg.getParameter("paramB"));//engga dari session tapi dari reg.parameter//(String) session.getAttribute("key"+decUid));
                model.put("menu", menu);
-               model.put("key", session.getAttribute("key"));
+               model.put("key",reg.getParameter("paramB") );//session.getAttribute("key"+decUid));
                model.put("user", user);
                return "utama";
            }else{
@@ -59,13 +66,13 @@ public class UtamaController {
 	
 	
 	
-	 @RequestMapping(value="/utamaTop.htm")
-     public String viewHalamanUtamaTop(Map<String, Object> model,HttpSession session) {
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
-         model.put("session", ses);
-         return "utamaTop";
-     }
+//	 @RequestMapping(value="/utamaTop.htm")
+//     public String viewHalamanUtamaTop(Map<String, Object> model,HttpSession session) {
+//         String ses = (String) session.getAttribute("session");
+//         TblUser user = (TblUser) session.getAttribute("user");
+//         model.put("session", ses);
+//         return "utamaTop";
+//     }
      
 	
 	

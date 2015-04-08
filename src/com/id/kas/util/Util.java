@@ -20,7 +20,7 @@ public  class Util {
 	
 	public static boolean cekUserAdminMode(String userId, Session sess){
 		TblUserGroupDAO userGroupDAO = new TblUserGroupDAO(sess);
-		TblUserGroup tblUserGroup = userGroupDAO.getById(AppContant.AdminModeGroup.AdminModeGroup, userId);
+		TblUserGroup tblUserGroup = userGroupDAO.getById(AppConstant.AdminModeGroup.AdminModeGroup, userId);
 		if (tblUserGroup==null){
 			return false;
 		}else

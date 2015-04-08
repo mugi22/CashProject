@@ -114,7 +114,7 @@ var branchcode;
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
 		var jsonurl = 'tagihanListAll.htm?'+
-'Nik='+$('#Nik').val()+"&"+'Yemm='+$('#Yemm').val()+"&"+'Branchcode='+$('#Branchcode').val();
+'Nik='+$('#Nik').val()+"&"+'Yemm='+$('#Yemm').val()+"&"+'Branchcode='+$('#Branchcode').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -145,7 +145,7 @@ var branchcode;
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'tagihanAdd.htm';
+		url = 'tagihanAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 /* ---- tagihanedit*/
@@ -156,7 +156,7 @@ var branchcode;
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'tagihanEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'tagihanEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -168,7 +168,7 @@ var branchcode;
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'tagihanEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'tagihanEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -182,7 +182,8 @@ var branchcode;
 							$.post('tagihanDelete.htm', {
 							       nik : row.nik,
                     			   yemm : row.yemm,
-                    	           branchcode : row.branchcode
+                    	           branchcode : row.branchcode,
+                    	           userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data

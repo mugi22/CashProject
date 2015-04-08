@@ -163,7 +163,7 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 	
 	/* function untuk list data*/
 	function retrieve() {
-		var jsonurl = 'userListAll.htm?param=' + $('#userIdSearch').val();
+		var jsonurl = 'userListAll.htm?param=' + $('#userIdSearch').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -194,7 +194,7 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 	function doAdd() {
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah User');
 		$('#fm').form('clear');
-		url = 'userAdd.htm';
+		url = 'userAdd.htm?'+"userId="+"${userId}";
 		/*var t = $('#namax');*/
 		upperCase($('#namax'));
 		upperCase($('#userId'));
@@ -210,7 +210,7 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit User');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'userEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'userEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			upperCase($('#namax'));
 			branchcode = row.branchCode;
 			addComboBranch();
@@ -225,7 +225,7 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit User');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'userEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'userEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			upperCase($('#namax'));
 			branchcode = row.branchCode;
 			addComboBranch();
@@ -240,7 +240,8 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 					function(r) {
 						if (r) {
 							$.post('userDelete.htm', {
-								userId : row.userId
+								userId : row.userId,
+								userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data

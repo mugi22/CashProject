@@ -50,12 +50,17 @@ public class LookupController  extends AbstractListScreen{
 //	 ***************************** LIST  **************************************************************
 	 @RequestMapping(value="/lookupListAll.htm", method=RequestMethod.POST)
      public @ResponseBody String lookupListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String LookupValue=reg.getParameter("LookupValue");
-String LookupName=reg.getParameter("LookupName");		 
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
+		String LookupValue=reg.getParameter("LookupValue");
+		String LookupName=reg.getParameter("LookupName");	
+		
+		 String userId = reg.getParameter("userId");
+         String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("userId"+userId);
+         
+       
+         
          model.put("session", ses);
-         if(!cekValidSession(session)){
+         if(!cekValidSession(session,userId)){
         	 return "[]";
          }
          String result="";
@@ -92,18 +97,22 @@ String LookupName=reg.getParameter("LookupName");
 // *********************ADD***********************
  @RequestMapping(value="/lookupAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 TblUser user = getUser(session);		 
-		 if(!cekValidSession(session)){
+	 String userId = reg.getParameter("userId");
+     String ses = (String) session.getAttribute("session"+userId);
+     TblUser user = (TblUser) session.getAttribute("user"+userId);
+//		 TblUser user = getUser(session,userId);	
+		 
+		 if(!cekValidSession(session,userId)){
         	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblLookupDAO dao = new TblLookupDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblLookupDAO dao = new TblLookupDAO(sess);
                TblLookup tbl = new TblLookup();
                     tbl.setLookupLabel(reg.getParameter("lookupLabel"));
                     tbl.setLookupValue(reg.getParameter("lookupValue"));
@@ -113,11 +122,11 @@ String LookupName=reg.getParameter("LookupName");
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.insert(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                simpanLog(user.getUserId(),gson.toJson(tbl));
-               ses.close();
+               sess.close();
                x=gson.toJson("SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -132,20 +141,23 @@ String LookupName=reg.getParameter("LookupName");
      public @ResponseBody String lookupEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 String LookupValue=reg.getParameter("lookupValue");
 String LookupName=reg.getParameter("lookupName");
-		 
-		 TblUser user = getUser(session);
-		 if(!cekValidSession(session)){
+
+String userId = reg.getParameter("userId");
+String ses = (String) session.getAttribute("session"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+//		 TblUser user = getUser(session);
+		 if(!cekValidSession(session,userId)){
         	 return "fail";
          }
          
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblLookupDAO dao = new TblLookupDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblLookupDAO dao = new TblLookupDAO(sess);
                TblLookup tbl = dao.getById(LookupValue,LookupName);
                 String tblOld = gson.toJson(tbl);
                     tbl.setLookupLabel(reg.getParameter("lookupLabel"));
@@ -156,11 +168,11 @@ String LookupName=reg.getParameter("lookupName");
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.update(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                 simpanLog(user.getUserId(),"MODIFY  : "+gson.toJson(tbl)+" OLD "+tblOld);
-               ses.close();
+               sess.close();
                x=gson.toJson("UPDATE SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -174,27 +186,29 @@ String LookupName=reg.getParameter("lookupName");
      public @ResponseBody String lookupDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 String LookupValue=reg.getParameter("lookupValue");
 String LookupName=reg.getParameter("lookupName");
-	
+String userId = reg.getParameter("userId");
+String ses = (String) session.getAttribute("session"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+userId);
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
-		 TblUser user = getUser(session);
+//		 TblUser user = getUser(session);
 		 
-		 if(!cekValidSession(session)){
+		 if(!cekValidSession(session,userId)){
         	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblLookupDAO dao = new TblLookupDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblLookupDAO dao = new TblLookupDAO(sess);
                TblLookup tbl = dao.getById(LookupValue,LookupName);
                String tblDel = gson.toJson(tbl);
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.delete(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                simpanLog(user.getUserId(),"DELETE  : "+tblDel);
-               ses.close();
+               sess.close();
                h.put("success", true);
                x=gson.toJson(h);
          }catch(Exception e){

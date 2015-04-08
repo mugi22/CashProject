@@ -13,7 +13,9 @@ public class JCrypto {
     private String sDecript;
 //    private String sString;
      
-    
+    /*
+     * @mKey -> string key
+     */
     public JCrypto(String mKey) {
 		super();
 		this.userKey = mKey;	
@@ -57,8 +59,16 @@ public void  JCrypto(SecretKey key) {
     public String encrypt(String sStringToEncript) {
         try {
             byte[] utf8 = sStringToEncript.getBytes("UTF-8");
-            byte[] enc = ecipher.doFinal(utf8);             
-            return new sun.misc.BASE64Encoder().encode(enc);
+            byte[] enc = ecipher.doFinal(utf8);    
+            String encripted = new sun.misc.BASE64Encoder().encode(enc);
+//            return new sun.misc.BASE64Encoder().encode(enc);
+            
+            if(encripted.contains(" ")){
+   			 	String z = encripted.replace(" ", "+");
+   			 	encripted = z;
+   		 	}
+            
+            return encripted;
         } catch (Exception e) {
         	e.printStackTrace();
             System.out.println("Failed in Encryption");
@@ -68,7 +78,10 @@ public void  JCrypto(SecretKey key) {
  
     public String decrypt(String sStringToDecript) {//sStringToDecript
         try {
-        	
+        	 if(sStringToDecript.contains(" ")){
+    			 	String z = sStringToDecript.replace(" ", "+");
+    			 	sStringToDecript = z;
+    		 	}
             byte[] dec = new sun.misc.BASE64Decoder().decodeBuffer(sStringToDecript); 
             byte[] utf8 = dcipher.doFinal(dec); 
             return new String(utf8, "UTF-8");

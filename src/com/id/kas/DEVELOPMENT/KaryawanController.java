@@ -28,7 +28,7 @@ import com.id.kas.util.AbstractListScreen;
 @Controller
 public class KaryawanController  extends AbstractListScreen{
 	@RequestMapping(value="/karyawan.htm",method=RequestMethod.GET)
-	 public String doGet(java.util.Map<String,Object> model, HttpSession session,  HttpServletRequest reg, HttpServletResponse res){ 
+	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
 	 	return super.doGet(model, session, reg,res);
 	}
 	
@@ -48,12 +48,17 @@ public class KaryawanController  extends AbstractListScreen{
 //	 ***************************** LIST  **************************************************************
 	 @RequestMapping(value="/karyawanListAll.htm", method=RequestMethod.POST)
      public @ResponseBody String karyawanListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Nik=reg.getParameter("Nik");
-String Nama=reg.getParameter("Nama");		 
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
+String Nik=reg.getParameter("Nik");		 
+String Nama=reg.getParameter("Nama");	           
+         String userId = reg.getParameter("userId");
+         String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         //model.put("session", ses);
+         
+         
          model.put("session", ses);
-         if(!cekValidSession(session)){
+         if(!cekValidSession(session,userId)){
         	 return "[]";
          }
          String result="";
@@ -90,31 +95,34 @@ String Nama=reg.getParameter("Nama");
 // *********************ADD***********************
  @RequestMapping(value="/karyawanAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 TblUser user = getUser(session);		 
-		 if(!cekValidSession(session)){
+		String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         if(!cekValidSession(session,userId)){
         	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblKaryawanDAO dao = new TblKaryawanDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
                TblKaryawan tbl = new TblKaryawan();
-                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
                     tbl.setNik(reg.getParameter("nik"));
                     tbl.setNama(reg.getParameter("nama"));
+                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.insert(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                simpanLog(user.getUserId(),gson.toJson(tbl));
-               ses.close();
+               sess.close();
                x=gson.toJson("SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -129,33 +137,35 @@ String Nama=reg.getParameter("Nama");
      public @ResponseBody String karyawanEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 String Nik=reg.getParameter("nik");
 		 
-		 TblUser user = getUser(session);
-		 if(!cekValidSession(session)){
-        	 return "fail";
+		String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         if(!cekValidSession(session,userId)){        	 
+         	return "fail";
          }
          
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblKaryawanDAO dao = new TblKaryawanDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
                TblKaryawan tbl = dao.getById(Nik);
                 String tblOld = gson.toJson(tbl);
-                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
                     tbl.setNik(reg.getParameter("nik"));
                     tbl.setNama(reg.getParameter("nama"));
+                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.update(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                 simpanLog(user.getUserId(),"MODIFY  : "+gson.toJson(tbl)+" OLD "+tblOld);
-               ses.close();
+               sess.close();
                x=gson.toJson("UPDATE SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -170,25 +180,27 @@ String Nik=reg.getParameter("nik");
 String Nik=reg.getParameter("nik");
 	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
-		 TblUser user = getUser(session);
-		 
-		 if(!cekValidSession(session)){
-        	 return "fail";
+String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         //model.put("session", ses);
+          if(!cekValidSession(session,userId)){
+                	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblKaryawanDAO dao = new TblKaryawanDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
                TblKaryawan tbl = dao.getById(Nik);
                String tblDel = gson.toJson(tbl);
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.delete(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                simpanLog(user.getUserId(),"DELETE  : "+tblDel);
-               ses.close();
+               sess.close();
                h.put("success", true);
                x=gson.toJson(h);
          }catch(Exception e){

@@ -70,7 +70,7 @@ public class TempCreate {
 								sbCari.append("'"+Util.firstUpper(t)+"="+"'"+"+"+"\\$"+"("+"'"+"#"+Util.firstUpper(t)+"'"+").val()"+"+"+'"'+"&"+'"'+"+");
                             }
 							x = (sbCari.toString()).substring(0,sbCari.toString().length()-5);
-							String z = line.replaceAll("XXXparamSearch", x+";");
+							String z = line.replaceAll("XXXparamSearch", x+'+'+'"'+"&"+'"'+"+"+'"'+"userId="+'"'+'+'+'"'+"\\$"+"{userId}"+'"'+';');
 							line =z;
 						}
 						

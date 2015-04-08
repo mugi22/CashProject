@@ -49,12 +49,15 @@ public class BranchController  extends AbstractListScreen{
 //	 ***************************** LIST  **************************************************************
 	 @RequestMapping(value="/branchListAll.htm", method=RequestMethod.POST)
      public @ResponseBody String branchListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Name=reg.getParameter("Name");
-String Status=reg.getParameter("Status");		 
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
-         model.put("session", ses);
-         if(!cekValidSession(session)){
+		String Name=reg.getParameter("Name");
+		String Status=reg.getParameter("Status");		 
+		
+		String userId = reg.getParameter("userId");
+		String ses = (String) session.getAttribute("session"+userId);
+		TblUser user = (TblUser) session.getAttribute("user"+userId);
+		
+		model.put("session", ses);
+         if(!cekValidSession(session,userId)){
         	 return "[]";
          }
          String result="";
@@ -91,8 +94,11 @@ String Status=reg.getParameter("Status");
 // *********************ADD***********************
  @RequestMapping(value="/branchAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 TblUser user = getUser(session);		 
-		 if(!cekValidSession(session)){
+	 
+
+	 String userId = reg.getParameter("userId");
+     TblUser user = (TblUser) session.getAttribute("user"+userId);
+		 if(!cekValidSession(session,userId)){
         	 return "fail";
          }
          Session ses = null;
@@ -131,9 +137,11 @@ String Status=reg.getParameter("Status");
 	 @RequestMapping(value="/branchEdit.htm", method=RequestMethod.POST)
      public @ResponseBody String branchEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 String BranchCode=reg.getParameter("branchCode");
-		 
-		 TblUser user = getUser(session);
-		 if(!cekValidSession(session)){
+
+String userId = reg.getParameter("userId");
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+	 	if(!cekValidSession(session,userId)){
+		
         	 return "fail";
          }
          
@@ -173,11 +181,10 @@ String BranchCode=reg.getParameter("branchCode");
 	 @RequestMapping(value="/branchDelete.htm", method=RequestMethod.POST)
      public @ResponseBody String branchDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 String BranchCode=reg.getParameter("branchCode");
-	
-//		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
-		 TblUser user = getUser(session);
-		 
-		 if(!cekValidSession(session)){
+
+String userId = reg.getParameter("userId");
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+	 if(!cekValidSession(session,userId)){
         	 return "fail";
          }
          Session ses = null;

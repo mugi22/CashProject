@@ -206,8 +206,14 @@ public class UtilityController {
 		 }
 		
 	 
-	 
-	 
+/*
+ * 	 
+ */
+	 @RequestMapping(value="/sessionExpire.htm", method=RequestMethod.GET)
+	  public  String sessionExpire(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+		 //session.invalidate();
+		 return "sessionExpire";
+	 }
 	 
 	 
 }

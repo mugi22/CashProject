@@ -124,7 +124,7 @@ var grade;
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
 		var jsonurl = 'pegawaiListAll.htm?'+
-'Nik='+$('#Nik').val()+"&"+'Nama='+$('#Nama').val();
+'Nik='+$('#Nik').val()+"&"+'Nama='+$('#Nama').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -155,7 +155,7 @@ var grade;
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'pegawaiAdd.htm';
+		url = 'pegawaiAdd.htm?'+"userId="+"${userId}";
 		//keyEnter($('#nik'));
 		//upperCase($('#nik'));
 		//upperCase($('#nama'));
@@ -169,7 +169,7 @@ var grade;
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'pegawaiEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'pegawaiEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -181,7 +181,7 @@ var grade;
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'pegawaiEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'pegawaiEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -193,7 +193,7 @@ var grade;
 					function(r) {
 						if (r) {
 							$.post('pegawaiDelete.htm', {
-							                    nik : row.nik,
+							                    nik : row.nik,userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data

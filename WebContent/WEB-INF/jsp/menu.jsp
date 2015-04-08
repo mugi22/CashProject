@@ -113,7 +113,7 @@ var branchcode;
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
 		var jsonurl = 'menuListAll.htm?'+
-'MenuId='+$('#MenuId').val()+"&"+'MenuName='+$('#MenuName').val()+"&"+'ParentId='+$('#ParentId').val();
+'MenuId='+$('#MenuId').val()+"&"+'MenuName='+$('#MenuName').val()+"&"+'ParentId='+$('#ParentId').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -144,7 +144,7 @@ var branchcode;
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'menuAdd.htm';
+		url = 'menuAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 
@@ -155,7 +155,7 @@ var branchcode;
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'menuEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'menuEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -167,7 +167,7 @@ var branchcode;
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'menuEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'menuEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -179,7 +179,8 @@ var branchcode;
 					function(r) {
 						if (r) {
 							$.post('menuDelete.htm', {
-								MenuId : row.menuId //SESUAIKAN 
+								MenuId : row.menuId,
+								userId:"${userId}"//SESUAIKAN 
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data

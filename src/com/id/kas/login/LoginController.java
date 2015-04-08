@@ -17,8 +17,9 @@ import com.id.kas.pojo.TblUser;
 import com.id.kas.pojo.TblUserGroup;
 import com.id.kas.pojo.dao.TblUserDAO;
 import com.id.kas.pojo.dao.TblUserGroupDAO;
-import com.id.kas.util.AppContant;
-import com.id.kas.util.MyVariable;
+import com.id.kas.util.AppConstant;
+import com.id.kas.util.AppProp;
+import com.id.kas.util.JCrypto;
 import com.id.kas.util.RandomString;
 import com.id.kas.util.Util;
 import com.id.kas.util.log.LogClass;
@@ -30,7 +31,6 @@ public class LoginController {
 	
 	@RequestMapping(value="/login",method=RequestMethod.GET)
 	public String doGet(){
-//		if(MyVariable.getsAppStatus().equals("OPEN")){
 		logger.info(" Login.....................");
 		return "login";
 	}
@@ -43,23 +43,28 @@ public class LoginController {
 		logger.info(userName + " Login.....................");
 		Session sess = null;
 		int valid = 0;
+		String key="";
 		try{
 			sess = HibernateUtil.getSessionFactory().openSession();
 			TblUserDAO dao = new TblUserDAO(sess);
 			TblUser tblUser = dao.getById(userName);
+			
 			if(tblUser!=null){
 				String enkPwd = SecurityUtil.encrypt(password);
 				if(enkPwd.equals(tblUser.getPassword().toString())){
 					valid = 1;
-					session.setAttribute("valid", "valid");
-					session.setAttribute("user", tblUser);
+					session.setAttribute("valid"+tblUser.getUserId(), "valid");//simpan disession dengan nama valid+userid
+					session.setAttribute("user"+tblUser.getUserId(), tblUser);
 					RandomString rs = new RandomString();
-					session.setAttribute("key", rs.randomString());
-					if(MyVariable.getsAppStatus().equals(AppContant.AdminMode.AdminModeClose)){						
+					key = rs.randomString();
+					session.setAttribute("key"+tblUser.getUserId(),key );
+
+					if(AppProp.getsAppStatus().equals(AppConstant.AdminMode.AdminModeClose)){						
 						if(!Util.cekUserAdminMode(tblUser.getUserId(), sess)){
 							valid = 2;
 						}
-					}
+					}	
+					AppProp.setmSession(tblUser.getUserId(),key);
 				}
 				
 			}else{
@@ -69,9 +74,14 @@ public class LoginController {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (valid==1){
+		if (valid==1){			
 			logger.info(userName + "Login.....................Success");
-	         return "redirect:/utama.htm";
+			String uid = req.getParameter("USERNAME");
+			JCrypto crip = new JCrypto(key);
+			String uidEncript = crip.encrypt(uid);
+			System.out.println("enkrpt = "+uidEncript+" decript "+crip.decrypt(uidEncript)+" key:"+key);
+			AppProp.setmSession(crip.decrypt(uidEncript),key);
+	         return "redirect:/utama.htm?paramA="+uidEncript+"&paramB="+key;
 	    }else if (valid==2){
 			logger.info(userName + " Login..................... APP STATUS : ADMIN MODE");
 	         return "redirect:/appstatus.htm";
@@ -84,8 +94,16 @@ public class LoginController {
 	
 	
 	@RequestMapping(value="/logout.htm",method=RequestMethod.GET)
-	public String dologout(HttpSession session){
-		session.invalidate();
+	public String dologout(HttpSession session,HttpServletRequest req, HttpServletResponse res){
+		System.out.println("logout");
+		String sUserId = req.getParameter("userId");
+		Map mSession = AppProp.getmSession();
+		mSession.remove(sUserId);
+		System.out.println("valid "+session.getAttribute("valid"+sUserId));
+		session.removeAttribute("valid"+sUserId);
+		session.removeAttribute("user"+sUserId);
+		session.removeAttribute("key"+sUserId);
+		//session.invalidate();
 		return "logout";
 	}
 	

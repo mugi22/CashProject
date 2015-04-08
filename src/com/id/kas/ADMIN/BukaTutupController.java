@@ -21,7 +21,7 @@ import com.id.kas.pojo.TblUserGroup;
 import com.id.kas.pojo.dao.TblBranchDAO;
 import com.id.kas.pojo.dao.TblUserGroupDAO;
 import com.id.kas.util.AbstractListScreen;
-import com.id.kas.util.MyVariable;
+import com.id.kas.util.AppProp;
 @Controller
 public class BukaTutupController extends AbstractListScreen {
 final static Logger logger = Logger.getLogger(BukaTutupController.class);

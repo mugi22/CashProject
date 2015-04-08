@@ -100,8 +100,7 @@
 	
     function submitForm(){
     	//validasi
-    	$('#kembali').numberbox('setValue',$('#diterima').val());
-    	/*
+    	$('#kembali').numberbox('setValue',$('#terima').val()-$('#tunggakan').val());    	
 		$('#ff').form('submit', {			
 			success : function(data) {	
 				//alert(data);
@@ -113,7 +112,7 @@
 				clearForm();
 			}
 		});
-    	*/
+    	
     }
 
 

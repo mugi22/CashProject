@@ -59,10 +59,12 @@ String MenuId="0";//reg.getParameter("MenuId");
 if(reg.getParameter("MenuId").length()>0){
 	MenuId = reg.getParameter("MenuId");
 }	
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
-         model.put("session", ses);
-         if(!cekValidSession(session)){
+String userId = reg.getParameter("userId");
+//String ses = (String) session.getAttribute("session"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+
+//model.put("session", ses);
+if(!cekValidSession(session,userId)){
         	 return "[]";
          }
          String result="";
@@ -99,18 +101,22 @@ if(reg.getParameter("MenuId").length()>0){
 // *********************ADD***********************
  @RequestMapping(value="/priviledgeAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 TblUser user = getUser(session);		 
-		 if(!cekValidSession(session)){
+	 String userId = reg.getParameter("userId");
+     //String ses = (String) session.getAttribute("session"+userId);
+     TblUser user = (TblUser) session.getAttribute("user"+userId);
+     
+     //model.put("session", ses);
+     if(!cekValidSession(session,userId)){
         	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblPriviledgeDAO dao = new TblPriviledgeDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblPriviledgeDAO dao = new TblPriviledgeDAO(sess);
                TblPriviledge tbl = new TblPriviledge();
                     tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
                     tbl.setMenuId(new BigDecimal(reg.getParameter("menuId")));
@@ -122,11 +128,11 @@ if(reg.getParameter("MenuId").length()>0){
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.insert(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                simpanLog(user.getUserId(),gson.toJson(tbl));
-               ses.close();
+               sess.close();
                x=gson.toJson("SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -149,19 +155,23 @@ if(reg.getParameter("MenuId").length()>0){
 			 MenuId = reg.getParameter("menuId");
 		 }	
 		 
-		 TblUser user = getUser(session);
-		 if(!cekValidSession(session)){
+		 String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         //model.put("session", ses);
+         if(!cekValidSession(session,userId)){
         	 return "fail";
          }
          
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblPriviledgeDAO dao = new TblPriviledgeDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblPriviledgeDAO dao = new TblPriviledgeDAO(sess);
                TblPriviledge tbl = dao.getById(new BigDecimal(GroupId),new BigDecimal(MenuId));
                 String tblOld = gson.toJson(tbl);
                 tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
@@ -174,11 +184,11 @@ if(reg.getParameter("MenuId").length()>0){
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.update(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                 simpanLog(user.getUserId(),"MODIFY  : "+gson.toJson(tbl)+" OLD "+tblOld);
-               ses.close();
+               sess.close();
                x=gson.toJson("UPDATE SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -201,25 +211,28 @@ if(reg.getParameter("MenuId").length()>0){
 		 }	
 		 
 		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
-		 TblUser user = getUser(session);
-		 
-		 if(!cekValidSession(session)){
-        	 return "fail";
+		 String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         //model.put("session", ses);
+         if(!cekValidSession(session,userId)){
+		    	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblPriviledgeDAO dao = new TblPriviledgeDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblPriviledgeDAO dao = new TblPriviledgeDAO(sess);
                TblPriviledge tbl = dao.getById(new BigDecimal(GroupId),new BigDecimal(MenuId));
                String tblDel = gson.toJson(tbl);
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.delete(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                simpanLog(user.getUserId(),"DELETE  : "+tblDel);
-               ses.close();
+               sess.close();
                h.put("success", true);
                x=gson.toJson(h);
          }catch(Exception e){

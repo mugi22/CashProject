@@ -25,7 +25,6 @@
         <div id="div2">
             <form name="FREG" id="formCari" method="post" action="#"  >                 
                     <label>Nik</label> : <input name="Nik" type="text" id="Nik" size="30" maxlength="30"><br>
-                    <label>Nama</label> : <input name="Nama" type="text" id="Nama" size="30" maxlength="30"><br>
 
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
@@ -44,9 +43,9 @@
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-                    <th field="unitKerja" width="100"sortable="true">UnitKerja</th> 
                     <th field="nik" width="100"sortable="true">Nik</th> 
                     <th field="nama" width="100"sortable="true">Nama</th> 
+                    <th field="unitKerja" width="100"sortable="true">UnitKerja</th> 
                      
                 </tr>
             </thead>
@@ -64,9 +63,9 @@
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
 		<div class="ftitle">KARYAWAN</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>UnitKerja</label> :<input name="unitKerja"	class="easyui-textbox" required="false" id="unitKerja">	</div>
                     <div class="fitem">	<label>Nik</label> :<input name="nik"	class="easyui-textbox" required="false" id="nik">	</div>
                     <div class="fitem">	<label>Nama</label> :<input name="nama"	class="easyui-textbox" required="false" id="nama">	</div>
+                    <div class="fitem">	<label>UnitKerja</label> :<input name="unitKerja"	class="easyui-textbox" required="false" id="unitKerja">	</div>
 			
 		</form>
 	</div>
@@ -97,8 +96,7 @@ var branchcode;
 
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
-		var jsonurl = 'karyawanListAll.htm?'+
-'Nik='+$('#Nik').val()+"&"+'Nama='+$('#Nama').val();
+		var jsonurl = 'karyawanListAll.htm?'+'Nik='+$('#Nik').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -129,7 +127,7 @@ var branchcode;
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'karyawanAdd.htm';
+		url = 'karyawanAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 /* ---- karyawanedit*/
@@ -140,7 +138,7 @@ var branchcode;
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'karyawanEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'karyawanEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -152,7 +150,7 @@ var branchcode;
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'karyawanEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'karyawanEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -164,7 +162,8 @@ var branchcode;
 					function(r) {
 						if (r) {
 							$.post('karyawanDelete.htm', {
-							                    nik : row.nik
+							                    nik : row.nik,
+							userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -209,7 +208,8 @@ var branchcode;
 		$('#branchCode').combobox({
 			url : 'comboAllBranch.htm?param=' + branchcode,
 			valueField : 'id',
-			textField : 'text'
+			textField : 'text',
+			panelHeight:'auto'
 		});
 		branchcode = '';
 	}
@@ -225,9 +225,9 @@ var branchcode;
 	function onShow() {
 		//list button
 		//$('#userId').textbox('readonly', true);
-                    $('#unitKerja').textbox('readonly', true);
                     $('#nik').textbox('readonly', true);
                     $('#nama').textbox('readonly', true);
+                    $('#unitKerja').textbox('readonly', true);
 
 		//form button
 		$('#btnSave').linkbutton('disable');
@@ -237,9 +237,9 @@ var branchcode;
 	function onAdd() {
 		//list button
 		//$('#userId').textbox('readonly', false);		
-                    $('#unitKerja').textbox('readonly', false);
                     $('#nik').textbox('readonly', false);
                     $('#nama').textbox('readonly', false);
+                    $('#unitKerja').textbox('readonly', false);
 		
 		//form button
 		$('#btnSave').linkbutton('enable');
@@ -249,9 +249,9 @@ var branchcode;
 	function onEdit() {
 		//list button
 		//$('#userId').textbox('readonly', true);	
-                    $('#unitKerja').textbox('readonly', false);
                     $('#nik').textbox('readonly', true);
                     $('#nama').textbox('readonly', false);
+                    $('#unitKerja').textbox('readonly', false);
 	
 		//form button
 		$('#btnSave').linkbutton('enable');

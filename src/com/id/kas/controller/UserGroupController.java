@@ -57,10 +57,12 @@ if (reg.getParameter("GroupId").length()>0){
 
 
 String UserId=reg.getParameter("UserId");		 
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
-         model.put("session", ses);
-         if(!cekValidSession(session)){
+String userId = reg.getParameter("userId");
+//String ses = (String) session.getAttribute("session"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+
+//model.put("session", ses);
+if(!cekValidSession(session,userId)){
         	 return "[]";
          }
          String result="";
@@ -97,18 +99,22 @@ String UserId=reg.getParameter("UserId");
 // *********************ADD***********************
  @RequestMapping(value="/userGroupAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 TblUser user = getUser(session);		 
-		 if(!cekValidSession(session)){
+	 String userId = reg.getParameter("userId");
+     //String ses = (String) session.getAttribute("session"+userId);
+     TblUser user = (TblUser) session.getAttribute("user"+userId);
+     
+     //model.put("session", ses);
+     if(!cekValidSession(session,userId)){
         	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblUserGroupDAO dao = new TblUserGroupDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblUserGroupDAO dao = new TblUserGroupDAO(sess);
                TblUserGroup tbl = new TblUserGroup();
                     tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
                     tbl.setUserId(reg.getParameter("userId"));
@@ -116,11 +122,11 @@ String UserId=reg.getParameter("UserId");
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.insert(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                simpanLog(user.getUserId(),gson.toJson(tbl));
-               ses.close();
+               sess.close();
                x=gson.toJson("SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -139,20 +145,23 @@ if (reg.getParameter("GroupId").length()>0){
 }
 
 String UserId=reg.getParameter("UserId");
-		 
-		 TblUser user = getUser(session);
-		 if(!cekValidSession(session)){
-        	 return "fail";
+String userId = reg.getParameter("userId");
+//String ses = (String) session.getAttribute("session"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+
+//model.put("session", ses);
+if(!cekValidSession(session,userId)){
+	return "fail";
          }
          
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblUserGroupDAO dao = new TblUserGroupDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblUserGroupDAO dao = new TblUserGroupDAO(sess);
                TblUserGroup tbl = dao.getById(new BigDecimal(GroupId),UserId);
                 String tblOld = gson.toJson(tbl);
                 tbl.setGroupId(new BigDecimal(reg.getParameter("groupId")));
@@ -161,11 +170,11 @@ String UserId=reg.getParameter("UserId");
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.update(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                 simpanLog(user.getUserId(),"MODIFY  : "+gson.toJson(tbl)+" OLD "+tblOld);
-               ses.close();
+               sess.close();
                x=gson.toJson("UPDATE SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -186,25 +195,28 @@ if (reg.getParameter("GroupId").length()>0){
 String UserId=reg.getParameter("UserId");
 	
 		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
-		 TblUser user = getUser(session);
-		 
-		 if(!cekValidSession(session)){
+		 String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         //model.put("session", ses);
+         if(!cekValidSession(session,userId)){
         	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblUserGroupDAO dao = new TblUserGroupDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblUserGroupDAO dao = new TblUserGroupDAO(sess);
                TblUserGroup tbl = dao.getById(new BigDecimal(GroupId),UserId);
                String tblDel = gson.toJson(tbl);
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.delete(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                simpanLog(user.getUserId(),"DELETE  : "+tblDel);
-               ses.close();
+               sess.close();
                h.put("success", true);
                x=gson.toJson(h);
          }catch(Exception e){

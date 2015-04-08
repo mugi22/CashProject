@@ -8,6 +8,6 @@
 </head>
 <body>
 <h1>Logout</h1><br>
-<a href="login.htm">Login</a>
+<a href="login.htm" target="_parent">Login</a>
 </body>
 </html>

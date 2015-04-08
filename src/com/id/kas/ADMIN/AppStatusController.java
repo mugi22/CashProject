@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.id.kas.login.LoginController;
 import com.id.kas.pojo.TblUser;
 import com.id.kas.util.AbstractListScreen;
-import com.id.kas.util.MyVariable;
+import com.id.kas.util.AppProp;
 @Controller
 public class AppStatusController extends AbstractListScreen{
 	final static Logger logger = Logger.getLogger(AppStatusController.class);

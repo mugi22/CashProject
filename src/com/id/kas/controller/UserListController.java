@@ -52,10 +52,12 @@ public class UserListController extends AbstractListScreen {
 //	 ***************************** AJAX  **************************************************************
 	 @RequestMapping(value="/userListAll.htm", method=RequestMethod.POST)
      public @ResponseBody String userListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
-         model.put("session", ses);
-         if(!cekValidSession(session)){
+		 String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         //model.put("session", ses);
+         if(!cekValidSession(session,userId)){
         	 return "[]";
          }
          String result="";
@@ -103,21 +105,23 @@ public class UserListController extends AbstractListScreen {
 	 
 	 @RequestMapping(value="/userAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-
-		 TblUser user = getUser(session);
-		 
-		 if(!cekValidSession(session)){
+		 String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         //model.put("session", ses);
+         if(!cekValidSession(session,userId)){		
         	 return "fail";
          }
 		 
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblUserDAO dao = new TblUserDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblUserDAO dao = new TblUserDAO(sess);
                TblUser tbl = new TblUser();
                tbl.setUserId(reg.getParameter("userId").toUpperCase());
                tbl.setName((reg.getParameter("name")).toUpperCase());
@@ -132,10 +136,10 @@ public class UserListController extends AbstractListScreen {
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.insert(tbl);
-               ses.getTransaction().commit();
-               ses.close();
+               sess.getTransaction().commit();
+               sess.close();
                x=gson.toJson("SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -148,18 +152,22 @@ public class UserListController extends AbstractListScreen {
 	 @RequestMapping(value="/userEdit.htm", method=RequestMethod.POST)
      public @ResponseBody String userEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		 String sId = reg.getParameter("userId");
-		 TblUser user = getUser(session);
-		 if(!cekValidSession(session)){
+		 String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         //model.put("session", ses);
+         if(!cekValidSession(session,userId)){
         	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblUserDAO dao = new TblUserDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblUserDAO dao = new TblUserDAO(sess);
                TblUser tbl = dao.getById(sId);
                tbl.setUserId(reg.getParameter("userId"));
                tbl.setName(reg.getParameter("name"));
@@ -171,10 +179,10 @@ public class UserListController extends AbstractListScreen {
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.update(tbl);
-               ses.getTransaction().commit();
-               ses.close();
+               sess.getTransaction().commit();
+               sess.close();
                x=gson.toJson("UPDATE SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -192,19 +200,25 @@ public class UserListController extends AbstractListScreen {
      public @ResponseBody String userDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 
 		 String userId = reg.getParameter("userId");
-		 TblUser user = getUser(session);
-         Session ses = null;
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         //model.put("session", ses);
+         if(!cekValidSession(session,userId)){
+        	 return "fail";
+         }
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblUserDAO dao = new TblUserDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblUserDAO dao = new TblUserDAO(sess);
                TblUser tbl = dao.getById(userId);
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.delete(tbl);
-               ses.getTransaction().commit();
-               ses.close();
+               sess.getTransaction().commit();
+               sess.close();
                h.put("success", true);
                x=gson.toJson(h);
          }catch(Exception e){

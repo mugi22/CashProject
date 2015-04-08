@@ -49,12 +49,16 @@ public class ParamController  extends AbstractListScreen{
 //	 ***************************** LIST  **************************************************************
 	 @RequestMapping(value="/paramListAll.htm", method=RequestMethod.POST)
      public @ResponseBody String paramListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Value=reg.getParameter("Value");
-String Key=reg.getParameter("Key");		 
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
-         model.put("session", ses);
-         if(!cekValidSession(session)){
+		 
+		 String Value=reg.getParameter("Value");
+		 String Key=reg.getParameter("Key");
+		 
+		 String userId = reg.getParameter("userId");
+         //String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         
+         //model.put("session", ses);
+         if(!cekValidSession(session,userId)){
         	 return "[]";
          }
          String result="";
@@ -91,8 +95,10 @@ String Key=reg.getParameter("Key");
 // *********************ADD***********************
  @RequestMapping(value="/paramAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 TblUser user = getUser(session);		 
-		 if(!cekValidSession(session)){
+	 String userId = reg.getParameter("userId");
+     String sesi = (String) session.getAttribute("session"+userId);
+     TblUser user = (TblUser) session.getAttribute("user"+userId);	 
+		 if(!cekValidSession(session,userId)){
         	 return "fail";
          }
          Session ses = null;
@@ -129,9 +135,10 @@ String Key=reg.getParameter("Key");
 	 @RequestMapping(value="/paramEdit.htm", method=RequestMethod.POST)
      public @ResponseBody String paramEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 String Key=reg.getParameter("key");
-		 
-		 TblUser user = getUser(session);
-		 if(!cekValidSession(session)){
+String userId = reg.getParameter("userId");
+//String ses = (String) session.getAttribute("session"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+		 if(!cekValidSession(session,userId)){
         	 return "fail";
          }
          
@@ -168,12 +175,15 @@ String Key=reg.getParameter("key");
 //	***********************************DELETE**************************************** 
 	 @RequestMapping(value="/paramDelete.htm", method=RequestMethod.POST)
      public @ResponseBody String paramDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Key=reg.getParameter("Key");
-	
+		String Key=reg.getParameter("Key");
+		String userId = reg.getParameter("userId");
+		System.out.println("delete key"+Key+" userid:"+userId);
+		//String ses = (String) session.getAttribute("session"+userId);
+		TblUser user = (TblUser) session.getAttribute("user"+userId);	
 		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
-		 TblUser user = getUser(session);
+//		 TblUser user = getUser(session);
 		 
-		 if(!cekValidSession(session)){
+		 if(!cekValidSession(session,userId)){
         	 return "fail";
          }
          Session ses = null;

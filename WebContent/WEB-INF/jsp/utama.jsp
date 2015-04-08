@@ -32,7 +32,9 @@
 			<h2>Cash Project</h2>
 			<table width="100%">
 			<tr>
-				<td align="left" width="20%"><a href="logout.htm">Logout</a><br> ${user.userId} ${user.name} ${user.branchCode}</td>
+				<td align="left" width="20%"><a href="logout.htm?userId=${user.userId}">Logout</a><br> ${user.userId} ${user.name} ${user.branchCode}
+				<input type="hidden" id="key" value="${key}" >
+				</td>
 				<td align="right">
 					<img alt="" src="image/java.jpg"  height="42" width="60">
 					<img alt="" src="image/eclipse.png"  height="42" width="100">

@@ -54,10 +54,12 @@ public class TagihanController  extends AbstractListScreen{
 String Nik=reg.getParameter("Nik");
 String Yemm=reg.getParameter("Yemm");
 String Branchcode=reg.getParameter("Branchcode");		 
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
-         model.put("session", ses);
-         if(!cekValidSession(session)){
+String userId = reg.getParameter("userId");
+//String ses = (String) session.getAttribute("session"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+
+//model.put("session", ses);
+if(!cekValidSession(session,userId)){
         	 return "[]";
          }
          String result="";
@@ -94,18 +96,22 @@ String Branchcode=reg.getParameter("Branchcode");
 // *********************ADD***********************
  @RequestMapping(value="/tagihanAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 TblUser user = getUser(session);		 
-		 if(!cekValidSession(session)){
+	 String userId = reg.getParameter("userId");
+     //String ses = (String) session.getAttribute("session"+userId);
+     TblUser user = (TblUser) session.getAttribute("user"+userId);
+     
+     //model.put("session", ses);
+     if(!cekValidSession(session,userId)){
         	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblTagihanDAO dao = new TblTagihanDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblTagihanDAO dao = new TblTagihanDAO(sess);
                TblTagihan tbl = new TblTagihan();
                     tbl.setNik(reg.getParameter("nik"));
                     tbl.setGrade(reg.getParameter("grade"));
@@ -119,11 +125,11 @@ String Branchcode=reg.getParameter("Branchcode");
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.insert(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                simpanLog(user.getUserId(),gson.toJson(tbl));
-               ses.close();
+               sess.close();
                x=gson.toJson("SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -140,19 +146,23 @@ String Nik=reg.getParameter("nik");
 String Yemm=reg.getParameter("yemm");
 String Branchcode=reg.getParameter("branchcode");
 		 
-		 TblUser user = getUser(session);
-		 if(!cekValidSession(session)){
+String userId = reg.getParameter("userId");
+//String ses = (String) session.getAttribute("session"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+
+//model.put("session", ses);
+if(!cekValidSession(session,userId)){
         	 return "fail";
          }
          
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblTagihanDAO dao = new TblTagihanDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblTagihanDAO dao = new TblTagihanDAO(sess);
                TblTagihan tbl = dao.getById(Nik,Yemm,Branchcode);
                 String tblOld = gson.toJson(tbl);
                     tbl.setNik(reg.getParameter("nik"));
@@ -167,11 +177,11 @@ String Branchcode=reg.getParameter("branchcode");
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
                
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.update(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                 simpanLog(user.getUserId(),"MODIFY  : "+gson.toJson(tbl)+" OLD "+tblOld);
-               ses.close();
+               sess.close();
                x=gson.toJson("UPDATE SUKSES");
          }catch(Exception e){
              x=gson.toJson("fail");
@@ -188,26 +198,28 @@ String Yemm=reg.getParameter("yemm");
 String Branchcode=reg.getParameter("branchcode");
 
 System.out.println("nik "+Nik+" yemm : "+Yemm+" Branchcode :"+Branchcode);
-//		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
-		 TblUser user = getUser(session);
-		 
-		 if(!cekValidSession(session)){
+String userId = reg.getParameter("userId");
+//String ses = (String) session.getAttribute("session"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+userId);
+
+//model.put("session", ses);
+if(!cekValidSession(session,userId)){
         	 return "fail";
          }
-         Session ses = null;
+         Session sess = null;
          String x ="";
          Map h = new HashMap<String, Object>();
          Gson gson = new Gson();
          try {
-               ses = HibernateUtil.getSessionFactory().openSession();
-               TblTagihanDAO dao = new TblTagihanDAO(ses);
+               sess = HibernateUtil.getSessionFactory().openSession();
+               TblTagihanDAO dao = new TblTagihanDAO(sess);
                TblTagihan tbl = dao.getById(Nik,Yemm,Branchcode);
                String tblDel = gson.toJson(tbl);
-               ses.beginTransaction();
+               sess.beginTransaction();
                dao.delete(tbl);
-               ses.getTransaction().commit();
+               sess.getTransaction().commit();
                simpanLog(user.getUserId(),"DELETE  : "+tblDel);
-               ses.close();
+               sess.close();
                h.put("success", true);
                x=gson.toJson(h);
          }catch(Exception e){

@@ -113,7 +113,7 @@ var branchcode;
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
 		var jsonurl = 'tarifListAll.htm?'+
-'Grade='+$('#Grade').val()+"&"+'IdTarif='+$('#IdTarif').val();
+'Grade='+$('#Grade').val()+"&"+'IdTarif='+$('#IdTarif').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -144,7 +144,7 @@ var branchcode;
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'tarifAdd.htm';
+		url = 'tarifAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 /* ---- tarifedit*/
@@ -155,7 +155,7 @@ var branchcode;
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'tarifEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'tarifEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -167,7 +167,7 @@ var branchcode;
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'tarifEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'tarifEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -179,8 +179,9 @@ var branchcode;
 					function(r) {
 						if (r) {
 							$.post('tarifDelete.htm', {
-							                    grade : row.grade,
-                    idTarif : row.idTarif
+							      	grade : row.grade,
+				                    idTarif : row.idTarif,
+				                    userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data

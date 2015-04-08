@@ -106,7 +106,7 @@ var groupId;
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
 		var jsonurl = 'priviledgeListAll.htm?'+
-'GroupId='+$('#GroupId').val()+"&"+'MenuId='+$('#MenuId').val();
+'GroupId='+$('#GroupId').val()+"&"+'MenuId='+$('#MenuId').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -137,7 +137,7 @@ var groupId;
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah ');
 		$('#fm').form('clear');
-		url = 'priviledgeAdd.htm';
+		url = 'priviledgeAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 
@@ -148,7 +148,7 @@ var groupId;
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit ');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'priviledgeEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'priviledgeEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -160,7 +160,7 @@ var groupId;
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil ');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'priviledgeEdit.htm';//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'priviledgeEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -173,7 +173,8 @@ var groupId;
 						if (r) {
 							$.post('priviledgeDelete.htm', {
 								GroupId : row.groupId,
-								MenuId : row.MenuIdMenuId//SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
+								MenuId : row.MenuIdMenuId,userId:"${userId}"
+								//SESUAIKAN Id=>huruf depan BEsar row.Id==>huruf depan kecil
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data

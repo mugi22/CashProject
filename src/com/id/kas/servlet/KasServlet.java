@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServlet;
 import org.hibernate.Session;
 
 import com.id.kas.db.HibernateUtil;
-import com.id.kas.util.MyVariable;
+import com.id.kas.util.AppProp;
 
 /**
  * Servlet implementation class KasServlet
@@ -36,7 +36,7 @@ public class KasServlet extends HttpServlet {
 		}
     	
     	//CLOSE  OPEN
-    	MyVariable.setsAppStatus("OPEN");
+    	AppProp.setsAppStatus("OPEN");
     	
     }
 }

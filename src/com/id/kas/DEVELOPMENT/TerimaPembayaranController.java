@@ -32,7 +32,7 @@ import com.id.kas.pojo.dao.TblTagihanDAO;
 import com.id.kas.pojo.dao.TblTarifDAO;
 import com.id.kas.pojo.dao.TblUserGroupDAO;
 import com.id.kas.util.AbstractListScreen;
-import com.id.kas.util.MyVariable;
+import com.id.kas.util.AppProp;
 @Controller
 public class TerimaPembayaranController extends AbstractListScreen {
 final static Logger logger = Logger.getLogger(TerimaPembayaranController.class);
