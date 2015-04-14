@@ -26,20 +26,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
+import com.id.kas.pojo.TblSeq;
 import com.id.kas.pojo.TblUser;
-//import com.id.kas.pojo.XXtbl;//harap Sesuaikan
+//import com.id.kas.pojo.TblSeq;//harap Sesuaikan
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class XXXclass  extends AbstractListScreen{
-	@RequestMapping(value="/XXXmap.htm",method=RequestMethod.GET)
+public class SeqController  extends AbstractListScreen{
+	@RequestMapping(value="/seq.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
 	 	return super.doGet(model, session, reg,res);
 	}
 	
 	
-	 @RequestMapping(value="/XXXmap.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/seq.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
 		 super.doPost(model, session,reg,res);
 		return getView();		 
@@ -48,13 +49,26 @@ public class XXXclass  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "XXXview";
+		return "seq";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/XXXmapListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String XXXmapListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-XXXStringParam		 
+	 @RequestMapping(value="/seqListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String seqListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String LastLogIn ="00-00-0000";
+                    if(reg.getParameter("LastLogIn").length()>0){
+                    LastLogIn = (reg.getParameter("LastLogIn"));
+                    }
+                    String Keterangan=reg.getParameter("Keterangan");
+                    String SeqName=reg.getParameter("SeqName");
+                    String SeqNum ="0";
+                    if(reg.getParameter("SeqNum").length()>0){
+                    SeqNum = (reg.getParameter("SeqNum"));
+                    }
+                    String Tarif ="0";
+                    if(reg.getParameter("Tarif").length()>0){
+                    Tarif = (reg.getParameter("Tarif"));
+                    }		 
          String userId = reg.getParameter("userId");
          String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
@@ -72,10 +86,10 @@ XXXStringParam
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			XXtblDAO dao = new XXtblDAO(sess);
+			TblSeqDAO dao = new TblSeqDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<XXtbl> l = new ArrayList<XXtbl>();
-				h = dao.getByPerPage(XXXCritParam,loffset, row);
+			List<TblSeq> l = new ArrayList<TblSeq>();
+				h = dao.getByPerPage(formatter.parse(LastLogIn),Keterangan,SeqName,Long.parseLong(SeqNum),new BigDecimal(Tarif),loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -95,7 +109,7 @@ XXXStringParam
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/XXXmapAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/seqAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -111,9 +125,14 @@ XXXStringParam
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               XXtblDAO dao = new XXtblDAO(sess);
-               XXtbl tbl = new XXtbl();
-XXFormFild                             
+               TblSeqDAO dao = new TblSeqDAO(sess);
+               TblSeq tbl = new TblSeq();
+                    tbl.setLastLogIn(formatter.parse(reg.getParameter("lastLogIn")));
+                    tbl.setKeterangan(reg.getParameter("keterangan"));
+                    tbl.setSeqName(reg.getParameter("seqName"));
+                    tbl.setSeqNum(Long.parseLong((reg.getParameter("seqNum"))));
+                    tbl.setTarif(new BigDecimal((reg.getParameter("tarif"))));
+                             
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
                
@@ -132,9 +151,14 @@ XXFormFild
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/XXXmapEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String XXXmapEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-XXXByIdParam		 
+	 @RequestMapping(value="/seqEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String seqEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String SeqName=reg.getParameter("seqName");
+                    String SeqNum="0";
+                    if(reg.getParameter("seqNum").length()>0){
+                    SeqNum = (reg.getParameter("seqNum"));
+                    }
+		 
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
@@ -149,10 +173,15 @@ XXXByIdParam
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               XXtblDAO dao = new XXtblDAO(sess);
-               XXtbl tbl = dao.getById(XXXParamId);
+               TblSeqDAO dao = new TblSeqDAO(sess);
+               TblSeq tbl = dao.getById(SeqName,Long.parseLong(SeqNum));
                 String tblOld = gson.toJson(tbl);
-XXFormFild               
+                    tbl.setLastLogIn(formatter.parse(reg.getParameter("lastLogIn")));
+                    tbl.setKeterangan(reg.getParameter("keterangan"));
+                    tbl.setSeqName(reg.getParameter("seqName"));
+                    tbl.setSeqNum(Long.parseLong((reg.getParameter("seqNum"))));
+                    tbl.setTarif(new BigDecimal((reg.getParameter("tarif"))));
+               
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
                
@@ -170,9 +199,14 @@ XXFormFild
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/XXXmapDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String XXXmapDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-XXXByIdParam	
+	 @RequestMapping(value="/seqDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String seqDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String SeqName=reg.getParameter("seqName");
+                    String SeqNum="0";
+                    if(reg.getParameter("seqNum").length()>0){
+                    SeqNum = (reg.getParameter("seqNum"));
+                    }
+	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -187,8 +221,8 @@ XXXByIdParam
          Gson gson = new Gson();
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               XXtblDAO dao = new XXtblDAO(sess);
-               XXtbl tbl = dao.getById(XXXParamId);
+               TblSeqDAO dao = new TblSeqDAO(sess);
+               TblSeq tbl = dao.getById(SeqName,Long.parseLong(SeqNum));
                String tblDel = gson.toJson(tbl);
                sess.beginTransaction();
                dao.delete(tbl);

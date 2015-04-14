@@ -29,7 +29,12 @@ jspTemplate
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
             <form name="FREG" id="formCari" method="post" action="#"  >                 
-XXXsearch
+                    <label>LastLogIn</label> : <input name="LastLogIn" type="text" id="LastLogIn" size="30" maxlength="30"><br>
+                    <label>Keterangan</label> : <input name="Keterangan" type="text" id="Keterangan" size="30" maxlength="30"><br>
+                    <label>SeqName</label> : <input name="SeqName" type="text" id="SeqName" size="30" maxlength="30"><br>
+                    <label>SeqNum</label> : <input name="SeqNum" type="text" id="SeqNum" size="30" maxlength="30"><br>
+                    <label>Tarif</label> : <input name="Tarif" type="text" id="Tarif" size="30" maxlength="30"><br>
+
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
                     <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
@@ -41,13 +46,18 @@ XXXsearch
 <!-- ******************************END  FORM PENCARIAN******************************* -->  
 
 <!-- **********************TABLE RESULT************************************** -->
-        <table id="dg" title="XXXjudul" class="easyui-datagrid" style="width:100%;"
+        <table id="dg" title="SEQ" class="easyui-datagrid" style="width:100%;"
                toolbar="#toolbar" pagination="true"
                data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-XXXfield                     
+                    <th field="lastLogIn" width="100"sortable="true">LastLogIn</th> 
+                    <th field="keterangan" width="100"sortable="true">Keterangan</th> 
+                    <th field="seqName" width="100"sortable="true">SeqName</th> 
+                    <th field="seqNum" width="100"sortable="true"data-options="formatter:function(value, row){return accounting.formatNumber(row.tarif,0,'.',','); }"align="right">SeqNum</th> 
+                    <th field="tarif" width="100"sortable="true"data-options="formatter:function(value, row){return accounting.formatNumber(row.tarif,0,'.',','); }"align="right">Tarif</th> 
+                     
                 </tr>
             </thead>
         </table>        
@@ -62,9 +72,14 @@ XXXfield
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">XXXjudul</div>
+		<div class="ftitle">SEQ</div>
 		<form id="fm" method="post" novalidate>
-XXXlist			
+                    <div class="fitem">	<label>LastLogIn</label> :<input name="lastLogIn"	class="easyui-textbox" required="false" id="lastLogIn">	</div>
+                    <div class="fitem">	<label>Keterangan</label> :<input name="keterangan"	class="easyui-textbox" required="false" id="keterangan">	</div>
+                    <div class="fitem">	<label>SeqName</label> :<input name="seqName"	class="easyui-textbox" required="false" id="seqName">	</div>
+                    <div class="fitem">	<label>SeqNum</label> :<input name="seqNum"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" required="false" id="seqNum">	</div>
+                    <div class="fitem">	<label>Tarif</label> :<input name="tarif"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" required="false" id="tarif">	</div>
+			
 		</form>
 	</div>
 	<div id="dlg-buttons">
@@ -94,8 +109,8 @@ var branchcode;
 
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
-		var jsonurl = 'XXXZListAll.htm?'+
-XXXparamSearch
+		var jsonurl = 'seqListAll.htm?'+
+'LastLogIn='+$('#LastLogIn').val()+"&"+'Keterangan='+$('#Keterangan').val()+"&"+'SeqName='+$('#SeqName').val()+"&"+'SeqNum='+$('#SeqNum').val()+"&"+'Tarif='+$('#Tarif').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -121,15 +136,15 @@ XXXparamSearch
 
 	/* END function untuk list data*/
 	
-	/* ============FORM FUNCTION ========== XXXZtambah*/
+	/* ============FORM FUNCTION ========== seqtambah*/
 
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'XXXZAdd.htm?'+"userId="+"${userId}";
+		url = 'seqAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
-/* ---- XXXZedit*/
+/* ---- seqedit*/
 	function doEdit() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
@@ -137,11 +152,11 @@ XXXparamSearch
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'seqEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
-/*-- XXXZtampil*/
+/*-- seqtampil*/
 	function doShow() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
@@ -149,7 +164,7 @@ XXXparamSearch
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'seqEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -160,8 +175,9 @@ XXXparamSearch
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
 					function(r) {
 						if (r) {
-							$.post('XXXZDelete.htm', {
-							XXXrowDelete,
+							$.post('seqDelete.htm', {
+							                    seqName : row.seqName,
+                    seqNum : row.seqNum,
 							userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
@@ -224,7 +240,12 @@ XXXparamSearch
 	function onShow() {
 		//list button
 		//$('#userId').textbox('readonly', true);
-XXXenableOnShowField
+                    $('#lastLogIn').textbox('readonly', true);
+                    $('#keterangan').textbox('readonly', true);
+                    $('#seqName').textbox('readonly', true);
+                    $('#seqNum').textbox('readonly', true);
+                    $('#tarif').textbox('readonly', true);
+
 		//form button
 		$('#btnSave').linkbutton('disable');
 	}
@@ -233,7 +254,12 @@ XXXenableOnShowField
 	function onAdd() {
 		//list button
 		//$('#userId').textbox('readonly', false);		
-XXXenableOnAddField		
+                    $('#lastLogIn').textbox('readonly', false);
+                    $('#keterangan').textbox('readonly', false);
+                    $('#seqName').textbox('readonly', false);
+                    $('#seqNum').textbox('readonly', false);
+                    $('#tarif').textbox('readonly', false);
+		
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
@@ -242,7 +268,12 @@ XXXenableOnAddField
 	function onEdit() {
 		//list button
 		//$('#userId').textbox('readonly', true);	
-XXXenableOnEditField	
+                    $('#lastLogIn').textbox('readonly', true);
+                    $('#keterangan').textbox('readonly', true);
+                    $('#seqName').textbox('readonly', true);
+                    $('#seqNum').textbox('readonly', true);
+                    $('#tarif').textbox('readonly', true);
+	
 		//form button
 		$('#btnSave').linkbutton('enable');
 	}
