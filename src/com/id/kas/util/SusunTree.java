@@ -43,7 +43,6 @@ public class SusunTree {
         List<TblMenu> list = criteria.list();
         PriviledgeCek pv = new PriviledgeCek();
         for (TblMenu tblmenu : list) {   
-//            System.out.println(jarak + tblmenu.getMenuId()+"  "+tblmenu.getMenuName());
             //juka punya child
             if(tblmenu.getHaveChild() =='0'){
             	//tambahkan parameter menu_id

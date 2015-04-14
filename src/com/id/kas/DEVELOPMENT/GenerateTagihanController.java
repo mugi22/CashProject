@@ -28,20 +28,19 @@ import com.id.kas.pojo.dao.TblPegawaiDAO;
 import com.id.kas.pojo.dao.TblTagihanDAO;
 import com.id.kas.pojo.dao.TblTarifDAO;
 import com.id.kas.pojo.dao.TblUserGroupDAO;
+import com.id.kas.util.AbstractFormScreen;
 import com.id.kas.util.AbstractListScreen;
 import com.id.kas.util.AppProp;
 @Controller
-public class GenerateTagihanController extends AbstractListScreen {
+public class GenerateTagihanController extends AbstractFormScreen {
 final static Logger logger = Logger.getLogger(GenerateTagihanController.class);
 	
 	@RequestMapping(value="/generateTagihan.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg,HttpServletResponse res){ 
-		TblUser user = (TblUser) session.getAttribute("user");
-		String valid =  (String) session.getAttribute("valid");
+		String userId = reg.getParameter("userId");
+		String ses = (String) session.getAttribute("session"+userId);
+		TblUser user = (TblUser) session.getAttribute("user"+userId);
 
-	    if(session.getAttribute("valid") == null){
-	    	return "redirect:/logout.htm";
-	    }
 		Session sess =null;
 		sess = HibernateUtil.getSessionFactory().openSession();
 		TblBranchDAO dao =new TblBranchDAO(sess);
@@ -55,12 +54,18 @@ final static Logger logger = Logger.getLogger(GenerateTagihanController.class);
 	
 	 @RequestMapping(value="/generateTagihan.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session,HttpServletRequest reg,HttpServletResponse res) {
+		 String userId = reg.getParameter("userId");
+			String ses = (String) session.getAttribute("session"+userId);
+			TblUser user = (TblUser) session.getAttribute("user"+userId);
+		 
 		 String mode = reg.getParameter("branchCode");
-		TblUser user = (TblUser) session.getAttribute("user");
+//		TblUser user = (TblUser) session.getAttribute("user");
 		String sUnit = reg.getParameter("branchCode");
 		String sYemm = reg.getParameter("yemm");
 		Session sess =null;
+		int iRec =0;
 		try{
+			
 			sess = HibernateUtil.getSessionFactory().openSession();
 			System.out.println("Proses Generate Tagihan "+sUnit+" - "+sYemm);
 			//ambil tarif masukan ke hashmap
@@ -78,6 +83,7 @@ final static Logger logger = Logger.getLogger(GenerateTagihanController.class);
 			sess.getTransaction().begin();
 			TblTagihanDAO tagihanDAO = new TblTagihanDAO(sess);
 			for(TblPegawai t:lPegawai){
+				iRec++;
 				BigDecimal bdTarif = (BigDecimal) mTarif.get(t.getGrade());
 				TblTagihan tagihan = new TblTagihan();
 				tagihan.setBranchcode(t.getBranchCode());
@@ -96,12 +102,13 @@ final static Logger logger = Logger.getLogger(GenerateTagihanController.class);
 				}
 			}
 			sess.getTransaction().commit();
-		
+			sess.close();
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-		model.put("message", "Selesai............... ");
-		sess.close();
+		model.put("message", "Selesai............... "+iRec+" record");
+		
+		model.put("branchCode", sUnit);
 		super.doPost(model, session, reg,res);
 
 		return getView();		 

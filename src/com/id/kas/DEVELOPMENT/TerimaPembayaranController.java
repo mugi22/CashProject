@@ -33,24 +33,24 @@ import com.id.kas.pojo.dao.TblTarifDAO;
 import com.id.kas.pojo.dao.TblUserGroupDAO;
 import com.id.kas.util.AbstractListScreen;
 import com.id.kas.util.AppProp;
+import com.id.kas.util.mail.GoogleMail;
 @Controller
 public class TerimaPembayaranController extends AbstractListScreen {
 final static Logger logger = Logger.getLogger(TerimaPembayaranController.class);
 	
 	@RequestMapping(value="/pembayaranTagihan.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg,HttpServletResponse res){ 
-		TblUser user = (TblUser) session.getAttribute("user");
-		String valid =  (String) session.getAttribute("valid");
+		String userId = reg.getParameter("userId");
+		String ses = (String) session.getAttribute("session"+userId);
+		TblUser user = (TblUser) session.getAttribute("user"+userId);
 
-	    if(session.getAttribute("valid") == null){
-	    	return "redirect:/logout.htm";
-	    }
+	   
 		Session sess =null;
 		sess = HibernateUtil.getSessionFactory().openSession();
 		TblBranchDAO dao =new TblBranchDAO(sess);
-		TblBranch tblBranch = dao.getById(user.getBranchCode());
+		TblBranch tblBranch = dao.getById(userId);
 		
-		model.put("branchCode", user.getBranchCode());
+		model.put("branchCode",userId);
 		sess.close();
 	 	return /*getView();*/super.doGet(model, session, reg,res);
 	}
@@ -60,7 +60,12 @@ final static Logger logger = Logger.getLogger(TerimaPembayaranController.class);
 	 public @ResponseBody String doPost(Map<String, Object> model,HttpSession session,HttpServletRequest reg,HttpServletResponse res) {
 		//String mode = reg.getParameter("branchCode");
 		 System.out.println("pembayaranTagihan........POST");
-		TblUser user = (TblUser) session.getAttribute("user");
+//		TblUser user = (TblUser) session.getAttribute("user");
+		 String userId = reg.getParameter("userId");
+			String ses = (String) session.getAttribute("session"+userId);
+			TblUser user = (TblUser) session.getAttribute("user"+userId);
+		
+		
 		String nik = reg.getParameter("nik");
 		String tagihan = reg.getParameter("tagihan");
 		Session sess =null;
@@ -86,6 +91,8 @@ final static Logger logger = Logger.getLogger(TerimaPembayaranController.class);
 				sess.update(tblTagihan);
 				sess.getTransaction().commit();
 				sess.close();
+//				GoogleMail googleMail = new GoogleMail();
+//				googleMail.sendMail();
 				msg="SUCCESSS";
 			}
 			
@@ -103,7 +110,9 @@ final static Logger logger = Logger.getLogger(TerimaPembayaranController.class);
 	@RequestMapping(value="/dataTagihan.htm",method=RequestMethod.GET)
 	public @ResponseBody String doGetDataTagihan(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg,HttpServletResponse res){ 
 		System.out.println("dataTagihan.htm .GET");
-		TblUser user = (TblUser) session.getAttribute("user");
+		String userId = reg.getParameter("userId");
+		String ses = (String) session.getAttribute("session"+userId);
+		TblUser user = (TblUser) session.getAttribute("user"+userId);
 		//cari data pegawai
 		Map x = new HashMap<String, String>();
 		String sNik = reg.getParameter("nik");
@@ -139,7 +148,10 @@ final static Logger logger = Logger.getLogger(TerimaPembayaranController.class);
 		 @RequestMapping(value="/comboTagihan.htm", method=RequestMethod.POST)
 		    public @ResponseBody String comboTagihan(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 			 
-			 TblUser user = (TblUser) session.getAttribute("user");
+			 String userId = reg.getParameter("userId");
+				String ses = (String) session.getAttribute("session"+userId);
+				TblUser user = (TblUser) session.getAttribute("user"+userId);
+				
 				 String param =reg.getParameter("param");
 				 System.out.println("comboTagihan.................param "+param);
 				 Session sess = null;
@@ -173,7 +185,11 @@ final static Logger logger = Logger.getLogger(TerimaPembayaranController.class);
 	@RequestMapping(value = "/getTagihan.htm", method = RequestMethod.GET)
 	public @ResponseBody
 	String getTagihan(Map<String, Object> model, HttpSession session,HttpServletRequest reg) {
-		 TblUser user = (TblUser) session.getAttribute("user");
+		String userId = reg.getParameter("userId");
+		String ses = (String) session.getAttribute("session"+userId);
+		TblUser user = (TblUser) session.getAttribute("user"+userId); 
+		 
+		 
 		 String param =reg.getParameter("param");//nik
 		 String param2 =reg.getParameter("param2");//comboselect yemm
 		 Map mTagihan = new HashMap<String, BigDecimal>();

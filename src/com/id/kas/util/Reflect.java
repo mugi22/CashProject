@@ -47,7 +47,7 @@ public class Reflect {
 					String[] xType = sType.split("\\.");
 					int q = xType.length - 1;
 //					System.out.println(q);
-//					System.out.println(sType+" "+xType[q]);
+					System.out.println(sType+" "+xType[q]);
 					listMethode.add(m[i].getName().toString().replace("get", "")+"|"+xType[q]);
 //					System.out.println((m[i].getName().toString().replace("get", ""))+"|"+xType[q]);
 				}
@@ -73,7 +73,8 @@ public class Reflect {
 					int q = xType.length - 1;
 //					System.out.println(q);
 //					System.out.println(sType+" "+xType[q]);
-					listMethode.add(m[i].getName().toString().replace("get", ""));//+"|"+xType[q]);
+//					listMethode.add(m[i].getName().toString().replace("get", ""));//+"|"+xType[q]);
+					listMethode.add(m[i].getName().toString().replace("get", "")+"|"+xType[q]);
 //					System.out.println((m[i].getName().toString().replace("get", ""))+"|"+xType[q]);
 				}
 			}

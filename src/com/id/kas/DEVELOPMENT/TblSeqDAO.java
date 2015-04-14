@@ -1,8 +1,17 @@
-package com.id.kas.DEVELOPMENT;
+/*
+*Create by CodeGenerator
+*daoTemplate
+*/
 
+package com.id.kas.DEVELOPMENT;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Projection;
@@ -32,10 +41,11 @@ public class TblSeqDAO {
 		session.update(tblseq);
 	}
 //====================================================================	
-	public TblSeq getById(String nik){
+	public TblSeq getById(String  seqName,long  seqNum){
 		Criteria criteria =null;
 		criteria = session.createCriteria(TblSeq.class);
-                    if (nik.length()>0){criteria.add(Restrictions.eq("nik", nik)); 	}
+                    if (seqName.length()>0){criteria.add(Restrictions.eq("seqName", seqName)); 	}
+                    if (seqNum>0){criteria.add(Restrictions.eq("seqNum", seqNum)); 	}
 
 		return (TblSeq)  criteria.uniqueResult();//session.get(TblSeq.class, id);
 	}
@@ -55,28 +65,36 @@ public class TblSeqDAO {
 	}
 
 /*//SESUAIKAN DENGAN KRITERIA*/	
-	public Criteria getCriteria(String Nik){
+	public Criteria getCriteria(Date LastLogIn,String Keterangan,String SeqName,long SeqNum,BigDecimal Tarif){
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Criteria criteria =null;
 		criteria = session.createCriteria(TblSeq.class);
-                    if (Nik.length()>0){criteria.add(Restrictions.eq("nik", Nik)); 	}
+                    try {
+                    if (LastLogIn.after(formatter.parse("00-00-0000"))){criteria.add(Restrictions.eq("lastLogIn", LastLogIn)); 	}
+                    } catch (ParseException e) {
+                    e.printStackTrace();
+                    }                    if (Keterangan.length()>0){criteria.add(Restrictions.eq("keterangan", Keterangan)); 	}
+                    if (SeqName.length()>0){criteria.add(Restrictions.eq("seqName", SeqName)); 	}
+                    if (SeqNum>0){criteria.add(Restrictions.eq("seqNum", SeqNum)); 	}
+                    if (Tarif.doubleValue()>0){criteria.add(Restrictions.eq("y", Tarif)); 	}
 		
 		return criteria;
 	}
 
-	public List<TblSeq> getBy(String Nik ,int start, int rowcount ){
-		Criteria criteria =getCriteria(Nik);
+	public List<TblSeq> getBy(Date LastLogIn,String Keterangan,String SeqName,long SeqNum,BigDecimal Tarif ,int start, int rowcount ){
+		Criteria criteria =getCriteria(LastLogIn,Keterangan,SeqName,SeqNum,Tarif);
 		return (List<TblSeq>) criteria.setFirstResult(start).setMaxResults(rowcount).list();
 	}
 	
-	public Long getByCount(String Nik, int start, int rowcount  ){
-		Criteria criteria =getCriteria(Nik);
+	public Long getByCount(Date LastLogIn,String Keterangan,String SeqName,long SeqNum,BigDecimal Tarif, int start, int rowcount  ){
+		Criteria criteria =getCriteria(LastLogIn,Keterangan,SeqName,SeqNum,Tarif);
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	public Map<String,Object> getByPerPage(String Nik ,int start, int rowcount ){
+	public Map<String,Object> getByPerPage(Date LastLogIn,String Keterangan,String SeqName,long SeqNum,BigDecimal Tarif ,int start, int rowcount ){
 		Map map = new HashMap<String, Object>();		
-		long rowCount =  getByCount(Nik,  start,rowcount);//total jumlah row
-		List<TblSeq> l = getBy(Nik, start,rowcount);//data result nya
+		long rowCount =  getByCount(LastLogIn,Keterangan,SeqName,SeqNum,Tarif,  start,rowcount);//total jumlah row
+		List<TblSeq> l = getBy(LastLogIn,Keterangan,SeqName,SeqNum,Tarif, start,rowcount);//data result nya
 		map.put("total", rowCount);
 		map.put("rows", l);
 		return map;

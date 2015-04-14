@@ -38,7 +38,7 @@
 						<td style="width: 100px">NiK Pegawai:</td>
 						<td style="width: 400px"><input class="easyui-textbox" type="text" name="nik" width="100px"	id="nik" onblur="test()"
 						autocomplete="off" data-options="required:true" ></input>
-						<a href="javascript:void(0)" class="easyui-linkbutton"	onclick="cari()">Cari</a> </td>
+						<a href="javascript:void(0)" class="easyui-linkbutton"	onclick="cari()">Tunggakan</a> </td>
 					</tr>
 					<tr>
 						<td style="width: 100px">Name Pegawai:</td>
@@ -127,7 +127,7 @@
 		}
 		function cari() {
 			$.ajax({
-				url : "dataTagihan.htm?nik=" + $('#nik').val(),
+				url : "dataTagihan.htm?nik=" + $('#nik').val()+"&"+"userId="+"${userId}",
 				success : function(result) {
 					if (result == '{}') {
 						alert('Data Tunggakan Tidak Ditemukan');
@@ -149,7 +149,7 @@
 
 		function addComboTagihan() {
 			$('#tagihan').combobox({
-				url : 'comboTagihan.htm?param=' + $('#nik').val(),
+				url : 'comboTagihan.htm?param=' + $('#nik').val()+"&"+"userId="+"${userId}",
 				valueField : 'id',
 				textField : 'text',
 				panelHeight : 'auto',
@@ -162,7 +162,7 @@
 		
 		function getTagihan(x){			
 			$.ajax({
-				url:'getTagihan.htm?param=' + $('#nik').val()+'&param2='+$('#tagihan').combobox('getValue'),
+				url:'getTagihan.htm?param=' + $('#nik').val()+'&param2='+$('#tagihan').combobox('getValue')+"&"+"userId="+"${userId}",
 				success : function(data) {	
 					var x = JSON.parse(data);					
 					$('#tunggakan').numberbox('setValue', x.jml);

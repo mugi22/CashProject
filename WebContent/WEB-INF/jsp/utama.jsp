@@ -57,10 +57,10 @@
 			
 		</div>
 		<div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
-			<iframe src="utamaMain.htm" style="width: 100%; height: 100%" id="iframe" frameborder="0"></iframe>			
+			<iframe src="utamaMain.htm?${paramx}" style="width: 100%; height: 100%" id="iframe" frameborder="0"></iframe>			
 		</div>
 	</div>
-
+<a href="cariPegawai.htm">Test</a>
 </body>
 </html>
 

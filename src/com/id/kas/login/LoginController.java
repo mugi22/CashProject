@@ -81,6 +81,7 @@ public class LoginController {
 			String uidEncript = crip.encrypt(uid);
 			System.out.println("enkrpt = "+uidEncript+" decript "+crip.decrypt(uidEncript)+" key:"+key);
 			AppProp.setmSession(crip.decrypt(uidEncript),key);
+//			model.put("paramx", "paramA="+uidEncript+"&paramB="+key);
 	         return "redirect:/utama.htm?paramA="+uidEncript+"&paramB="+key;
 	    }else if (valid==2){
 			logger.info(userName + " Login..................... APP STATUS : ADMIN MODE");

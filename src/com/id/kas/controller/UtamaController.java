@@ -31,6 +31,7 @@ public class UtamaController {
 		String decUid = crip.decrypt(encUid); //decrip unyuk user
 		
 		 TblUser user = (TblUser) session.getAttribute("user"+decUid);//ambil object TblUser dari session
+		 model.put("paramx", "paramA="+encUid+"&paramB="+sKey+"&userId="+user.getUserId());
 		 String ses = (String) session.getAttribute("valid"+decUid);
 		 if(user==null){
 			 return "redirect:/login.htm"; 
@@ -89,10 +90,13 @@ public class UtamaController {
     }
      
      @RequestMapping(value="/utamaMain.htm")
-     public String doGetUtamaMain(Map<String, Object> model,HttpSession session) {
-         String ses = (String) session.getAttribute("session");
-         TblUser user = (TblUser) session.getAttribute("user");
-         model.put("session", ses);
+     public String doGetUtamaMain(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+    	 String userId = reg.getParameter("userId");
+    	 String ses = (String) session.getAttribute("session"+userId);
+    	 TblUser user = (TblUser) session.getAttribute("user"+userId);
+    	 ///model diput untuk link pegawai
+//         model.put("session", ses);
+    	 model.put("user", userId);
          return "utamaMain";
      }
 	

@@ -4,10 +4,14 @@
 */
 
 package com.id.kas.DEVELOPMENT;
-
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Projection;
@@ -60,6 +64,7 @@ XXXgetIdCriteria
 
 /*//SESUAIKAN DENGAN KRITERIA*/	
 	public Criteria getCriteria(XXXgetCriParam){
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Criteria criteria =null;
 		criteria = session.createCriteria(XXXpojo.class);
 XXXgetCriteria		

@@ -23,24 +23,34 @@ public class XxxController {
 		String conName = reg.getParameter("cont");
 		String mapName = reg.getParameter("maping");
 		String daoName = reg.getParameter("dao");
-		System.out.println();
-		
+//		System.out.println();
+		String col[] = reg.getParameterValues("col");
 		String par[] = reg.getParameterValues("tes");
 		String list[] = reg.getParameterValues("list");
         String search[] = reg.getParameterValues("search");
         String ids[] = reg.getParameterValues("ids");    
+        String tipes[] = reg.getParameterValues("tipe"); 
         
 		List<String> lForm =  new ArrayList<String>();
 		List<String> lList = new ArrayList<String>();
         List<String> lSearch = new ArrayList<String>();
         List<String> lIds = new ArrayList<String>();
-        
-        
-		System.out.println("Form "+par.length);
+        List<String> lTipes = new ArrayList<String>();
+        List<String> lCol = new ArrayList<String>();
+//		System.out.println("Form "+par.length);
 		int i = 0;
+		
+		
+		for(String s : col){
+			i++;
+			System.out.println(i+" col : "+s);
+			lCol.add(s);
+		}
+		
+		i = 0;
 		for(String s : par){
 			i++;
-//			System.out.println(i+"  : "+s);
+			System.out.println(i+" par : "+s);
 			lForm.add(s);
 		}
 		
@@ -52,7 +62,7 @@ public class XxxController {
 			lList.add(s);
 		}
 		
-                System.out.println("search "+list.length);
+        System.out.println("search "+list.length);
 		i = 0;
 		for(String s : search){
 			i++;
@@ -66,6 +76,12 @@ public class XxxController {
 //			System.out.println(i+"  : "+s);
 			lIds.add(s);
 		}
+		
+		for(String s : tipes){
+			i++;
+			System.out.println(i+"tipes  : "+s);
+			lTipes.add(s);
+		}
                 
 		TempCreate tem = new TempCreate();
 //		V I E W H:\Workspace\CashProject\WebContent\WEB-INF\jsp
@@ -76,40 +92,35 @@ public class XxxController {
 		String sFile;
 		sFile=sTemplate+"jspTemplate.txt";//baca template
 		List<String> l = new ArrayList<String>();
-//		System.out.println(tem.readFile(sFile,lForm,lList));
-		String strFile = (tem.readFile(sFile,lForm,lList,jspName,lSearch,lIds));
-//		String sFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp"+jspName+".jsp";
+		String strFile = (tem.readFile(sFile,lForm,lCol,lList,jspName,lSearch,lIds,lTipes));
 		tem.createFile(sFileCreate, strFile);
 		
 		
 //		COTROLLER	
 		String sFileConTemp=sTemplate+"controllerTemplate.txt";
-//		String sFileController="H:\\zzz\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+conName+".java";
-		String strControl = tem.readFileControllerTemp(sFileConTemp,mapName,jspName,conName,daoName,lForm,lSearch,lIds);
+		String strControl = tem.readFileControllerTemp(sFileConTemp,mapName,jspName,conName,daoName,lCol,lForm,lSearch,lIds,lTipes);
 		tem.createFile(sFileController, strControl);
 		      
 //		D A O  mula
-//		COTROLLER	
 		String sFileDAOTemp=sTemplate+"daoTemplate.txt";
-//		String sFileDAO="H:\\zzz\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+daoName+"DAO.java";
-		String strDAO = tem.readFileDAOTemp(sFileDAOTemp, daoName,lSearch,lIds);
+		String strDAO = tem.readFileDAOTemp(sFileDAOTemp, daoName,lCol,lSearch,lIds,lTipes);
 		tem.createFile(sFileDAO, strDAO);
 			
-		System.out.println("POST  disini.......");
+//		System.out.println("POST  disini.......");
 //		readFile();
 		return "xxxScreen";
 	}
 
 	@RequestMapping(value="/xxx.htm",method=RequestMethod.GET)
 	public String doGet(HttpServletRequest reg){
-		System.out.println("GET   disini.......");
+//		System.out.println("GET   disini.......");
 		return "xxxScreen";
 	}
 	
 	
 	@RequestMapping(value="/testAjax.htm",method=RequestMethod.GET)
 	public @ResponseBody String testAjax(HttpServletRequest reg){
-		System.out.println("Test Ajax................"+reg.getParameter("param"));
+//		System.out.println("Test Ajax................"+reg.getParameter("param"));
 		Reflect ref = new Reflect();
 		ref.setClassName(reg.getParameter("param"));
 //		System.out.println();
@@ -118,7 +129,9 @@ public class XxxController {
 		sb.append("[");
 		String col ="colx";
 		for(String s : l){
-			sb.append("{"+'"'+col+'"'+':'+""+'"'+s+'"'+"}"+",");
+			System.out.println("s ---->"+s);
+			String[] x = s.split("\\|");
+			sb.append("{"+'"'+col+'"'+':'+""+'"'+/*s*/x[0]+'"'+","+'"'+"tipe"+'"'+':'+""+'"'+/*s*/x[1]+'"'+"}"+",");
 		}
 		String x = (sb.toString()).substring(0,sb.toString().length()-1);
 		String z = x+"]";
@@ -127,7 +140,7 @@ public class XxxController {
 		
 		Gson gson = new Gson();
 //		String x =  gson.toJson(l);
-		System.out.println(z);
+//		System.out.println(z);
 		return z.toString();
 	}
 	

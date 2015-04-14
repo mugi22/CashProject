@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>xxxScreen</h1><br>
+<h1>Code Generator</h1><br>
 name : <input type="text" style="width: 300px" id="z" value="com.id.kas.pojo.TblSeq"> <input type="button" value="test" id="btnTest" 
 onclick="testAjax()">
 <hr>
@@ -26,6 +26,7 @@ DAO : <input type="text" style="width: 300px" id="dao" name="dao" value="TblSeq"
                     <th>List</th>
                     <th>Search</th>
                     <th>ID</th>
+                    <th>Tipe</th>
                 </tr>
             </thead>
             <tbody id="tbody">
@@ -64,11 +65,37 @@ function testAjax(){
 			     
 			     var eachrow = "<tr>"
 	                 + "<td>"+"<input type="+'"'+"text"+'"'+" name="+'"'+"col"+'"'+"value="+'"'+data.colx+'"'+" />" +  "</td>"	 
-	                 +"<td>"  +"<input type="+'"'+"checkbox"+'"'+" name="+'"'+"tes"+'"'+"value="+'"'+data.colx+'"'+" />"+ "</td>"	
-	                 +"<td>"  +"<input type="+'"'+"checkbox"+'"'+" name="+'"'+"list"+'"'+"value="+'"'+data.colx+'"'+" />"+ "</td>"
-	                 +"<td>"  +"<input type="+'"'+"checkbox"+'"'+" name="+'"'+"search"+'"'+"value="+'"'+data.colx+'"'+" />"+ "</td>"
-	                 +"<td>"  +"<input type="+'"'+"checkbox"+'"'+" name="+'"'+"ids"+'"'+"value="+'"'+data.colx+'"'+" />"+ "</td>"
-	                 + "</tr>";
+	                <!-- +"<td>"  +"<input type="+'"'+"checkbox"+'"'+" name="+'"'+"tes"+'"'+"value="+'"'+data.colx+'"'+" />"+ "</td>"	-->
+	                +"<td><select name="+'"'+"tes"+'"'+">"
+	                +"<option value="+'"'+"Y"+'"'+">Y</option>"
+	                +"<option value="+'"'+"N"+'"'+">N</option>"
+	            	+"</select></td>"
+	                <!-- +"<td>"  +"<input type="+'"'+"checkbox"+'"'+" name="+'"'+"list"+'"'+"value="+'"'+data.colx+'"'+" />"+ "</td>"
+	                --> 
+	                +"<td><select name="+'"'+"list"+'"'+">"
+	                +"<option value="+'"'+"Y"+'"'+">Y</option>"
+	                +"<option value="+'"'+"N"+'"'+">N</option>"
+	            	+"</select></td>"
+	                
+	            	<!--+"<td>"  +"<input type="+'"'+"checkbox"+'"'+" name="+'"'+"search"+'"'+"value="+'"'+data.colx+'"'+" />"+ "</td>"
+	                -->
+	            	+"<td><select name="+'"'+"search"+'"'+">"
+	            	+"<option value="+'"'+"N"+'"'+">N</option>"
+	                +"<option value="+'"'+"Y"+'"'+">Y</option>"	                
+	            	+"</select></td>"
+	                
+	                <!--+"<td>"  +"<input type="+'"'+"checkbox"+'"'+" name="+'"'+"ids"+'"'+"value="+'"'+data.colx+'"'+" />"+ "</td>"
+	                -->
+	                +"<td><select name="+'"'+"ids"+'"'+">"
+	                +"<option value="+'"'+"N"+'"'+">N</option>"
+	                +"<option value="+'"'+"Y"+'"'+">Y</option>"
+	                
+	            	+"</select></td>"
+	                
+	                +"<td>"  +"<input type="+'"'+"text"+'"'+" name="+'"'+"tipe"+'"'+"value="+'"'+data.tipe+'"'+" />"+ "</td>"
+	                
+	                
+	                + "</tr>";
 	    			 $('#tbody').append(eachrow);
 			});
 		}

@@ -6,8 +6,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.criterion.Restrictions;
 
 public class TempCreate {
 
@@ -19,28 +22,12 @@ public class TempCreate {
 	private static String k=",";
 	private static String j1="                    ";
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-//		String sFile;
-//		sFile="C:\\KasProject\\KasTIProject\\template\\jspTemplate.txt";//baca template
 		TempCreate tem = new TempCreate();
-//		List<String> l = new ArrayList<String>();
-//		l.add("Name");
-//		l.add("alamat");
-//		System.out.println(tem.readFile(sFile,l,l));
-//		String strFile = (tem.readFile(sFile,l,l));
-//		String sFileCreate="C:\\KasProject\\KasTIProject\\WebContent\\WEB-INF\\jsp\\test.jsp";
-//		tem.createFile(sFileCreate, strFile);
-//		C:\\Users\\Mugiarto\\Documents\\NetBeansProjects\\KasProject\\template
-//		COTROLLER C:\MgRepos\Project\KasProject\src\com\id\kas\DEVELOPMENT
-//		String sFileCreate="C:\\Users\\Mugiarto\\Documents\\NetBeansProjects\\KasProject\\template\\controllerTemplate.txt";
-//		String sMapping ="/banch.htm";
-//		String sJsp="branch";
-//		String sClass="branch2Controller";
-		//String strControl = tem.readFileControllerTemp(sFileCreate,sMapping,sJsp,sClass,"dao");
 		
 	}
-//JSP
-	public String readFile(String s,List<String> lForm,List<String> lList,String jspName,List<String> lSearch,List<String>  lIds){
+
+	//JSP
+	public String readFile(String s,List<String> lForm,List<String> lCol,List<String> lList,String jspName,List<String> lSearch,List<String>  lIds,List<String> lTipes){
 		StringBuffer sb = new StringBuffer();
 		BufferedReader br = null;	
 				try {
@@ -55,10 +42,14 @@ public class TempCreate {
 						}
                         //PENCARIAN       XXXparamSearch                                        
 						if (sCurrentLine.contains("XXXsearch")){
-							StringBuffer sbField = new StringBuffer();                                                       
+							StringBuffer sbField = new StringBuffer();     
+							int i = 0;
 							for(String t :lSearch){
-                                 sbField.append(j1+"<label>"+Util.firstUpper(t)+"</label> : "+"<input name="+'"'+Util.firstUpper(t)+'"'+" type="+'"'+"text"+'"'+" id="+'"'+t+'"'+" size="+'"'+"30"+'"'+" maxlength="+'"'+"30"+'"'+"><br>\n");
-                            }
+								if(t.equals("Y")){
+                                 sbField.append(j1+"<label>"+Util.firstUpper(lCol.get(i))+"</label> : "+"<input name="+'"'+Util.firstUpper(lCol.get(i))+'"'+" type="+'"'+"text"+'"'+" id="+'"'+lCol.get(i)+'"'+" size="+'"'+"30"+'"'+" maxlength="+'"'+"30"+'"'+"><br>\n");
+								}
+							i++;
+							}
 							String z = line.replaceAll("XXXsearch", Util.firstLowerr(sbField.toString()));
 							line =z;
 						}
@@ -66,8 +57,12 @@ public class TempCreate {
 						if (sCurrentLine.contains("XXXparamSearch")){
 							StringBuffer sbCari = new StringBuffer();  
 							String x = "";
+							int i = 0;
 							for(String t :lSearch){
-								sbCari.append("'"+Util.firstUpper(t)+"="+"'"+"+"+"\\$"+"("+"'"+"#"+Util.firstUpper(t)+"'"+").val()"+"+"+'"'+"&"+'"'+"+");
+								if(t.equals("Y")){
+								sbCari.append("'"+Util.firstUpper(lCol.get(i))+"="+"'"+"+"+"\\$"+"("+"'"+"#"+Util.firstUpper(lCol.get(i))+"'"+").val()"+"+"+'"'+"&"+'"'+"+");
+								}
+								i++;
                             }
 							x = (sbCari.toString()).substring(0,sbCari.toString().length()-5);
 							String z = line.replaceAll("XXXparamSearch", x+'+'+'"'+"&"+'"'+"+"+'"'+"userId="+'"'+'+'+'"'+"\\$"+"{userId}"+'"'+';');
@@ -77,9 +72,20 @@ public class TempCreate {
 						//LIST
 						if (sCurrentLine.contains("XXXfield")){
 							StringBuffer sbField = new StringBuffer();
+							int i =0;
 							for(String t :lList){
-								sbField.append(j1+"<th field="+'"'+Util.firstLowerr(t)+'"'+" width="+'"'+"100"+'"'+ "sortable="+'"'+"true"+'"'+">"+t+"</th> "+"\n");
-							}
+								if(t.equals("Y")){
+									if(lTipes.get(i).equals("long")||lTipes.get(i).equals("BigDecimal")){
+										sbField.append(j1+"<th field="+'"'+Util.firstLowerr(lCol.get(i))+'"'+" width="+'"'+"100"+'"'+ "sortable="+'"'+"true"+'"'+
+												"data-options="+'"'+"formatter:function(value, row){return accounting.formatNumber(row.tarif,0,'.',','); }"+'"'+
+												"align="+'"'+"right"+'"'+">"+lCol.get(i)+"</th> "+"\n");
+									}else{
+									sbField.append(j1+"<th field="+'"'+Util.firstLowerr(lCol.get(i))+'"'+" width="+'"'+"100"+'"'+ "sortable="+'"'+"true"+'"'+">"+lCol.get(i)+"</th> "+"\n");
+									}
+								}
+								i++;
+								}
+							
 							String z = line.replaceAll("XXXfield", Util.firstLowerr(sbField.toString()));
 							line =z;
 						}
@@ -87,11 +93,19 @@ public class TempCreate {
 						//FORM
 						if (sCurrentLine.contains("XXXlist")){
 							StringBuffer sbField = new StringBuffer();
+							int i =0;
 							for(String t :lForm){
-								if(t.equals("CreateDate")||t.equals("CreateBy")||t.equals("UpdateDate")||t.equals("UpdateBy")||t.equals("Versi")||t.equals("")){									
-								}else{
-									sbField.append(j1+"<div class="+d+"fitem"+d+">	<label>"+t+"</label> :<input name="+d+Util.firstLowerr(t)+d+"	class="+d+"easyui-textbox"+d+" required="+d+"false"+d+" id="+d+Util.firstLowerr(t)+d+">	</div>\n");
+								if(t.equals("Y")){
+									if(lCol.get(i).equals("CreateDate")||lCol.get(i).equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
+									}else if(lTipes.get(i).equals("String")||lTipes.get(i).equals("Date")){
+										sbField.append(j1+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-textbox"+d+" required="+d+"false"+d+" id="+d+Util.firstLowerr(lCol.get(i))+d+">	</div>\n");
+									}else if(lTipes.get(i).equals("long")||lTipes.get(i).equals("BigDecimal")){
+										sbField.append(j1+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-numberbox"+d+
+												" "+"data-options="+'"'+"min:0,precision:0,groupSeparator:','"+'"'
+												+" required="+d+"false"+d+" id="+d+Util.firstLowerr(lCol.get(i))+d+">	</div>\n");
+									}
 								}
+								i++;
 							}
 							String z = line.replaceAll("XXXlist", sbField.toString());
 							line =z;
@@ -101,11 +115,15 @@ public class TempCreate {
 						//XXXenableOnShowField                  $('#userId').textbox('readonly', false);		
 						if (sCurrentLine.contains("XXXenableOnShowField")){
 							StringBuffer sbField = new StringBuffer();
+							int i=0;
 							for(String t :lForm){
-								if(t.equals("CreateDate")||t.equals("CreateBy")||t.equals("UpdateDate")||t.equals("UpdateBy")||t.equals("Versi")||t.equals("")){									
-								}else{
-									sbField.append(j1+"\\$('#"+Util.firstLowerr(t)+"').textbox('readonly', true);"+"\n");
-								}								
+								if(t.equals("Y")){
+									if(lCol.get(i).equals("CreateDate")||lCol.get(i).equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
+									}else{
+										sbField.append(j1+"\\$('#"+Util.firstLowerr(lCol.get(i))+"').textbox('readonly', true);"+"\n");
+									}	
+								}
+								i++;
 							}
 							String z = line.replaceAll("XXXenableOnShowField", sbField.toString());
 							line =z;
@@ -114,11 +132,15 @@ public class TempCreate {
 						//XXXenableOnAddField                  $('#userId').textbox('readonly', false);		
 						if (sCurrentLine.contains("XXXenableOnAddField")){
 							StringBuffer sbField = new StringBuffer();
+							int i=0;
 							for(String t :lForm){
-								if(t.equals("CreateDate")||t.equals("CreateBy")||t.equals("UpdateDate")||t.equals("UpdateBy")||t.equals("Versi")||t.equals("")){									
-								}else{
-									sbField.append(j1+"\\$('#"+Util.firstLowerr(t)+"').textbox('readonly', false);"+"\n");
-								}								
+								if(t.equals("Y")){
+									if(lCol.get(i).equals("CreateDate")||lCol.get(i).equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
+									}else{
+										sbField.append(j1+"\\$('#"+Util.firstLowerr(lCol.get(i))+"').textbox('readonly', false);"+"\n");
+									}
+								}
+								i++;
 							}
 							String z = line.replaceAll("XXXenableOnAddField", sbField.toString());
 							line =z;
@@ -127,18 +149,22 @@ public class TempCreate {
 						//XXXenableOnEditField
 						if (sCurrentLine.contains("XXXenableOnEditField")){
 							StringBuffer sbField = new StringBuffer();
+							int i = 0;
 							for(String t :lForm){
-								if(t.equals("CreateDate")||t.equals("CreateBy")||t.equals("UpdateDate")||t.equals("UpdateBy")||t.equals("Versi")||t.equals("")){									
+							if(t.equals("Y")){
+								if(lCol.get(i).equals("CreateDate")||t.equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
 								}else{
-									String z =j1+"\\$('#"+Util.firstLowerr(t)+"').textbox('readonly', false);"+"\n";
+									String z =j1+"\\$('#"+Util.firstLowerr(lCol.get(i))+"').textbox('readonly', false);"+"\n";
 									for(String k :lIds){
-										System.out.println("t  : "+" k ");
+//										System.out.println("t  : "+" k ");
 										if(t.equals(k)){
-											z =j1+"\\$('#"+Util.firstLowerr(t)+"').textbox('readonly', true);"+"\n";
+											z =j1+"\\$('#"+Util.firstLowerr(lCol.get(i))+"').textbox('readonly', true);"+"\n";
 										}
 									}
 									sbField.append(z);
-								}								
+								}	
+								i++;
+							}
 							}
 							String z = line.replaceAll("XXXenableOnEditField", sbField.toString());
 							line =z;
@@ -149,10 +175,14 @@ public class TempCreate {
 						if (sCurrentLine.contains("XXXrowDelete")){
 							StringBuffer sbField = new StringBuffer();
 							String x="";
-							for(String k :lIds){
-								sbField.append(j1+Util.firstLowerr(k)+" : row."+Util.firstLowerr(k)+",\n");
+							int i =0;
+							for(String t :lIds){
+								if(t.equals("Y")){
+								sbField.append(j1+Util.firstLowerr(lCol.get(i))+" : row."+Util.firstLowerr(lCol.get(i))+",\n");
+								}
+								i++;
 							}
-							System.out.println("======= "+sbField.toString()+"|");
+//							System.out.println("======= "+sbField.toString()+"|");
 							x = (sbField.toString()).substring(0,sbField.toString().length()-2);
 							String z = line.replaceAll("XXXrowDelete", x);
 							line =z;
@@ -181,7 +211,7 @@ public class TempCreate {
 	
 	
 //	*************************CONTROLLER*************************************
-	public String readFileControllerTemp(String s,String sMapping, String sJsp,String sClassName, String daoName,List<String> lForm, List<String> lSearch, List<String> lIds ){
+	public String readFileControllerTemp(String s,String sMapping, String sJsp,String sClassName, String daoName,List<String> lCol,List<String> lForm, List<String> lSearch, List<String> lIds,List<String> lTipes ){
 		StringBuffer sb = new StringBuffer();
 		BufferedReader br = null;	
 				try {
@@ -213,23 +243,57 @@ public class TempCreate {
 						
 						if (sCurrentLine.contains("XXFormFild")){
 							StringBuffer sbField = new StringBuffer();
+							int i =0;
 							for(String t :lForm){
-								if(t.equals("CreateDate")||t.equals("CreateBy")||t.equals("UpdateDate")||t.equals("UpdateBy")||t.equals("Versi")||t.equals("")){									
-								}else{
-									sbField.append(j1+"tbl.set"+Util.firstUpper(t)+"(reg.getParameter("+d+Util.firstLowerr(t)+d+"));\n");
+								if(t.equals("Y")){	
+									if(lCol.get(i).equals("CreateDate")||lCol.get(i).equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||t.equals("")){									
+									}else
+									if (lTipes.get(i).equals("String")){
+										sbField.append(j1+"tbl.set"+Util.firstUpper(lCol.get(i))+"(reg.getParameter("+d+Util.firstLowerr(lCol.get(i))+d+"));\n");
+									}
+									
+									if (lTipes.get(i).equals("long")){
+										sbField.append(j1+"tbl.set"+Util.firstUpper(lCol.get(i))+"(Long.parseLong((reg.getParameter("+d+Util.firstLowerr(lCol.get(i))+d+"))));\n");
+									}
+									
+									
+									if (lTipes.get(i).equals("BigDecimal")){
+										sbField.append(j1+"tbl.set"+Util.firstUpper(lCol.get(i))+"(new BigDecimal((reg.getParameter("+d+Util.firstLowerr(lCol.get(i))+d+"))));\n");
+									}
+									
+									if (lTipes.get(i).equals("Date")||lTipes.get(i).equals("Date")){
+										sbField.append(j1+"tbl.set"+Util.firstUpper(lCol.get(i))+"(formatter.parse(reg.getParameter("+d+Util.firstLowerr(lCol.get(i))+d+")));\n");
+									}
 								}
+								i++;
 							}
 							String z = line.replaceAll("XXFormFild", sbField.toString());
 							line =z;
 						}	
 						
-						//parameter pencarian  String kriteria1 =reg.getParameter("param");
+						//parameter pencarian  String kriteria1 =reg.getParameter("param");//perbaiki disinai
 						if (sCurrentLine.contains("XXXStringParam")){
 							StringBuffer sbx = null ;
 							sbx= new StringBuffer();
 							String x = "";
-							for(String t :lSearch){								
-								sbx.append( "String "+Util.firstUpper(t)+"=reg.getParameter("+'"'+Util.firstUpper(t)+'"'+");\n");								
+							int i = 0;
+							for(String t :lSearch){		
+								if(t.equals("Y")){
+									if(lTipes.get(i).equals("String")){
+										sbx.append(j1+ "String "+Util.firstUpper(lCol.get(i))+"=reg.getParameter("+'"'+Util.firstUpper(lCol.get(i))+'"'+");\n");	
+									}else if(lTipes.get(i).equals("Date")){
+										sbx.append(j1+"String "+Util.firstUpper(lCol.get(i))+" ="+'"'+"00-00-0000"+'"'+";\n");
+										sbx.append(j1+"if(reg.getParameter("+'"'+Util.firstUpper(lCol.get(i))+'"'+")"+'.'+"length()>0){\n");
+										sbx.append(j1+Util.firstUpper(lCol.get(i))+" = "+"(reg.getParameter("+'"'+Util.firstUpper(lCol.get(i))+'"'+"));\n"+j1+"}\n");
+									}
+									
+									else/*(lTipes.get(i).equals("long"))*/{
+										sbx.append(j1+"String "+Util.firstUpper(lCol.get(i))+" ="+'"'+"0"+'"'+";\n");
+										sbx.append(j1+"if(reg.getParameter("+'"'+Util.firstUpper(lCol.get(i))+'"'+")"+'.'+"length()>0){\n");
+										sbx.append(j1+Util.firstUpper(lCol.get(i))+" = "+"(reg.getParameter("+'"'+Util.firstUpper(lCol.get(i))+'"'+"));\n"+j1+"}\n");
+									}
+								}
+								i++;
 							}
 							x = (sbx.toString()).substring(0,sbx.toString().length()-1);
 							String z = line.replaceAll("XXXStringParam",x);
@@ -242,8 +306,23 @@ public class TempCreate {
 							StringBuffer sbx = null ;
 							sbx= new StringBuffer();
 							String x = "";
-							for(String t :lSearch){								
-								sbx.append(Util.firstUpper(t)+",");								
+							int i = 0;
+							for(String t :lSearch){	
+								if(t.equals("Y")){
+									if(lTipes.get(i).equals("String")){
+										sbx.append(Util.firstUpper(lCol.get(i))+",");	
+									}else
+									if(lTipes.get(i).equals("long")){
+										sbx.append("Long.parseLong("+Util.firstUpper(lCol.get(i))+")"+",");	
+									}else
+									if(lTipes.get(i).equals("BigDecimal")){
+										sbx.append("new BigDecimal("+Util.firstUpper(lCol.get(i))+")"+",");	
+									}else
+									if(lTipes.get(i).equals("Date")){
+										sbx.append("formatter.parse("+Util.firstUpper(lCol.get(i))+"),");	
+									}
+								}
+								i++;
 							}
 							x = (sbx.toString()).substring(0,sbx.toString().length()-1);
 							String z = line.replaceAll("XXXCritParam",x);
@@ -252,12 +331,23 @@ public class TempCreate {
 						
 
 //						GetByID ambil param yang dikirim XXXParamId
-						if (sCurrentLine.contains("XXXByIdParam")){
+						if (sCurrentLine.contains("XXXByIdParam")){//controller
 							StringBuffer sbx = null ;
 							sbx= new StringBuffer();
 //							String x = "";
-							for(String t :lIds){								
-								sbx.append( "String "+Util.firstUpper(t)+"=reg.getParameter("+'"'+Util.firstLowerr(t)+'"'+");\n");								
+							int i = 0;
+							for(String t :lIds){
+								if(t.equals("Y")){
+									if(lTipes.get(i).equals("String")||lTipes.get(i).equals("Date")){
+										sbx.append( j1+"String"/*lTipes.get(i)*/+" "+Util.firstUpper(lCol.get(i))+"=reg.getParameter("+'"'+Util.firstLowerr(lCol.get(i))+'"'+");\n");								
+									}else{
+										sbx.append(j1+"String "+Util.firstUpper(lCol.get(i))+"="+'"'+"0"+'"'+";\n");
+										sbx.append(j1+"if(reg.getParameter("+'"'+Util.firstLowerr(lCol.get(i))+'"'+")"+'.'+"length()>0){\n");
+										sbx.append(j1+Util.firstUpper(lCol.get(i))+" = "+"(reg.getParameter("+'"'+Util.firstLowerr(lCol.get(i))+'"'+"));\n"+j1+"}\n");
+										//Tarif = reg.getParameter("Tarif");	
+									}
+								}
+								i++;
 							}
 //							x = (sbx.toString()).substring(0,sbx.toString().length()-1);
 							String z = line.replaceAll("XXXByIdParam",sbx.toString());
@@ -268,8 +358,23 @@ public class TempCreate {
 							StringBuffer sbx = null ;
 							sbx= new StringBuffer();
 							String x = "";
-							for(String t :lIds){								
-								sbx.append( Util.firstUpper(t)+",");								
+							int i = 0;
+							for(String t :lIds){
+								if(t.equals("Y")){
+									if(lTipes.get(i).endsWith("String")||lTipes.get(i).equals("Date")){
+										sbx.append( Util.firstUpper(lCol.get(i))+",");
+									}
+									
+									if(lTipes.get(i).endsWith("long")){
+										sbx.append("Long.parseLong("+ Util.firstUpper(lCol.get(i))+"),");
+									}
+									
+									if(lTipes.get(i).endsWith("BigDecimal")){
+										sbx.append("new BigDecimal("+ Util.firstUpper(lCol.get(i))+"),");
+									}
+									
+								}
+								i++;
 							}
 							x = (sbx.toString()).substring(0,sbx.toString().length()-1);
 							String z = line.replaceAll("XXXParamId",x);
@@ -278,7 +383,7 @@ public class TempCreate {
 						
 						sb.append(line+"\n");
 					}
-					System.out.println(sb.toString());
+//					System.out.println(sb.toString());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} finally {
@@ -293,7 +398,7 @@ public class TempCreate {
 	
 	
 //***************** DAO****************************	
-	public String readFileDAOTemp(String s,String tbl,List<String> lSearch, List<String> lIds){
+	public String readFileDAOTemp(String s,String tbl,List<String> lCol,List<String> lSearch, List<String> lIds,List<String> lTipes){
 		StringBuffer sb = new StringBuffer();
 		BufferedReader br = null;	
 				try {
@@ -312,15 +417,17 @@ public class TempCreate {
 							line =z;
 							
 						}
-						
 //						+++++++++++++++++++++++ public Criteria getCriteria(String XXXgetCriParam){
-						
 						if (sCurrentLine.contains("XXXgetCriParam")){
 							StringBuffer sbx = null ;
 							sbx= new StringBuffer();
 							String x = "";
-							for(String t :lSearch){								
-								sbx.append("String "+Util.firstUpper(t)+",");								
+							int i = 0;
+							for(String t :lSearch){	
+								if(t.equals("Y")){
+									sbx.append(/*"String "*/lTipes.get(i)+" "+Util.firstUpper(lCol.get(i))+",");	
+								}
+								i++;
 							}
 							x = (sbx.toString()).substring(0,sbx.toString().length()-1);
 							String z = line.replaceAll("XXXgetCriParam",x);
@@ -329,43 +436,62 @@ public class TempCreate {
 						//public Criteria getCriteria
 						if (sCurrentLine.contains("XXXgetCriteria")){
 							StringBuffer sbx = null ;
+							int i =0;
 							sbx= new StringBuffer();
-							for(String t :lSearch){								
-								sbx.append(j1+"if ("+Util.firstUpper(t)+".length()>0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(t)+'"'+", "+Util.firstUpper(t)+")); 	}\n");
+							for(String t :lSearch){	
+								if(t.equals("Y")){	
+	//								sbx.append(j1+"if ("+Util.firstUpper(t)+".length()>0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(t)+'"'+", "+Util.firstUpper(t)+")); 	}\n");
+									if(lTipes.get(i).equals("String")){
+										sbx.append(j1+"if ("+Util.firstUpper(lCol.get(i))+".length()>0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(lCol.get(i))+'"'+", "+Util.firstUpper(lCol.get(i))+")); 	}\n");
+									}
+									if(lTipes.get(i).equals("long")){
+										sbx.append(j1+"if ("+Util.firstUpper(lCol.get(i))+">0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(lCol.get(i))+'"'+", "+Util.firstUpper(lCol.get(i))+")); 	}\n");
+									}
+									
+									if(lTipes.get(i).equals("BigDecimal")){
+										sbx.append(j1+"if ("+Util.firstUpper(lCol.get(i))+".doubleValue()"+">0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(t)+'"'+", "+Util.firstUpper(lCol.get(i))+")); 	}\n");
+									}
+									
+									if(lTipes.get(i).equals("Date")){
+										sbx.append(j1+"try {\n"+j1+"if ("+Util.firstUpper(lCol.get(i))+".after(formatter.parse("+'"'+"00-00-0000"+'"'+"))){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(lCol.get(i))+'"'+", "+Util.firstUpper(lCol.get(i))+")); 	}\n");
+									    sbx.append(j1+"} catch (ParseException e) {\n"+j1+"e.printStackTrace();\n"+j1+"}");
+									}
+								}
+								i++;
 							}
 							String z = line.replaceAll("XXXgetCriteria",sbx.toString());
 							line =z;
 							
 						}
-						
-						
-						
-						
-						
-						
-						if (sCurrentLine.contains("XXX2getCriParam")){ //tanpa String
+					if (sCurrentLine.contains("XXX2getCriParam")){ //tanpa String
 							StringBuffer sbx = null ;
 							sbx= new StringBuffer();
 							String x = "";
-							for(String t :lSearch){								
-								sbx.append(Util.firstUpper(t)+",");								
+							int i=0;
+							for(String t :lSearch){	
+								if(t.equals("Y")){
+									sbx.append(Util.firstUpper(lCol.get(i))+",");	
+									i++;
+								}
 							}
 							x = (sbx.toString()).substring(0,sbx.toString().length()-1);
 							String z = line.replaceAll("XXX2getCriParam",x);
 							line =z;							
 						}
 						
-						
-					
-
 				
 //						criteria BY ID
-						if (sCurrentLine.contains("XXXByIdParam")){ //tanpa String
+						if (sCurrentLine.contains("XXXByIdParam")){ //tanpa String //DAO
 							StringBuffer sbx = null ;
 							sbx= new StringBuffer();
 							String x = "";
-							for(String t :lIds){								
-								sbx.append("String "+Util.firstLowerr(t)+",");								
+							int i =0;
+							for(String t :lIds){
+								if(t.equals("Y")){
+									System.out.println("t :"+t+" ---- "+lTipes.get(i));
+									sbx.append(/*"String "*/lTipes.get(i)+"  "+Util.firstLowerr(lCol.get(i))+",");	
+								}
+								i++;
 							}
 							x = (sbx.toString()).substring(0,sbx.toString().length()-1);
 							String z = line.replaceAll("XXXByIdParam",x);
@@ -376,18 +502,27 @@ public class TempCreate {
 						if (sCurrentLine.contains("XXXgetIdCriteria")){
 							StringBuffer sbx = null ;
 							sbx= new StringBuffer();
-							for(String t :lIds){								
-								sbx.append(j1+"if ("+Util.firstLowerr(t)+".length()>0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(t)+'"'+", "+Util.firstLowerr(t)+")); 	}\n");
+							int i = 0;
+							for(String t :lIds){
+								if(t.equals("Y")){
+									if(lTipes.get(i).equals("String")||lTipes.get(i).equals("Date")){
+										sbx.append(j1+"if ("+Util.firstLowerr(lCol.get(i))+".length()>0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(lCol.get(i))+'"'+", "+Util.firstLowerr(lCol.get(i))+")); 	}\n");
+									}
+									if(lTipes.get(i).equals("long")){
+										sbx.append(j1+"if ("+Util.firstLowerr(lCol.get(i))+">0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(lCol.get(i))+'"'+", "+Util.firstLowerr(lCol.get(i))+")); 	}\n");
+									}
+									
+									if(lTipes.get(i).equals("BigDecimal")){
+										sbx.append(j1+"if ("+Util.firstLowerr(lCol.get(i))+".doubleValue()"+">0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(lCol.get(i))+'"'+", "+Util.firstLowerr(lCol.get(i))+")); 	}\n");
+									}
+								}
+								i++;
 							}
 							String z = line.replaceAll("XXXgetIdCriteria",sbx.toString());
 							line =z;							
 						}
-						
-						
-//					+++++++++++++++++++++++++++++
 						sb.append(line+"\n");
 					}
-					System.out.println(sb.toString());
 				} catch (IOException e) {
 					e.printStackTrace();
 				} finally {
@@ -404,15 +539,14 @@ public class TempCreate {
 	public void createFile(String fileName,String fileText) {
 		try {
 			File file = new File(fileName);
-			System.out.println(file.getAbsolutePath());
 			if(file.createNewFile()){
 				BufferedWriter output = new BufferedWriter(new FileWriter(file));
 				output.write(fileText);
 				output.close();
-		        System.out.println("Success..........................................!");
+		        System.out.println("Success..........................................!"+fileName);
 			}
 		         else{
-		         System.out.println("Error, file already exists.");
+		         System.out.println("Error ,"+fileName+" file already exists.");
 		    }
 			
 			
