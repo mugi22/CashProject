@@ -21,7 +21,6 @@ jspTemplate
         <script type="text/javascript" src="css/formater.js"></script>
 		<script type="text/javascript" src="css/accounting.min.js"></script>
 		<script type="text/javascript" src="css/myalert.js"></script>
-		 <script type="text/javascript" src="css/my.js"></script>
 
 <title>User</title>
 </head>
@@ -30,7 +29,9 @@ jspTemplate
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
             <form name="FREG" id="formCari" method="post" action="#"  >                 
-XXXsearch
+                    <label>KodeProvinsi</label> : <input name="KodeProvinsi" type="text" id="KodeProvinsi" size="30" maxlength="30"><br>
+                    <label>NamaProvinsi</label> : <input name="NamaProvinsi" type="text" id="NamaProvinsi" size="30" maxlength="30"><br>
+
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
                     <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
@@ -41,15 +42,16 @@ XXXsearch
         <hr>
 <!-- ******************************END  FORM PENCARIAN******************************* -->  
 
-
 <!-- **********************TABLE RESULT************************************** -->
-        <table id="dg" title="XXXjudul" class="easyui-datagrid" style="width:100%;"
+        <table id="dg" title="PROVINSI" class="easyui-datagrid" style="width:100%;"
                toolbar="#toolbar" pagination="true"
                data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-XXXfield                     
+                    <th field="kodeProvinsi" width="100"sortable="true">KodeProvinsi</th> 
+                    <th field="namaProvinsi" width="100"sortable="true">NamaProvinsi</th> 
+                     
                 </tr>
             </thead>
         </table>        
@@ -64,9 +66,11 @@ XXXfield
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">XXXjudul</div>
+		<div class="ftitle">PROVINSI</div>
 		<form id="fm" method="post" novalidate>
-XXXlist			
+                    <div class="fitem">	<label>KodeProvinsi</label> :<input name="kodeProvinsi"	class="easyui-textbox" required="false" id="kodeProvinsi">	</div>
+                    <div class="fitem">	<label>NamaProvinsi</label> :<input name="namaProvinsi"	class="easyui-textbox" required="false" id="namaProvinsi">	</div>
+			
 		</form>
 	</div>
 	<div id="dlg-buttons">
@@ -94,9 +98,10 @@ var branchcode;
 		alert("testtttt..... click");
 	}
 
+/* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
-		var jsonurl = 'XXXZListAll.htm?'+
-XXXparamSearch
+		var jsonurl = 'provinsiListAll.htm?'+
+'KodeProvinsi='+$('#KodeProvinsi').val()+"&"+'NamaProvinsi='+$('#NamaProvinsi').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -122,14 +127,15 @@ XXXparamSearch
 
 	/* END function untuk list data*/
 	
-	/* ============FORM FUNCTION ========== XXXZtambah*/
+	/* ============FORM FUNCTION ========== provinsitambah*/
 
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'XXXZAdd.htm?'+"userId="+"${userId}";
+		url = 'provinsiAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
+/* ---- provinsiedit*/
 	function doEdit() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
@@ -137,10 +143,11 @@ XXXparamSearch
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'provinsiEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
+/*-- provinsitampil*/
 	function doShow() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
@@ -148,7 +155,7 @@ XXXparamSearch
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'provinsiEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -159,8 +166,8 @@ XXXparamSearch
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
 					function(r) {
 						if (r) {
-							$.post('XXXZDelete.htm', {
-							XXXrowDelete,
+							$.post('provinsiDelete.htm', {
+							                    kodeProvinsi : row.kodeProvinsi,
 							userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
@@ -201,7 +208,16 @@ XXXparamSearch
 	
 	
 	/* ================TAMBAHAN=================*/
-
+	//untuk mengisi combobox kode cabang keseluruhan dengan default value sesuai parameter
+	function addComboBranch() {
+		$('#branchCode').combobox({
+			url : 'comboAllBranch.htm?param=' + branchcode,
+			valueField : 'id',
+			textField : 'text',
+			panelHeight:'auto'
+		});
+		branchcode = '';
+	}
 	
 	/*Untuk membuat menjadi huruf besar semua */
 	function upperCase(t) {
@@ -212,19 +228,33 @@ XXXparamSearch
 	
 	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		XXXenableOnShowField
+		//list button
+		//$('#userId').textbox('readonly', true);
+                    $('#kodeProvinsi').textbox('readonly', true);
+                    $('#namaProvinsi').textbox('readonly', true);
+
+		//form button
 		$('#btnSave').linkbutton('disable');
 	}
 	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		XXXenableOnAddField		
+		//list button
+		//$('#userId').textbox('readonly', false);		
+                    $('#kodeProvinsi').textbox('readonly', false);
+                    $('#namaProvinsi').textbox('readonly', false);
+		
+		//form button
 		$('#btnSave').linkbutton('enable');
 	}
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		XXXenableOnEditField	
+		//list button
+		//$('#userId').textbox('readonly', true);	
+                    $('#createBy').textbox('readonly', true);
+	
+		//form button
 		$('#btnSave').linkbutton('enable');
 	}
 

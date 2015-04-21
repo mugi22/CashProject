@@ -26,22 +26,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
+import com.id.kas.pojo.TblKabupaten;
 import com.id.kas.pojo.TblUser;
-import com.id.kas.DEVELOPMENT.XXtbl;//harap Sesuaikan
-
-
+//import com.id.kas.pojo.TblKabupaten;//harap Sesuaikan
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class XXXclass  extends AbstractListScreen{
-	@RequestMapping(value="/XXXmap.htm",method=RequestMethod.GET)
+public class KabupatenController  extends AbstractListScreen{
+	@RequestMapping(value="/kabupaten.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
 	 	return super.doGet(model, session, reg,res);
 	}
 	
 	
-	 @RequestMapping(value="/XXXmap.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/kabupaten.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
 		 super.doPost(model, session,reg,res);
 		return getView();		 
@@ -50,17 +49,20 @@ public class XXXclass  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "XXXview";
+		return "kabupaten";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/XXXmapListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String XXXmapListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-XXXStringParam		 
+	 @RequestMapping(value="/kabupatenListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String kabupatenListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                   String KodeProvinsi=reg.getParameter("KodeProvinsi");
+                    String KodeKabupaten=reg.getParameter("KodeKabupaten");
+                    String NamaKabupaten=reg.getParameter("NamaKabupaten");		 
+                    System.out.println("KodeProvinsi "+KodeProvinsi);
          String userId = reg.getParameter("userId");
          String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
-  
+        System.out.println("KodeProvinsi "+KodeProvinsi);
          model.put("session", ses);
          if(!cekValidSession(session,userId)){
         	 return "[]";
@@ -74,10 +76,10 @@ XXXStringParam
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			XXtblDAO dao = new XXtblDAO(sess);
+			TblKabupatenDAO dao = new TblKabupatenDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<XXtbl> l = new ArrayList<XXtbl>();
-				h = dao.getByPerPage(XXXCritParam,loffset, row);
+			List<TblKabupaten> l = new ArrayList<TblKabupaten>();
+				h = dao.getByPerPage(KodeProvinsi,KodeKabupaten,NamaKabupaten,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -97,7 +99,7 @@ XXXStringParam
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/XXXmapAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/kabupatenAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -113,9 +115,12 @@ XXXStringParam
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               XXtblDAO dao = new XXtblDAO(sess);
-               XXtbl tbl = new XXtbl();
-XXFormFild                             
+               TblKabupatenDAO dao = new TblKabupatenDAO(sess);
+               TblKabupaten tbl = new TblKabupaten();
+                    tbl.setKodeProvinsi(reg.getParameter("kodeProvinsi"));
+                    tbl.setKodeKabupaten(reg.getParameter("kodeKabupaten"));
+                    tbl.setNamaKabupaten(reg.getParameter("namaKabupaten"));
+                             
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
                
@@ -134,9 +139,11 @@ XXFormFild
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/XXXmapEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String XXXmapEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-XXXByIdParam		 
+	 @RequestMapping(value="/kabupatenEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String kabupatenEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String KodeProvinsi=reg.getParameter("kodeProvinsi");
+                    String KodeKabupaten=reg.getParameter("kodeKabupaten");
+		 
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
@@ -151,10 +158,13 @@ XXXByIdParam
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               XXtblDAO dao = new XXtblDAO(sess);
-               XXtbl tbl = dao.getById(XXXParamId);
+               TblKabupatenDAO dao = new TblKabupatenDAO(sess);
+               TblKabupaten tbl = dao.getById(KodeProvinsi,KodeKabupaten);
                 String tblOld = gson.toJson(tbl);
-XXFormFild               
+                    tbl.setKodeProvinsi(reg.getParameter("kodeProvinsi"));
+                    tbl.setKodeKabupaten(reg.getParameter("kodeKabupaten"));
+                    tbl.setNamaKabupaten(reg.getParameter("namaKabupaten"));
+               
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
                
@@ -172,9 +182,11 @@ XXFormFild
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/XXXmapDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String XXXmapDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-XXXByIdParam	
+	 @RequestMapping(value="/kabupatenDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String kabupatenDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String KodeProvinsi=reg.getParameter("kodeProvinsi");
+                    String KodeKabupaten=reg.getParameter("kodeKabupaten");
+	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -189,8 +201,8 @@ XXXByIdParam
          Gson gson = new Gson();
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               XXtblDAO dao = new XXtblDAO(sess);
-               XXtbl tbl = dao.getById(XXXParamId);
+               TblKabupatenDAO dao = new TblKabupatenDAO(sess);
+               TblKabupaten tbl = dao.getById(KodeProvinsi,KodeKabupaten);
                String tblDel = gson.toJson(tbl);
                sess.beginTransaction();
                dao.delete(tbl);

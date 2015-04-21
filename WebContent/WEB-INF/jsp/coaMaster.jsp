@@ -30,7 +30,12 @@ jspTemplate
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
             <form name="FREG" id="formCari" method="post" action="#"  >                 
-XXXsearch
+                    <label>Description</label> : <input name="Description" type="text" id="Description" size="30" maxlength="30"><br>
+                    <label>Groups</label> : <input name="Groups" type="text" id="Groups" size="30" maxlength="30"><br>
+                    <label>NoCoa</label> : <input name="NoCoa" type="text" id="NoCoa" size="30" maxlength="30"><br>
+                    <label>ParentCoa</label> : <input name="ParentCoa" type="text" id="ParentCoa" size="30" maxlength="30"><br>
+                    <label>Lvl</label> : <input name="Lvl" type="text" id="Lvl" size="30" maxlength="30"><br>
+
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
                     <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
@@ -43,13 +48,18 @@ XXXsearch
 
 
 <!-- **********************TABLE RESULT************************************** -->
-        <table id="dg" title="XXXjudul" class="easyui-datagrid" style="width:100%;"
+        <table id="dg" title="COAMASTER" class="easyui-datagrid" style="width:100%;"
                toolbar="#toolbar" pagination="true"
                data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-XXXfield                     
+                    <th field="description" width="100"sortable="true">Description</th> 
+                    <th field="groups" width="100"sortable="true">Groups</th> 
+                    <th field="noCoa" width="100"sortable="true">NoCoa</th> 
+                    <th field="parentCoa" width="100"sortable="true">ParentCoa</th> 
+                    <th field="lvl" width="100"sortable="true">Lvl</th> 
+                     
                 </tr>
             </thead>
         </table>        
@@ -64,9 +74,13 @@ XXXfield
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">XXXjudul</div>
+		<div class="ftitle">COAMASTER</div>
 		<form id="fm" method="post" novalidate>
-XXXlist			
+                    <div class="fitem">	<label>Description</label> :<input name="description"	class="easyui-textbox" required="false" id="description">	</div>
+                    <div class="fitem">	<label>Groups</label> :<input name="groups"	class="easyui-textbox" required="false" id="groups">	</div>
+                    <div class="fitem">	<label>NoCoa</label> :<input name="noCoa"	class="easyui-textbox" required="false" id="noCoa">	</div>
+                    <div class="fitem">	<label>ParentCoa</label> :<input name="parentCoa"	class="easyui-textbox" required="false" id="parentCoa">	</div>
+			
 		</form>
 	</div>
 	<div id="dlg-buttons">
@@ -95,8 +109,8 @@ var branchcode;
 	}
 
 	function retrieve() {		
-		var jsonurl = 'XXXZListAll.htm?'+
-XXXparamSearch
+		var jsonurl = 'coaMasterListAll.htm?'+
+'Description='+$('#Description').val()+"&"+'Groups='+$('#Groups').val()+"&"+'NoCoa='+$('#NoCoa').val()+"&"+'ParentCoa='+$('#ParentCoa').val()+"&"+'Lvl='+$('#Lvl').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -122,12 +136,12 @@ XXXparamSearch
 
 	/* END function untuk list data*/
 	
-	/* ============FORM FUNCTION ========== XXXZtambah*/
+	/* ============FORM FUNCTION ========== coamastertambah*/
 
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'XXXZAdd.htm?'+"userId="+"${userId}";
+		url = 'coaMasterAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 	function doEdit() {
@@ -137,7 +151,7 @@ XXXparamSearch
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'coaMasterEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -148,7 +162,7 @@ XXXparamSearch
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'coaMasterEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -159,8 +173,8 @@ XXXparamSearch
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
 					function(r) {
 						if (r) {
-							$.post('XXXZDelete.htm', {
-							XXXrowDelete,
+							$.post('coaMasterDelete.htm', {
+							                    noCoa : row.noCoa,
 							userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
@@ -212,19 +226,34 @@ XXXparamSearch
 	
 	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		XXXenableOnShowField
+		                    $('#description').textbox('readonly', true);
+                    $('#groups').textbox('readonly', true);
+                    $('#noCoa').textbox('readonly', true);
+                    $('#parentCoa').textbox('readonly', true);
+                    $('#lvl').textbox('readonly', true);
+
 		$('#btnSave').linkbutton('disable');
 	}
 	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		XXXenableOnAddField		
+		                    $('#description').textbox('readonly', false);
+                    $('#groups').textbox('readonly', false);
+                    $('#noCoa').textbox('readonly', false);
+                    $('#parentCoa').textbox('readonly', false);
+                    $('#lvl').textbox('readonly', false);
+		
 		$('#btnSave').linkbutton('enable');
 	}
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		XXXenableOnEditField	
+		                    $('#description').textbox('readonly', true);
+                    $('#groups').textbox('readonly', true);
+                    $('#noCoa').textbox('readonly', true);
+                    $('#parentCoa').textbox('readonly', true);
+                    $('#lvl').textbox('readonly', true);
+	
 		$('#btnSave').linkbutton('enable');
 	}
 

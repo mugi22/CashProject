@@ -30,7 +30,11 @@ jspTemplate
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
             <form name="FREG" id="formCari" method="post" action="#"  >                 
-XXXsearch
+                    <label>Description</label> : <input name="Description" type="text" id="Description" size="30" maxlength="30"><br>
+                    <label>NoCoa</label> : <input name="NoCoa" type="text" id="NoCoa" size="30" maxlength="30"><br>
+                    <label>NoRek</label> : <input name="NoRek" type="text" id="NoRek" size="30" maxlength="30"><br>
+                    <label>SaldoNormal</label> : <input name="SaldoNormal" type="text" id="SaldoNormal" size="30" maxlength="30"><br>
+
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
                     <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
@@ -43,13 +47,17 @@ XXXsearch
 
 
 <!-- **********************TABLE RESULT************************************** -->
-        <table id="dg" title="XXXjudul" class="easyui-datagrid" style="width:100%;"
+        <table id="dg" title="REKENINGIAMASTER" class="easyui-datagrid" style="width:100%;"
                toolbar="#toolbar" pagination="true"
                data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-XXXfield                     
+                    <th field="description" width="100"sortable="true">Description</th> 
+                    <th field="noCoa" width="100"sortable="true">NoCoa</th> 
+                    <th field="noRek" width="100"sortable="true">NoRek</th> 
+                    <th field="saldoNormal" width="100"sortable="true">SaldoNormal</th> 
+                     
                 </tr>
             </thead>
         </table>        
@@ -64,9 +72,13 @@ XXXfield
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">XXXjudul</div>
+		<div class="ftitle">REKENINGIAMASTER</div>
 		<form id="fm" method="post" novalidate>
-XXXlist			
+                    <div class="fitem">	<label>Description</label> :<input name="description"	class="easyui-textbox" required="false" id="description">	</div>
+                    <div class="fitem">	<label>NoCoa</label> :<input name="noCoa"	class="easyui-textbox" required="false" id="noCoa">	</div>
+                    <div class="fitem">	<label>NoRek</label> :<input name="noRek"	class="easyui-textbox" required="false" id="noRek">	</div>
+                    <div class="fitem">	<label>SaldoNormal</label> :<input name="saldoNormal"	class="easyui-textbox" required="false" id="saldoNormal">	</div>
+			
 		</form>
 	</div>
 	<div id="dlg-buttons">
@@ -95,8 +107,8 @@ var branchcode;
 	}
 
 	function retrieve() {		
-		var jsonurl = 'XXXZListAll.htm?'+
-XXXparamSearch
+		var jsonurl = 'rekeningIaMasterListAll.htm?'+
+'Description='+$('#Description').val()+"&"+'NoCoa='+$('#NoCoa').val()+"&"+'NoRek='+$('#NoRek').val()+"&"+'SaldoNormal='+$('#SaldoNormal').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -122,12 +134,12 @@ XXXparamSearch
 
 	/* END function untuk list data*/
 	
-	/* ============FORM FUNCTION ========== XXXZtambah*/
+	/* ============FORM FUNCTION ========== rekeningiamastertambah*/
 
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'XXXZAdd.htm?'+"userId="+"${userId}";
+		url = 'rekeningIaMasterrAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 	function doEdit() {
@@ -137,7 +149,7 @@ XXXparamSearch
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'rekeningIaMasterEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -148,7 +160,7 @@ XXXparamSearch
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'rekeningIaMasterEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -159,8 +171,8 @@ XXXparamSearch
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
 					function(r) {
 						if (r) {
-							$.post('XXXZDelete.htm', {
-							XXXrowDelete,
+							$.post('rekeningIaMasterrDelete.htm', {
+							                    noCoa : row.noCoa,
 							userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
@@ -212,19 +224,31 @@ XXXparamSearch
 	
 	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		XXXenableOnShowField
+		                    $('#description').textbox('readonly', true);
+                    $('#noCoa').textbox('readonly', true);
+                    $('#noRek').textbox('readonly', true);
+                    $('#saldoNormal').textbox('readonly', true);
+
 		$('#btnSave').linkbutton('disable');
 	}
 	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		XXXenableOnAddField		
+		                    $('#description').textbox('readonly', false);
+                    $('#noCoa').textbox('readonly', false);
+                    $('#noRek').textbox('readonly', false);
+                    $('#saldoNormal').textbox('readonly', false);
+		
 		$('#btnSave').linkbutton('enable');
 	}
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		XXXenableOnEditField	
+		                    $('#description').textbox('readonly', true);
+                    $('#noCoa').textbox('readonly', true);
+                    $('#noRek').textbox('readonly', true);
+                    $('#saldoNormal').textbox('readonly', true);
+	
 		$('#btnSave').linkbutton('enable');
 	}
 

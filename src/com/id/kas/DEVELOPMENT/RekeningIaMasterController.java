@@ -26,22 +26,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
+import com.id.kas.pojo.TblRekeningIaMaster;
 import com.id.kas.pojo.TblUser;
-import com.id.kas.DEVELOPMENT.XXtbl;//harap Sesuaikan
-
-
+//import com.id.kas.pojo.TblRekeningIaMaster;//harap Sesuaikan
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class XXXclass  extends AbstractListScreen{
-	@RequestMapping(value="/XXXmap.htm",method=RequestMethod.GET)
+public class RekeningIaMasterController  extends AbstractListScreen{
+	@RequestMapping(value="/rekeningIaMaster.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
 	 	return super.doGet(model, session, reg,res);
 	}
 	
 	
-	 @RequestMapping(value="/XXXmap.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/rekeningIaMaster.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
 		 super.doPost(model, session,reg,res);
 		return getView();		 
@@ -50,13 +49,16 @@ public class XXXclass  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "XXXview";
+		return "rekeningIaMaster";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/XXXmapListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String XXXmapListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-XXXStringParam		 
+	 @RequestMapping(value="/rekeningIaMasterListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String rekeningIaMasterListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String Description=reg.getParameter("Description");
+                    String NoCoa=reg.getParameter("NoCoa");
+                    String NoRek=reg.getParameter("NoRek");
+                    String SaldoNormal=reg.getParameter("SaldoNormal");		 
          String userId = reg.getParameter("userId");
          String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
@@ -74,10 +76,10 @@ XXXStringParam
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			XXtblDAO dao = new XXtblDAO(sess);
+			TblRekeningIaMasterDAO dao = new TblRekeningIaMasterDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<XXtbl> l = new ArrayList<XXtbl>();
-				h = dao.getByPerPage(XXXCritParam,loffset, row);
+			List<TblRekeningIaMaster> l = new ArrayList<TblRekeningIaMaster>();
+				h = dao.getByPerPage(Description,NoCoa,NoRek,SaldoNormal,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -97,7 +99,7 @@ XXXStringParam
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/XXXmapAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/rekeningIaMasterAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -113,9 +115,13 @@ XXXStringParam
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               XXtblDAO dao = new XXtblDAO(sess);
-               XXtbl tbl = new XXtbl();
-XXFormFild                             
+               TblRekeningIaMasterDAO dao = new TblRekeningIaMasterDAO(sess);
+               TblRekeningIaMaster tbl = new TblRekeningIaMaster();
+                    tbl.setDescription(reg.getParameter("description"));
+                    tbl.setNoCoa(reg.getParameter("noCoa"));
+                    tbl.setNoRek(reg.getParameter("noRek"));
+                    tbl.setSaldoNormal(reg.getParameter("saldoNormal"));
+                             
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
                
@@ -134,9 +140,10 @@ XXFormFild
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/XXXmapEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String XXXmapEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-XXXByIdParam		 
+	 @RequestMapping(value="/rekeningIaMasterEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String rekeningIaMasterEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String NoCoa=reg.getParameter("noCoa");
+		 
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
@@ -151,10 +158,14 @@ XXXByIdParam
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               XXtblDAO dao = new XXtblDAO(sess);
-               XXtbl tbl = dao.getById(XXXParamId);
+               TblRekeningIaMasterDAO dao = new TblRekeningIaMasterDAO(sess);
+               TblRekeningIaMaster tbl = dao.getById(NoCoa);
                 String tblOld = gson.toJson(tbl);
-XXFormFild               
+                    tbl.setDescription(reg.getParameter("description"));
+                    tbl.setNoCoa(reg.getParameter("noCoa"));
+                    tbl.setNoRek(reg.getParameter("noRek"));
+                    tbl.setSaldoNormal(reg.getParameter("saldoNormal"));
+               
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
                
@@ -172,9 +183,10 @@ XXFormFild
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/XXXmapDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String XXXmapDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-XXXByIdParam	
+	 @RequestMapping(value="/rekeningIaMasterDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String rekeningIaMasterDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String NoCoa=reg.getParameter("noCoa");
+	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -189,8 +201,8 @@ XXXByIdParam
          Gson gson = new Gson();
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               XXtblDAO dao = new XXtblDAO(sess);
-               XXtbl tbl = dao.getById(XXXParamId);
+               TblRekeningIaMasterDAO dao = new TblRekeningIaMasterDAO(sess);
+               TblRekeningIaMaster tbl = dao.getById(NoCoa);
                String tblDel = gson.toJson(tbl);
                sess.beginTransaction();
                dao.delete(tbl);

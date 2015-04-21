@@ -30,7 +30,10 @@ jspTemplate
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
             <form name="FREG" id="formCari" method="post" action="#"  >                 
-XXXsearch
+                    <label>KodeKabupaten</label> : <input name="KodeKabupaten" type="text" id="KodeKabupaten" size="30" maxlength="30"><br>
+                    <label>NamaKecamatan</label> : <input name="NamaKecamatan" type="text" id="NamaKecamatan" size="30" maxlength="30"><br>
+                    <label>KodeKecamatan</label> : <input name="KodeKecamatan" type="text" id="KodeKecamatan" size="30" maxlength="30"><br>
+
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
                     <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
@@ -43,13 +46,16 @@ XXXsearch
 
 
 <!-- **********************TABLE RESULT************************************** -->
-        <table id="dg" title="XXXjudul" class="easyui-datagrid" style="width:100%;"
+        <table id="dg" title="KECAMATAN" class="easyui-datagrid" style="width:100%;"
                toolbar="#toolbar" pagination="true"
                data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-XXXfield                     
+                    <th field="kodeKabupaten" width="100"sortable="true">KodeKabupaten</th> 
+                    <th field="namaKecamatan" width="100"sortable="true">NamaKecamatan</th> 
+                    <th field="kodeKecamatan" width="100"sortable="true">KodeKecamatan</th> 
+                     
                 </tr>
             </thead>
         </table>        
@@ -64,9 +70,12 @@ XXXfield
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">XXXjudul</div>
+		<div class="ftitle">KECAMATAN</div>
 		<form id="fm" method="post" novalidate>
-XXXlist			
+                    <div class="fitem">	<label>KodeKabupaten</label> :<input name="kodeKabupaten"	class="easyui-textbox" required="false" id="kodeKabupaten">	</div>
+                    <div class="fitem">	<label>NamaKecamatan</label> :<input name="namaKecamatan"	class="easyui-textbox" required="false" id="namaKecamatan">	</div>
+                    <div class="fitem">	<label>KodeKecamatan</label> :<input name="kodeKecamatan"	class="easyui-textbox" required="false" id="kodeKecamatan">	</div>
+			
 		</form>
 	</div>
 	<div id="dlg-buttons">
@@ -95,8 +104,8 @@ var branchcode;
 	}
 
 	function retrieve() {		
-		var jsonurl = 'XXXZListAll.htm?'+
-XXXparamSearch
+		var jsonurl = 'kecamatanListAll.htm?'+
+'KodeKabupaten='+$('#KodeKabupaten').val()+"&"+'NamaKecamatan='+$('#NamaKecamatan').val()+"&"+'KodeKecamatan='+$('#KodeKecamatan').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -122,12 +131,12 @@ XXXparamSearch
 
 	/* END function untuk list data*/
 	
-	/* ============FORM FUNCTION ========== XXXZtambah*/
+	/* ============FORM FUNCTION ========== kecamatantambah*/
 
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'XXXZAdd.htm?'+"userId="+"${userId}";
+		url = 'kecamatanAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 	function doEdit() {
@@ -137,7 +146,7 @@ XXXparamSearch
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'kecamatanEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -148,7 +157,7 @@ XXXparamSearch
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'kecamatanEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
@@ -159,8 +168,9 @@ XXXparamSearch
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
 					function(r) {
 						if (r) {
-							$.post('XXXZDelete.htm', {
-							XXXrowDelete,
+							$.post('kecamatanDelete.htm', {
+							                    kodeKabupaten : row.kodeKabupaten,
+                    kodeKecamatan : row.kodeKecamatan,
 							userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
@@ -212,19 +222,28 @@ XXXparamSearch
 	
 	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		XXXenableOnShowField
+		                    $('#kodeKabupaten').textbox('readonly', true);
+                    $('#namaKecamatan').textbox('readonly', true);
+                    $('#kodeKecamatan').textbox('readonly', true);
+
 		$('#btnSave').linkbutton('disable');
 	}
 	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		XXXenableOnAddField		
+		                    $('#kodeKabupaten').textbox('readonly', false);
+                    $('#namaKecamatan').textbox('readonly', false);
+                    $('#kodeKecamatan').textbox('readonly', false);
+		
 		$('#btnSave').linkbutton('enable');
 	}
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		XXXenableOnEditField	
+		                    $('#kodeKabupaten').textbox('readonly', true);
+                    $('#namaKecamatan').textbox('readonly', true);
+                    $('#kodeKecamatan').textbox('readonly', true);
+	
 		$('#btnSave').linkbutton('enable');
 	}
 
