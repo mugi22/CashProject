@@ -32,7 +32,7 @@ import com.id.kas.util.AbstractFormScreen;
 import com.id.kas.util.AbstractListScreen;
 import com.id.kas.util.AppProp;
 @Controller
-public class GenerateTagihanController extends AbstractFormScreen {
+public class GenerateTagihanController extends /*AbstractFormScreen*/AbstractListScreen {
 final static Logger logger = Logger.getLogger(GenerateTagihanController.class);
 	
 	@RequestMapping(value="/generateTagihan.htm",method=RequestMethod.GET)

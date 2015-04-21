@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dframework.jpos.security.SecurityUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.id.kas.DEVELOPMENT.TblKabupatenDAO;
 import com.id.kas.db.HibernateUtil;
+import com.id.kas.pojo.TblKabupaten;
 import com.id.kas.pojo.TblPriviledge;
 import com.id.kas.pojo.TblUser;
 import com.id.kas.pojo.TblUserGroup;
@@ -52,8 +54,8 @@ public class UserListController extends AbstractListScreen {
 //	 ***************************** AJAX  **************************************************************
 	 @RequestMapping(value="/userListAll.htm", method=RequestMethod.POST)
      public @ResponseBody String userListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 String userId = reg.getParameter("userId");
-         //String ses = (String) session.getAttribute("session"+userId);
+		 String userId = reg.getParameter("userID");
+		 String unitId = reg.getParameter("unitId");
          TblUser user = (TblUser) session.getAttribute("user"+userId);
          
          //model.put("session", ses);
@@ -67,31 +69,54 @@ public class UserListController extends AbstractListScreen {
          
          Session sess = null;
          try {
-        	long rowCount=0;
-			sess = HibernateUtil.getSessionFactory().openSession();
-			TblUserDAO dao = new TblUserDAO(sess);
-			Map h = new HashMap<String, Object>();
-			List<TblUser> l = new ArrayList<TblUser>();
-			if (reg.getParameter("param").equals("")|| reg.getParameter("param") == null) {
-				rowCount = dao.getAllCount();
-				l = dao.getAll(loffset, row);				
-				h.put("total", rowCount);
-				h.put("rows", l);
-			} else {
-				TblUser tblUser = dao.getById(reg.getParameter("param"));
-				if(tblUser!=null){
-					h.put("total", 1);
-					l.add(tblUser);
-					h.put("rows", l);
-				}else{//bila pencarian tidak di temukan
-					h.put("total", 0);
-					List lz = new ArrayList();
-					h.put("rows", lz);
-				}
-			}
-			sess.close();
-            result = gson.toJson(h);
-            System.out.println(result);
+         	long rowCount=0;
+ 			sess = HibernateUtil.getSessionFactory().openSession();
+ 			TblUserDAO dao = new TblUserDAO(sess);
+ 			Map h = new HashMap<String, Object>();
+ 			List<TblUser> l = new ArrayList<TblUser>();
+ 				h = dao.getByPerPage(reg.getParameter("param"),unitId,loffset, row);
+ 			sess.close();
+             result = gson.toJson(h);
+             System.out.println(result);
+        	 
+        	 
+        	 
+        	 
+        	 
+        	 
+        	 
+        	 
+        	 
+        	 
+        	 
+        	 
+        	 
+        	 
+//        	long rowCount=0;
+//			sess = HibernateUtil.getSessionFactory().openSession();
+//			TblUserDAO dao = new TblUserDAO(sess);
+//			Map h = new HashMap<String, Object>();
+//			List<TblUser> l = new ArrayList<TblUser>();
+//			if (reg.getParameter("param").equals("")|| reg.getParameter("param") == null) {
+//				rowCount = dao.getAllCount();
+//				l = dao.getAll(loffset, row);				
+//				h.put("total", rowCount);
+//				h.put("rows", l);
+//			} else {
+//				TblUser tblUser = dao.getById(reg.getParameter("param"));
+//				if(tblUser!=null){
+//					h.put("total", 1);
+//					l.add(tblUser);
+//					h.put("rows", l);
+//				}else{//bila pencarian tidak di temukan
+//					h.put("total", 0);
+//					List lz = new ArrayList();
+//					h.put("rows", lz);
+//				}
+//			}
+//			sess.close();
+//            result = gson.toJson(h);
+//            System.out.println(result);
 			
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -105,10 +130,11 @@ public class UserListController extends AbstractListScreen {
 	 
 	 @RequestMapping(value="/userAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		 String userId = reg.getParameter("userId");
+		 System.out.println("DO ADDDD>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		 String userId = reg.getParameter("userID");
          //String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
-         
+         System.out.println("userID "+userId+" userId "+reg.getParameter("userId"));
          //model.put("session", ses);
          if(!cekValidSession(session,userId)){		
         	 return "fail";
@@ -125,7 +151,7 @@ public class UserListController extends AbstractListScreen {
                TblUser tbl = new TblUser();
                tbl.setUserId(reg.getParameter("userId").toUpperCase());
                tbl.setName((reg.getParameter("name")).toUpperCase());
-               tbl.setBranchCode(reg.getParameter("branchCode"));
+               tbl.setBranchCode(reg.getParameter("branchCodeAll"));
 
                tbl.setPassword(SecurityUtil.encrypt(reg.getParameter("password")));
                tbl.setStartTime(formatter.parse(reg.getParameter("startTime")));
@@ -152,7 +178,7 @@ public class UserListController extends AbstractListScreen {
 	 @RequestMapping(value="/userEdit.htm", method=RequestMethod.POST)
      public @ResponseBody String userEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		 String sId = reg.getParameter("userId");
-		 String userId = reg.getParameter("userId");
+		 String userId = reg.getParameter("userID");
          //String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
          
@@ -171,7 +197,7 @@ public class UserListController extends AbstractListScreen {
                TblUser tbl = dao.getById(sId);
                tbl.setUserId(reg.getParameter("userId"));
                tbl.setName(reg.getParameter("name"));
-               tbl.setBranchCode(reg.getParameter("branchCode"));
+               tbl.setBranchCode(reg.getParameter("branchCodeAll"));
                tbl.setPassword(SecurityUtil.encrypt(reg.getParameter("password")));
                tbl.setEmail(reg.getParameter("email"));
                tbl.setEndTime(formatter.parse(reg.getParameter("endTime")));
@@ -199,7 +225,7 @@ public class UserListController extends AbstractListScreen {
 	 @RequestMapping(value="/userDelete.htm", method=RequestMethod.POST)
      public @ResponseBody String userDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 
-		 String userId = reg.getParameter("userId");
+		 String userId = reg.getParameter("userID");
          //String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
          
@@ -214,7 +240,7 @@ public class UserListController extends AbstractListScreen {
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
                TblUserDAO dao = new TblUserDAO(sess);
-               TblUser tbl = dao.getById(userId);
+               TblUser tbl = dao.getById(reg.getParameter("userId"));
                sess.beginTransaction();
                dao.delete(tbl);
                sess.getTransaction().commit();

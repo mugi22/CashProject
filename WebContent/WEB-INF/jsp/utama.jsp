@@ -66,7 +66,9 @@
 
 <script type="text/javascript">
 
-
+$("document").ready(function(){
+	$('#tt').tree('collapseAll');
+});
 $('#tt').tree({
 	onClick: function(node){
 		//alert(node.id);  // alert node text property when clicked

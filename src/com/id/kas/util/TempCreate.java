@@ -112,7 +112,6 @@ public class TempCreate {
 						}	
 						
 						//ENABLE/DISABLE FIELD FORM XXXenableField
-						//XXXenableOnShowField                  $('#userId').textbox('readonly', false);		
 						if (sCurrentLine.contains("XXXenableOnShowField")){
 							StringBuffer sbField = new StringBuffer();
 							int i=0;
@@ -152,11 +151,10 @@ public class TempCreate {
 							int i = 0;
 							for(String t :lForm){
 							if(t.equals("Y")){
-								if(lCol.get(i).equals("CreateDate")||t.equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
+								if(lCol.get(i).equals("CreateDate")||lCol.get(i).equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
 								}else{
 									String z =j1+"\\$('#"+Util.firstLowerr(lCol.get(i))+"').textbox('readonly', false);"+"\n";
 									for(String k :lIds){
-//										System.out.println("t  : "+" k ");
 										if(t.equals(k)){
 											z =j1+"\\$('#"+Util.firstLowerr(lCol.get(i))+"').textbox('readonly', true);"+"\n";
 										}
@@ -168,9 +166,7 @@ public class TempCreate {
 							}
 							String z = line.replaceAll("XXXenableOnEditField", sbField.toString());
 							line =z;
-						}
-						
-						
+						}						
 						//XXXrowDelete Id : row.Id
 						if (sCurrentLine.contains("XXXrowDelete")){
 							StringBuffer sbField = new StringBuffer();
@@ -182,16 +178,12 @@ public class TempCreate {
 								}
 								i++;
 							}
-//							System.out.println("======= "+sbField.toString()+"|");
 							x = (sbField.toString()).substring(0,sbField.toString().length()-2);
 							String z = line.replaceAll("XXXrowDelete", x);
 							line =z;
 						}
-						//=======================================
-						
-						
 						if (sCurrentLine.contains("XXXZ")){//XXXZ nama file jsp 
-							String z = line.replaceAll("XXXZ", jspName.toLowerCase());
+							String z = line.replaceAll("XXXZ", jspName/*.toLowerCase()*/);
 							line =z;
 						}	
 						sb.append(line+"\n");						
@@ -208,6 +200,9 @@ public class TempCreate {
 				return sb.toString();
 			}
 	
+
+	
+	
 	
 	
 //	*************************CONTROLLER*************************************
@@ -218,29 +213,23 @@ public class TempCreate {
 					String sCurrentLine;
 					br = new BufferedReader(new FileReader(s));
 					while ((sCurrentLine = br.readLine()) != null) {
-						//System.out.println(sCurrentLine);XXXclass
 						String line = sCurrentLine;
 						if (sCurrentLine.contains("XXXclass")){
 							String z = line.replaceAll("XXXclass",sClassName);
 							line =z;							
 						}
-						
 						if (sCurrentLine.contains("XXXmap")){
 							String z = line.replaceAll("XXXmap",sMapping);
 							line =z;							
 						}
-						
 						if (sCurrentLine.contains("XXXview")){
 							String z = line.replaceAll("XXXview",sJsp);
 							line =z;							
 						}
-						
 						if (sCurrentLine.contains("XXtbl")){
 							String z = line.replaceAll("XXtbl",daoName);
 							line =z;							
 						}
-						
-						
 						if (sCurrentLine.contains("XXFormFild")){
 							StringBuffer sbField = new StringBuffer();
 							int i =0;
@@ -255,7 +244,6 @@ public class TempCreate {
 									if (lTipes.get(i).equals("long")){
 										sbField.append(j1+"tbl.set"+Util.firstUpper(lCol.get(i))+"(Long.parseLong((reg.getParameter("+d+Util.firstLowerr(lCol.get(i))+d+"))));\n");
 									}
-									
 									
 									if (lTipes.get(i).equals("BigDecimal")){
 										sbField.append(j1+"tbl.set"+Util.firstUpper(lCol.get(i))+"(new BigDecimal((reg.getParameter("+d+Util.firstLowerr(lCol.get(i))+d+"))));\n");
@@ -470,9 +458,9 @@ public class TempCreate {
 							int i=0;
 							for(String t :lSearch){	
 								if(t.equals("Y")){
-									sbx.append(Util.firstUpper(lCol.get(i))+",");	
-									i++;
+									sbx.append(Util.firstUpper(lCol.get(i))+",");										
 								}
+								i++;
 							}
 							x = (sbx.toString()).substring(0,sbx.toString().length()-1);
 							String z = line.replaceAll("XXX2getCriParam",x);
@@ -508,13 +496,15 @@ public class TempCreate {
 									if(lTipes.get(i).equals("String")||lTipes.get(i).equals("Date")){
 										sbx.append(j1+"if ("+Util.firstLowerr(lCol.get(i))+".length()>0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(lCol.get(i))+'"'+", "+Util.firstLowerr(lCol.get(i))+")); 	}\n");
 									}
-									if(lTipes.get(i).equals("long")){
+									if(lTipes.get(i).equals("long")||lTipes.get(i).equals("int")){
 										sbx.append(j1+"if ("+Util.firstLowerr(lCol.get(i))+">0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(lCol.get(i))+'"'+", "+Util.firstLowerr(lCol.get(i))+")); 	}\n");
 									}
 									
 									if(lTipes.get(i).equals("BigDecimal")){
 										sbx.append(j1+"if ("+Util.firstLowerr(lCol.get(i))+".doubleValue()"+">0){criteria.add(Restrictions.eq("+'"'+Util.firstLowerr(lCol.get(i))+'"'+", "+Util.firstLowerr(lCol.get(i))+")); 	}\n");
 									}
+									
+									
 								}
 								i++;
 							}

@@ -64,6 +64,18 @@ public class TblBranchDAO {
 		return criteria;
 	}
 
+	public  List<TblBranch> getByParent(String KodeParent){
+		Criteria criteria =null;
+		criteria = session.createCriteria(TblBranch.class);
+                    if (KodeParent.length()>0){criteria.add(Restrictions.eq("parentId", KodeParent)); 	}
+//                    if (Status.length()>0){criteria.add(Restrictions.eq("status", Status)); 	}
+		
+		return criteria.list();
+	}
+	
+	
+	
+	
 	public List<TblBranch> getBy(String Name,String Status ,int start, int rowcount ){
 		Criteria criteria =getCriteria(Name,Status);
 		return (List<TblBranch>) criteria.setFirstResult(start).setMaxResults(rowcount).list();

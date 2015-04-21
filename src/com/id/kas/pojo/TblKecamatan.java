@@ -9,6 +9,7 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,93 +19,14 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "TBL_KECAMATAN", schema = "TESTDB")
-public class TblKecamatan implements java.io.Serializable {
+public class TblKecamatan extends AuditTrail implements java.io.Serializable {
 
-	private TblKecamatanId id;
-	private String createBy;
-	private Date createDate;
-	private String updateBy;
-	private Date updateDate;
-	private BigDecimal versi;
+
 	private String namaKecamatan;
+	private String kodeKecamatan;
+	private String kodeKabupaten;
 
 	public TblKecamatan() {
-	}
-
-	public TblKecamatan(TblKecamatanId id, String namaKecamatan) {
-		this.id = id;
-		this.namaKecamatan = namaKecamatan;
-	}
-
-	public TblKecamatan(TblKecamatanId id, String createBy, Date createDate,
-			String updateBy, Date updateDate, BigDecimal versi,
-			String namaKecamatan) {
-		this.id = id;
-		this.createBy = createBy;
-		this.createDate = createDate;
-		this.updateBy = updateBy;
-		this.updateDate = updateDate;
-		this.versi = versi;
-		this.namaKecamatan = namaKecamatan;
-	}
-
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "kodeKecamatan", column = @Column(name = "KODE_KECAMATAN", nullable = false, length = 6)),
-			@AttributeOverride(name = "kodeKabupaten", column = @Column(name = "KODE_KABUPATEN", nullable = false, length = 4)) })
-	public TblKecamatanId getId() {
-		return this.id;
-	}
-
-	public void setId(TblKecamatanId id) {
-		this.id = id;
-	}
-
-	@Column(name = "CREATE_BY", length = 20)
-	public String getCreateBy() {
-		return this.createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
-	@Temporal(TemporalType.DATE)
-	@Column(name = "CREATE_DATE", length = 7)
-	public Date getCreateDate() {
-		return this.createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	@Column(name = "UPDATE_BY", length = 20)
-	public String getUpdateBy() {
-		return this.updateBy;
-	}
-
-	public void setUpdateBy(String updateBy) {
-		this.updateBy = updateBy;
-	}
-
-	@Temporal(TemporalType.DATE)
-	@Column(name = "UPDATE_DATE", length = 7)
-	public Date getUpdateDate() {
-		return this.updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	@Column(name = "VERSI", scale = 0)
-	public BigDecimal getVersi() {
-		return this.versi;
-	}
-
-	public void setVersi(BigDecimal versi) {
-		this.versi = versi;
 	}
 
 	@Column(name = "NAMA_KECAMATAN", nullable = false, length = 100)
@@ -114,6 +36,24 @@ public class TblKecamatan implements java.io.Serializable {
 
 	public void setNamaKecamatan(String namaKecamatan) {
 		this.namaKecamatan = namaKecamatan;
+	}
+	@Id
+	@Column(name = "KODE_KECAMATAN", nullable = false, length = 6)
+	public String getKodeKecamatan() {
+		return this.kodeKecamatan;
+	}
+
+	public void setKodeKecamatan(String kodeKecamatan) {
+		this.kodeKecamatan = kodeKecamatan;
+	}
+@Id
+	@Column(name = "KODE_KABUPATEN", nullable = false, length = 4)
+	public String getKodeKabupaten() {
+		return this.kodeKabupaten;
+	}
+
+	public void setKodeKabupaten(String kodeKabupaten) {
+		this.kodeKabupaten = kodeKabupaten;
 	}
 
 }

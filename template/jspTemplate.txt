@@ -21,6 +21,7 @@ jspTemplate
         <script type="text/javascript" src="css/formater.js"></script>
 		<script type="text/javascript" src="css/accounting.min.js"></script>
 		<script type="text/javascript" src="css/myalert.js"></script>
+		 <script type="text/javascript" src="css/my.js"></script>
 
 <title>User</title>
 </head>
@@ -39,6 +40,7 @@ XXXsearch
         </div>
         <hr>
 <!-- ******************************END  FORM PENCARIAN******************************* -->  
+
 
 <!-- **********************TABLE RESULT************************************** -->
         <table id="dg" title="XXXjudul" class="easyui-datagrid" style="width:100%;"
@@ -92,7 +94,6 @@ var branchcode;
 		alert("testtttt..... click");
 	}
 
-/* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
 		var jsonurl = 'XXXZListAll.htm?'+
 XXXparamSearch
@@ -129,7 +130,6 @@ XXXparamSearch
 		url = 'XXXZAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
-/* ---- XXXZedit*/
 	function doEdit() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
@@ -141,7 +141,6 @@ XXXparamSearch
 			onEdit();
 		}
 	}
-/*-- XXXZtampil*/
 	function doShow() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
@@ -202,16 +201,7 @@ XXXparamSearch
 	
 	
 	/* ================TAMBAHAN=================*/
-	//untuk mengisi combobox kode cabang keseluruhan dengan default value sesuai parameter
-	function addComboBranch() {
-		$('#branchCode').combobox({
-			url : 'comboAllBranch.htm?param=' + branchcode,
-			valueField : 'id',
-			textField : 'text',
-			panelHeight:'auto'
-		});
-		branchcode = '';
-	}
+
 	
 	/*Untuk membuat menjadi huruf besar semua */
 	function upperCase(t) {
@@ -222,28 +212,19 @@ XXXparamSearch
 	
 	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		//list button
-		//$('#userId').textbox('readonly', true);
-XXXenableOnShowField
-		//form button
+		XXXenableOnShowField
 		$('#btnSave').linkbutton('disable');
 	}
 	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		//list button
-		//$('#userId').textbox('readonly', false);		
-XXXenableOnAddField		
-		//form button
+		XXXenableOnAddField		
 		$('#btnSave').linkbutton('enable');
 	}
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		//list button
-		//$('#userId').textbox('readonly', true);	
-XXXenableOnEditField	
-		//form button
+		XXXenableOnEditField	
 		$('#btnSave').linkbutton('enable');
 	}
 

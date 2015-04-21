@@ -10,7 +10,7 @@
 </head>
 <body>
 <h1>Code Generator</h1><br>
-name : <input type="text" style="width: 300px" id="z" value="com.id.kas.pojo.TblSeq"> <input type="button" value="test" id="btnTest" 
+name : <input type="text" style="width: 300px" id="z" value="com.id.kas.pojo.TblSeq"> <input type="button" value="Ambil" id="btnTest" 
 onclick="testAjax()">
 <hr>
 <form action="" method="post">
@@ -21,7 +21,7 @@ DAO : <input type="text" style="width: 300px" id="dao" name="dao" value="TblSeq"
 <table border="1" id="ddReferences">
             <thead>
                 <tr>
-                    <th>Column</th>
+                    <th>Column Name</th>
                     <th>Form</th>
                     <th>List</th>
                     <th>Search</th>
@@ -36,7 +36,7 @@ DAO : <input type="text" style="width: 300px" id="dao" name="dao" value="TblSeq"
         <input type="submit" value="Submit"> 
         <input type="reset" value="Reset">
 </form>
- <input type="button" value="test" onclick="test()">
+ <!-- input type="button" value="test" onclick="test()"-->
 
 </body>
 </html>

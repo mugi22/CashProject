@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>GEN XXX</h1>
+<h1>POJO GEN</h1>
 <form action="" method="post">
 Table Name : <input type="text" style="width: 300px" id="tblName" name="tblName" value="Tbl_Test"> <input type="button" value="Add" id="btnTest" onclick="addRow()">
 <br>

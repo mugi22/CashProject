@@ -9,6 +9,7 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,7 +21,7 @@ import javax.persistence.TemporalType;
 @Table(name = "TBL_KELURAHAN", schema = "TESTDB")
 public class TblKelurahan implements java.io.Serializable {
 
-	private TblKelurahanId id;
+//	private TblKelurahanId id;
 	private String createBy;
 	private Date createDate;
 	private String updateBy;
@@ -28,39 +29,41 @@ public class TblKelurahan implements java.io.Serializable {
 	private BigDecimal versi;
 	private String kodePos;
 	private String namaKelurahan;
+	private String kodeKecamatan;
+	private String idKelurahan;
 
 	public TblKelurahan() {
 	}
 
-	public TblKelurahan(TblKelurahanId id, String namaKelurahan) {
-		this.id = id;
-		this.namaKelurahan = namaKelurahan;
-	}
+//	public TblKelurahan(TblKelurahanId id, String namaKelurahan) {
+//		this.id = id;
+//		this.namaKelurahan = namaKelurahan;
+//	}
+//
+//	public TblKelurahan(TblKelurahanId id, String createBy, Date createDate,
+//			String updateBy, Date updateDate, BigDecimal versi, String kodePos,
+//			String namaKelurahan) {
+//		this.id = id;
+//		this.createBy = createBy;
+//		this.createDate = createDate;
+//		this.updateBy = updateBy;
+//		this.updateDate = updateDate;
+//		this.versi = versi;
+//		this.kodePos = kodePos;
+//		this.namaKelurahan = namaKelurahan;
+//	}
 
-	public TblKelurahan(TblKelurahanId id, String createBy, Date createDate,
-			String updateBy, Date updateDate, BigDecimal versi, String kodePos,
-			String namaKelurahan) {
-		this.id = id;
-		this.createBy = createBy;
-		this.createDate = createDate;
-		this.updateBy = updateBy;
-		this.updateDate = updateDate;
-		this.versi = versi;
-		this.kodePos = kodePos;
-		this.namaKelurahan = namaKelurahan;
-	}
-
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "kodeKecamatan", column = @Column(name = "KODE_KECAMATAN", nullable = false, length = 6)),
-			@AttributeOverride(name = "idKelurahan", column = @Column(name = "ID_KELURAHAN", nullable = false, length = 10)) })
-	public TblKelurahanId getId() {
-		return this.id;
-	}
-
-	public void setId(TblKelurahanId id) {
-		this.id = id;
-	}
+//	@EmbeddedId
+//	@AttributeOverrides({
+//			@AttributeOverride(name = "kodeKecamatan", column = @Column(name = "KODE_KECAMATAN", nullable = false, length = 6)),
+//			@AttributeOverride(name = "idKelurahan", column = @Column(name = "ID_KELURAHAN", nullable = false, length = 10)) })
+//	public TblKelurahanId getId() {
+//		return this.id;
+//	}
+//
+//	public void setId(TblKelurahanId id) {
+//		this.id = id;
+//	}
 
 	@Column(name = "CREATE_BY", length = 20)
 	public String getCreateBy() {
@@ -127,4 +130,30 @@ public class TblKelurahan implements java.io.Serializable {
 		this.namaKelurahan = namaKelurahan;
 	}
 
+	
+//	
+//	public TblKelurahanId(String kodeKecamatan, String idKelurahan) {
+//		this.kodeKecamatan = kodeKecamatan;
+//		this.idKelurahan = idKelurahan;
+//	}
+@Id
+	@Column(name = "KODE_KECAMATAN", nullable = false, length = 6)
+	public String getKodeKecamatan() {
+		return this.kodeKecamatan;
+	}
+
+	public void setKodeKecamatan(String kodeKecamatan) {
+		this.kodeKecamatan = kodeKecamatan;
+	}
+@Id
+	@Column(name = "ID_KELURAHAN", nullable = false, length = 10)
+	public String getIdKelurahan() {
+		return this.idKelurahan;
+	}
+
+	public void setIdKelurahan(String idKelurahan) {
+		this.idKelurahan = idKelurahan;
+	}
+	
+	
 }
