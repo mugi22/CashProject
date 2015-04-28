@@ -1,0 +1,266 @@
+/*.styled-select select {
+   background: transparent;
+   width: 168px;
+   padding: 5px;
+   font-size: 11px;
+   line-height: 1;
+   border: 0;
+   border-radius: 0;
+   height: 24px;
+   -webkit-appearance: none;
+   } */
+
+#popup {
+    visibility: hidden; 
+    background-color: red; 
+    position: absolute;
+    top: 10px;
+    z-index: 100; 
+    height: 100px;
+    width: 300px
+}
+
+.popup_box {
+    /*display:none;  Hide the DIV 
+    position:fixed; */
+    position:absolute;  /*hack for internet explorer 6  */
+    height:auto;  
+    width:75%;  
+    background:#FFFFFF;  
+    /*left: 200px;
+    top: 245px;
+    z-index:100; Layering ( on-top of others), if you have lots of layers: I just maximized, you can change it yourself */
+    margin-left: 15px;  
+	margin-top: 10px;
+   
+    /* additional features, can be omitted */
+    border: 2px solid #0ff;      
+    padding: 10px;  
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px; 
+    -moz-box-shadow: 0 0 5px #000;
+    -webkit-box-shadow: 0 0 5px #000;
+    box-shadow: 0 0 5px #000;  
+}
+
+	#wrapper {
+		width:900px;
+		margin:0px auto;
+		border:1px solid #bbb;
+		padding:10px;
+	}
+	#header {
+		border:1px solid #bbb;
+		height:80px;
+		padding:10px;
+	}
+	#content {
+		margin-top:10px;
+		padding-bottom:10px;
+	}
+	#content div {
+		padding:10px;
+		border:1px solid #bbb;
+		float:left;
+	}
+	#content-left {
+		width:180px;
+		height:300px;
+	}
+	#content-main {
+		margin-left:10px;
+		width:666px;
+		height:150px;
+	}
+	#content-box1, #content-box2, #content-box3 {
+		padding:10px;
+		border:1px solid #bbb;
+		position:absolute;
+		margin-top:190px;
+		height:120px;
+	}
+
+input,select { 
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 9px;
+}
+p {
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size : 11px;
+    color: #000000;
+    white-space : nowrap;
+  }
+.f_bold {
+font-weight:lighter;
+color:#000000;
+text-align:right;
+}
+.f_boldhd {
+font-weight:700;
+color:#000000;
+text-align:right;
+}
+.f_boldhdx {
+font-weight:bolder;
+color:#C30;
+text-align:right;
+}
+.cfg_header {
+border:			solid #666 1px;
+background-color:#B3D9FF;	
+font-family:	Verdana, Arial, Helvetica, sans-serif;
+font-size:		11px;
+font-weight:	400;
+}
+.cfg_header_rekap {
+border:			solid #666 1px;
+background-color:#FC0;	
+font-family:	Verdana, Arial, Helvetica, sans-serif;
+font-size:		11px;
+font-weight:	400;
+}
+.cfg_detail {
+border:			solid #666 1px;
+border-bottom:	none;
+border-top:		none;
+font-family:	Verdana, Arial, Helvetica, sans-serif;
+font-size:		10px;
+}
+.cfg_detailx {
+border:			solid #666 1px;
+/*border-bottom:	none;
+border-top:		none;
+border-left:	none;
+border-right-color:#FFF;*/
+font-family:	Verdana, Arial, Helvetica, sans-serif;
+font-size:		10px;
+}
+.cfg_detailx2 {
+border:			solid #666 1px;
+border-top:		none;
+/*border-bottom:	none;
+border-left:	none;
+border-right-color:#FFF;*/
+font-family:	Verdana, Arial, Helvetica, sans-serif;
+font-size:		10px;
+font-weight:bold;
+font-style:italic;
+background-color:#FFC;
+color:#C30;
+}
+.cfg_detail_pg {
+border:			solid #666 1px;
+border-top:		none;
+/*border-bottom:	none;
+border-left:	none;
+border-right-color:#FFF;*/
+font-family:	Verdana, Arial, Helvetica, sans-serif;
+font-size:		11px;
+font-weight:bold;
+color:#09F;
+}
+.cfg_detail_sd {
+/*border:			solid #666 1px;
+border-bottom:	none;
+border-top:		none;
+border-right:none; */
+border:hidden;
+font-family:	Verdana, Arial, Helvetica, sans-serif;
+font-size:		10px;
+}
+
+.show_detailx {
+border:			solid #666 1px;
+border-bottom:	none;
+border-top:		none;
+/*border-left:	none;
+border-right-color:#FFF;*/
+font-family:	Verdana, Arial, Helvetica, sans-serif;
+font-size:		10px;
+}
+.cfg_akhir{
+border:solid #666 1px;
+border-top:none;
+/*background-color:#FFC;	*/
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size:10px;	
+}
+.bg_hijau {
+color:#063;
+}
+.bg_merah {	
+color:#F00;
+}
+.bg_kuning {
+color:#FC0;
+}
+.warna1 { background: #a4dfcd; } /* Hijau */
+.warna2 { background: #fff; } /* Putih */
+
+.cfg_div {
+font-family: 	Verdana, Arial, Helvetica, sans-serif;
+font-size:		10px;
+width:			600px;
+}
+.table_th, .table_td {
+  color:          #000000;
+  float:          left;
+}
+.table_th {
+  font-weight:    bold;
+  padding:        0;
+  text-align:     left;
+} 
+.table_td {
+  /*font-weight:    normal; */
+  padding:        0;
+  text-align:     left;
+}
+.table_tdr {
+  /*font-weight:    normal; */
+  padding:        0;
+  text-align:     right;
+}
+.first_td {
+  width:        50px;
+  border:		solid #CF0 1px;
+  border-left:	none;
+  border-right:	none;
+  border-top:	none;
+}
+.middle_td {
+  width:        100px;
+  border:		solid #CF0 1px;
+  border-left:	none;
+  border-right:	none;
+  border-top:	none;
+}
+.middle2_td {
+  width:        150px;
+  border:		solid #CF0 1px;
+  border-left:	none;
+  border-right:	none;
+  border-top:	none;
+}
+.last_td {
+  width:        150px;  
+  border:		solid #CF0 1px;
+  border-left:	none;
+  border-right:	none;
+  border-top:	none;  
+}
+.tes_td {
+  border:		solid #030 1px;
+  border-left:	none;
+/*  border-right:	none; */
+  border-top:	none;
+}
+
+#table{width:75%;}
+div span{display:inline-block;}
+div .header{background:#95AABC;font-weight:bolder;}
+.kolom{width:90px;padding:2px;margin:20px;}
+.baris{border-bottom:1px solid #000;cursor:pointer;}
+.baris:hover{background:#fff59f;}
+.ganjil{background:#ddd;}
+.genap{backgound:#eee;}
