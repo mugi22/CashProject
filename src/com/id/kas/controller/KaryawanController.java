@@ -1,10 +1,4 @@
-/*
-*Create by CodeGenerator
-*controllerTemplate
-*/
-
-package com.id.kas.DEVELOPMENT;
-import java.math.BigDecimal;
+package com.id.kas.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,22 +19,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.id.kas.DEVELOPMENT.TblKaryawan;
 import com.id.kas.db.HibernateUtil;
-import com.id.kas.pojo.TblCoaMaster;
 import com.id.kas.pojo.TblUser;
-//import com.id.kas.pojo.TblCoaMaster;//harap Sesuaikan
+import com.id.kas.pojo.dao.TblKaryawanDAO;
+//import com.id.kas.pojo.TblKaryawan;//harap tambahain coyyy
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class CoaMasterController  extends AbstractListScreen{
-	@RequestMapping(value="/coaMaster.htm",method=RequestMethod.GET)
+public class KaryawanController  extends AbstractListScreen{
+	@RequestMapping(value="/karyawan.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
 	 	return super.doGet(model, session, reg,res);
 	}
 	
 	
-	 @RequestMapping(value="/coaMaster.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/karyawan.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
 		 super.doPost(model, session,reg,res);
 		return getView();		 
@@ -49,26 +44,21 @@ public class CoaMasterController  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "coaMaster";
+		return "karyawan";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/coaMasterListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String coaMasterListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String Description=reg.getParameter("Description");
-                    String Groups=reg.getParameter("Groups");
-                    String NoCoa=reg.getParameter("NoCoa");
-                    String ParentCoa=reg.getParameter("ParentCoa");
-                    String Lvl ="0";
-                    if(reg.getParameter("Lvl").length()>0){
-                    	Lvl = (reg.getParameter("Lvl"));
-                    }		
-                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                    int f = 4;
+	 @RequestMapping(value="/karyawanListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String karyawanListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Nik=reg.getParameter("Nik");		 
+String Nama=reg.getParameter("Nama");	           
          String userId = reg.getParameter("userId");
          String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
-  
+         
+         //model.put("session", ses);
+         
+         
          model.put("session", ses);
          if(!cekValidSession(session,userId)){
         	 return "[]";
@@ -77,15 +67,15 @@ public class CoaMasterController  extends AbstractListScreen{
          int row = Integer.parseInt(reg.getParameter("rows"));
          int loffset = (Integer.parseInt(reg.getParameter("page"))-1)*row;
          Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
-         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+         
          Session sess = null;
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblCoaMasterDAO dao = new TblCoaMasterDAO(sess);
+			TblKaryawanDAO dao = new TblKaryawanDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<TblCoaMaster> l = new ArrayList<TblCoaMaster>();
-				h = dao.getByPerPage(Description,Groups,NoCoa,ParentCoa,Integer.parseInt(Lvl), loffset, row);
+			List<TblKaryawan> l = new ArrayList<TblKaryawan>();
+				h = dao.getByPerPage(Nik,Nama,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -105,7 +95,7 @@ public class CoaMasterController  extends AbstractListScreen{
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/coaMasterAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/karyawanAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -121,12 +111,11 @@ public class CoaMasterController  extends AbstractListScreen{
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblCoaMasterDAO dao = new TblCoaMasterDAO(sess);
-               TblCoaMaster tbl = new TblCoaMaster();
-                    tbl.setDescription(reg.getParameter("description"));
-                    tbl.setGroups(reg.getParameter("groups"));
-                    tbl.setNoCoa(reg.getParameter("noCoa"));
-                    tbl.setParentCoa(reg.getParameter("parentCoa"));
+               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
+               TblKaryawan tbl = new TblKaryawan();
+                    tbl.setNik(reg.getParameter("nik"));
+                    tbl.setNama(reg.getParameter("nama"));
+                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
@@ -146,9 +135,9 @@ public class CoaMasterController  extends AbstractListScreen{
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/coaMasterEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String coaMasterEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String NoCoa=reg.getParameter("noCoa");
+	 @RequestMapping(value="/karyawanEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String karyawanEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Nik=reg.getParameter("nik");
 		 
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -164,13 +153,12 @@ public class CoaMasterController  extends AbstractListScreen{
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblCoaMasterDAO dao = new TblCoaMasterDAO(sess);
-               TblCoaMaster tbl = dao.getById(NoCoa);
+               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
+               TblKaryawan tbl = dao.getById(Nik);
                 String tblOld = gson.toJson(tbl);
-                    tbl.setDescription(reg.getParameter("description"));
-                    tbl.setGroups(reg.getParameter("groups"));
-                    tbl.setNoCoa(reg.getParameter("noCoa"));
-                    tbl.setParentCoa(reg.getParameter("parentCoa"));
+                    tbl.setNik(reg.getParameter("nik"));
+                    tbl.setNama(reg.getParameter("nama"));
+                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -189,12 +177,12 @@ public class CoaMasterController  extends AbstractListScreen{
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/coaMasterDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String coaMasterDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String NoCoa=reg.getParameter("noCoa");
+	 @RequestMapping(value="/karyawanDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String karyawanDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+String Nik=reg.getParameter("nik");
 	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
-		 String userId = reg.getParameter("userId");
+String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
          //model.put("session", ses);
@@ -207,8 +195,8 @@ public class CoaMasterController  extends AbstractListScreen{
          Gson gson = new Gson();
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblCoaMasterDAO dao = new TblCoaMasterDAO(sess);
-               TblCoaMaster tbl = dao.getById(NoCoa);
+               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
+               TblKaryawan tbl = dao.getById(Nik);
                String tblDel = gson.toJson(tbl);
                sess.beginTransaction();
                dao.delete(tbl);

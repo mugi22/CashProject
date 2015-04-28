@@ -50,6 +50,7 @@ public class UserGroupController  extends AbstractListScreen{
 //	 ***************************** LIST  **************************************************************
 	 @RequestMapping(value="/userGroupListAll.htm", method=RequestMethod.POST)
      public @ResponseBody String userGroupListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+		
 String GroupId="0";//reg.getParameter("GroupId");
 if (reg.getParameter("GroupId").length()>0){
 	GroupId=reg.getParameter("GroupId");
@@ -58,8 +59,9 @@ if (reg.getParameter("GroupId").length()>0){
 
 String UserId=reg.getParameter("UserId");		 
 String userId = reg.getParameter("userId");
+System.out.println("---------------------------------------------UserId"+UserId+"==========userId"+userId);
 //String ses = (String) session.getAttribute("session"+userId);
-TblUser user = (TblUser) session.getAttribute("user"+userId);
+TblUser user = (TblUser) session.getAttribute("user"+UserId);
 
 //model.put("session", ses);
 if(!cekValidSession(session,userId)){

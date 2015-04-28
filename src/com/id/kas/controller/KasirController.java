@@ -3,7 +3,7 @@
 *controllerTemplate
 */
 
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.controller;
 import java.math.BigDecimal;
 
 import java.text.SimpleDateFormat;
@@ -26,21 +26,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
-import com.id.kas.pojo.TblRekeningIA;
+import com.id.kas.pojo.TblBranch;
 import com.id.kas.pojo.TblUser;
-//import com.id.kas.pojo.TblRekeningIA;//harap Sesuaikan
+import com.id.kas.pojo.TblKasir;//harap Sesuaikan
+import com.id.kas.pojo.dao.TblBranchDAO;
+import com.id.kas.pojo.dao.TblKasirDAO;
+import com.id.kas.pojo.dao.TblUserDAO;
+
+
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class RekeningIAController  extends AbstractListScreen{
-	@RequestMapping(value="/rekeningIA.htm",method=RequestMethod.GET)
+public class KasirController  extends AbstractListScreen{
+	@RequestMapping(value="/kasir.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
 	 	return super.doGet(model, session, reg,res);
 	}
 	
 	
-	 @RequestMapping(value="/rekeningIA.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/kasir.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
 		 super.doPost(model, session,reg,res);
 		return getView();		 
@@ -49,16 +54,16 @@ public class RekeningIAController  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "rekeningIA";
+		return "kasir";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/rekeningIAListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String rekeningIAListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String Description=reg.getParameter("Description");
-                    String Norek=reg.getParameter("Norek");
+	 @RequestMapping(value="/kasirListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String kasirListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String Status=reg.getParameter("Status");
                     String BranchCode=reg.getParameter("BranchCode");
-                    String NorekIAMaster=reg.getParameter("NorekIAMaster");		 
+                    String UserId=reg.getParameter("UserId");
+                    String Norek=reg.getParameter("Norek");		 
          String userId = reg.getParameter("userId");
          String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
@@ -76,21 +81,21 @@ public class RekeningIAController  extends AbstractListScreen{
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblRekeningIADAO dao = new TblRekeningIADAO(sess);
+			TblKasirDAO dao = new TblKasirDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<TblRekeningIA> l = new ArrayList<TblRekeningIA>();
-				h = dao.getByPerPage(Description,Norek,BranchCode,NorekIAMaster,loffset, row);
-			sess.close();
-            result = gson.toJson(h);
-            System.out.println(result);
-            
-            /**  BILA ADA PERUBAHAN DATA JSON
-            String x = changeJson(h, sess);
-            sess.close();
-        	result ="{"+'"'+"total"+'"'+":"+h.get("total")+","+'"'+"rows"+'"'+":["+x+']'+'}';
-            */
-            
+			List<TblKasir> l = new ArrayList<TblKasir>();
+				h = dao.getByPerPage(Status,BranchCode,UserId,Norek,loffset, row);
 			
+            result = gson.toJson(h);
+            
+            
+            /**  BILA ADA PERUBAHAN DATA JSON*/
+            String x = changeJson(h, sess);
+            //sess.close();
+        	result ="{"+'"'+"total"+'"'+":"+h.get("total")+","+'"'+"rows"+'"'+":["+x+']'+'}';
+            
+        	System.out.println(result);
+        	sess.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -99,7 +104,7 @@ public class RekeningIAController  extends AbstractListScreen{
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/rekeningIAAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/kasirAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -115,24 +120,19 @@ public class RekeningIAController  extends AbstractListScreen{
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblRekeningIADAO dao = new TblRekeningIADAO(sess);
-               TblRekeningIA tbl = new TblRekeningIA();
-                    tbl.setDescription(reg.getParameter("description"));
-                    tbl.setNorek(reg.getParameter("norek"));
-                    tbl.setNoCOA(reg.getParameter("noCOA"));
-                    tbl.setTglBuka(formatter.parse(reg.getParameter("tglBuka")));
-                    tbl.setSaldoAwal(new BigDecimal((reg.getParameter("saldoAwal"))));
-                    tbl.setSaldoAkhir(new BigDecimal((reg.getParameter("saldoAkhir"))));
-                    tbl.setMutasiD(new BigDecimal((reg.getParameter("mutasiD"))));
-                    tbl.setMutasiK(new BigDecimal((reg.getParameter("mutasiK"))));
+               TblKasirDAO dao = new TblKasirDAO(sess);
+               TblKasir tbl = new TblKasir();
+                    tbl.setStatus(reg.getParameter("status"));
+                    tbl.setLimitAmount(new BigDecimal((reg.getParameter("limitAmount"))));
+                    tbl.setBranchMapping(reg.getParameter("branchMapping"));
+                    tbl.setCcy(reg.getParameter("ccy"));
+                    tbl.setAmount(new BigDecimal((reg.getParameter("amount"))));
                     tbl.setBranchCode(reg.getParameter("branchCode"));
-                    tbl.setAlternateId(reg.getParameter("alternateId"));
-                    tbl.setNorekIAMaster(reg.getParameter("norekIAMaster"));
-                    tbl.setSaldoNormal(reg.getParameter("saldoNormal"));
-                    tbl.setLastTrxDate(formatter.parse(reg.getParameter("lastTrxDate")));
+                    tbl.setUserId(reg.getParameter("userId"));
+                    tbl.setNorek(reg.getParameter("norek"));
                              
                tbl.setCreateBy(user.getUserId());
-//               tbl.setCreateDate(new Date());
+               tbl.setCreateDate(new Date());
                
                sess.beginTransaction();
                dao.insert(tbl);
@@ -149,9 +149,9 @@ public class RekeningIAController  extends AbstractListScreen{
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/rekeningIAEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String rekeningIAEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String Norek=reg.getParameter("norek");
+	 @RequestMapping(value="/kasirEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String kasirEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String UserId=reg.getParameter("userId");
 		 
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -167,25 +167,20 @@ public class RekeningIAController  extends AbstractListScreen{
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblRekeningIADAO dao = new TblRekeningIADAO(sess);
-               TblRekeningIA tbl = dao.getById(Norek);
+               TblKasirDAO dao = new TblKasirDAO(sess);
+               TblKasir tbl = dao.getById(UserId);
                 String tblOld = gson.toJson(tbl);
-                    tbl.setDescription(reg.getParameter("description"));
-                    tbl.setNorek(reg.getParameter("norek"));
-                    tbl.setNoCOA(reg.getParameter("noCOA"));
-                    tbl.setTglBuka(formatter.parse(reg.getParameter("tglBuka")));
-                    tbl.setSaldoAwal(new BigDecimal((reg.getParameter("saldoAwal"))));
-                    tbl.setSaldoAkhir(new BigDecimal((reg.getParameter("saldoAkhir"))));
-                    tbl.setMutasiD(new BigDecimal((reg.getParameter("mutasiD"))));
-                    tbl.setMutasiK(new BigDecimal((reg.getParameter("mutasiK"))));
+                    tbl.setStatus(reg.getParameter("status"));
+                    tbl.setLimitAmount(new BigDecimal((reg.getParameter("limitAmount"))));
+                    tbl.setBranchMapping(reg.getParameter("branchMapping"));
+                    tbl.setCcy(reg.getParameter("ccy"));
+                    tbl.setAmount(new BigDecimal((reg.getParameter("amount"))));
                     tbl.setBranchCode(reg.getParameter("branchCode"));
-                    tbl.setAlternateId(reg.getParameter("alternateId"));
-                    tbl.setNorekIAMaster(reg.getParameter("norekIAMaster"));
-                    tbl.setSaldoNormal(reg.getParameter("saldoNormal"));
-                    tbl.setLastTrxDate(formatter.parse(reg.getParameter("lastTrxDate")));
+                    tbl.setUserId(reg.getParameter("userId"));
+                    tbl.setNorek(reg.getParameter("norek"));
                
-               tbl.setCreateBy(user.getUserId());
-//               tbl.setUpdateDate(new Date());
+               tbl.setUpdateBy(user.getUserId());
+               tbl.setUpdateDate(new Date());
                
                sess.beginTransaction();
                dao.update(tbl);
@@ -201,9 +196,9 @@ public class RekeningIAController  extends AbstractListScreen{
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/rekeningIADelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String rekeningIADelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String Norek=reg.getParameter("norek");
+	 @RequestMapping(value="/kasirDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String kasirDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String UserId=reg.getParameter("userId");
 	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 String userId = reg.getParameter("userId");
@@ -219,8 +214,8 @@ public class RekeningIAController  extends AbstractListScreen{
          Gson gson = new Gson();
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblRekeningIADAO dao = new TblRekeningIADAO(sess);
-               TblRekeningIA tbl = dao.getById(Norek);
+               TblKasirDAO dao = new TblKasirDAO(sess);
+               TblKasir tbl = dao.getById(UserId);
                String tblDel = gson.toJson(tbl);
                sess.beginTransaction();
                dao.delete(tbl);
@@ -237,28 +232,32 @@ public class RekeningIAController  extends AbstractListScreen{
  	 }
 
 //----------BILA ADA PERUBAHAN DATA JSON, RUBAH DI SINI------------------------------------------
-//	public String changeJson(Map<String,Object> result, Session sess){//nemabhakan field nama group dan nama menu
-//		List<TblPriviledge> listPri = (List<TblPriviledge>) result.get("rows");
-////		List<TblPriviledge> priv = (List<TblPriviledge>) h.get("rows");
-//		Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
-//		StringBuffer sb = new StringBuffer();
-//		for(TblPriviledge pr : listPri){
-//			String s = gson.toJson(pr);			
-//			TblGroupDAO groupDAO = new TblGroupDAO(sess);
-//			TblGroup group = groupDAO.getById(pr.getGroupId());
-//			TblMenuDAO menuDAO = new TblMenuDAO(sess);
-//			TblMenu menu =  menuDAO.getById(pr.getMenuId());
-//			String a = s.replace("}", ","+'"'+"groupName"+'"'+":"+'"'+group.getGroupName()+'"'+","+'"'+"menuName"+'"'+":"+'"'+menu.getMenuName()+'"'+"},");
-//			sb.append(a);
-//		}
-//		String x="";
-//		if(sb.toString().length()>0){
-//			x= (sb.toString()).substring(0,sb.toString().length()-1);
-//		}	else{
-//			x="";
-//		}
-//		return x;
-//	}
+	public String changeJson(Map<String,Object> result, Session sess){//nemabhakan field nama group dan nama menu
+		List<TblKasir> listPri = (List<TblKasir>) result.get("rows");
+//		List<TblPriviledge> priv = (List<TblPriviledge>) h.get("rows");
+		Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
+		StringBuffer sb = new StringBuffer();
+		for(TblKasir pr : listPri){
+			String s = gson.toJson(pr);			
+			TblUserDAO groupDAO = new TblUserDAO(sess);
+			TblUser user = groupDAO.getById(pr.getUserId());
+			//"userName":"MUGI"
+			String userName = ","+'"'+"userName"+'"'+":"+'"'+user.getName()+'"';
+			//"branchName":"KPPP"
+			TblBranchDAO branchDAO = new TblBranchDAO(sess);
+			TblBranch tblBranch = branchDAO.getById(user.getBranchCode());
+			String branchName = ","+'"'+"branchName"+'"'+":"+'"'+tblBranch.getName()+'"';
+			String a = s.replace("}", userName+branchName+"},");
+			sb.append(a);
+		}
+		String x="";
+		if(sb.toString().length()>0){
+			x= (sb.toString()).substring(0,sb.toString().length()-1);
+		}	else{
+			x="";
+		}
+		return x;
+	}
 
 	
 }

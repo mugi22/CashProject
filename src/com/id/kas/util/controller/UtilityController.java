@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.id.kas.DEVELOPMENT.TblProvinsiDAO;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblBranch;
 import com.id.kas.pojo.TblGroup;
@@ -21,6 +20,7 @@ import com.id.kas.pojo.TblLookup;
 import com.id.kas.pojo.TblProvinsi;
 import com.id.kas.pojo.dao.TblBranchDAO;
 import com.id.kas.pojo.dao.TblGroupDAO;
+import com.id.kas.pojo.dao.TblProvinsiDAO;
 //import com.id.kas.pojo.dao.TblProvinsiDAO;
 import com.id.kas.pojo.dao.TblLookupDAO;
 
@@ -47,7 +47,7 @@ public class UtilityController {
 			TblBranchDAO dao = new TblBranchDAO(sess);
 			List<TblBranch> l = new ArrayList<TblBranch>();
 			TblBranch branch = dao.getById(reg.getParameter("param"));
-			System.out.println(" ==================PARAM :"+reg.getParameter("param"));
+//			System.out.println(" ==================PARAM :"+reg.getParameter("param"));
 			if(param.length()>0){
 				l = dao.getByParent(/*branch.getParentId()*/param);
 			}

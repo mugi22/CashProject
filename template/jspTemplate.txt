@@ -33,7 +33,8 @@ jspTemplate
 XXXsearch
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
-                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
+                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >    
+                    <input type="reset" name="btnCetak" id="btnCetak" value="Cetak" onclick="doCetak()" >  
                 </div>
             </form> 
             <div id="result"></div>
@@ -142,6 +143,9 @@ XXXparamSearch
 		}
 	}
 	function doShow() {
+		doEdit();
+		onShow();
+	/*
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
@@ -151,6 +155,7 @@ XXXparamSearch
 			url = 'XXXZEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
+		*/
 	}
 	
 	function doDelete() {
@@ -226,6 +231,16 @@ XXXparamSearch
 	function onEdit() {
 		XXXenableOnEditField	
 		$('#btnSave').linkbutton('enable');
+	}
+/*===============================================REPORT==================================*/
+function doCetak(){
+		var repUrl = 'XXXZReport.htm?'+
+					  XXXparamSearch;
+		var s = window.location.search.replace("?", "");
+		window.open(repUrl+"&"+s,
+				"_blank", 
+				"toolbar=no, scrollbars=yes, resizable=yes,	directories=no, location=no, \
+				 menubar=no, status=no,'");
 	}
 
 	

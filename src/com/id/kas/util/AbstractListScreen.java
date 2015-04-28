@@ -33,7 +33,7 @@ public abstract class AbstractListScreen {
 	 public String doGet(Map<String, Object> model,HttpSession session,HttpServletRequest reg,HttpServletResponse res) {
 		 String param =reg.getParameter("param");//.replace(" ", "");
 		 String param2 =reg.getParameter("param2");//param2 dari klik menu -> key(random string)
-		 String userId =reg.getParameter("userId");
+		 String UID =reg.getParameter("UID");
 		 //String Key = reg.getParameter("paramB");
 		 
 		 //untuk form yang tidak ada tombol add delete dll nya
@@ -63,14 +63,14 @@ public abstract class AbstractListScreen {
 				 
 			 }
 		 
-			 String sUserId = reg.getParameter("userId");
+			 String sUserId = reg.getParameter("UID");
 	         String ses = (String) session.getAttribute("session"+sUserId);
 	         TblUser user = (TblUser) session.getAttribute("user"+sUserId);
 	         if(user==null) return "redirect:/logout.htm";
 	         String ret = null;
 	         //ADMIN MODE OPEN
          if(AppProp.getsAppStatus().equals(AppConstant.AdminMode.AdminModeOpen)){
-	         if(cekValidSession(session,userId)){
+	         if(cekValidSession(session,UID)){
 //	        	 System.out.println(sIsAdd+"*==========================");
 		         model.put("btnAdd",sIsAdd);// "disable");
 		         model.put("btnEdit",sIsEdit);//reg.getParameter("isEdit") );//"disable");
@@ -88,7 +88,7 @@ public abstract class AbstractListScreen {
         	 sess = HibernateUtil.getSessionFactory().openSession();
         	 if(Util.cekUserAdminMode(user.getUserId(), sess)){//cek apakah user punya group adminmode
         		sess.close();
-	        		 if(cekValidSession(session,userId)){//session disini httpservletsession
+	        		 if(cekValidSession(session,UID)){//session disini httpservletsession
 	    	        	 //System.out.println(sIsAdd+"*==========================");
 	    		         model.put("btnAdd",sIsAdd);// "disable");
 	    		         model.put("btnEdit",sIsEdit);//reg.getParameter("isEdit") );//"disable");

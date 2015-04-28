@@ -21,6 +21,7 @@ jspTemplate
         <script type="text/javascript" src="css/formater.js"></script>
 		<script type="text/javascript" src="css/accounting.min.js"></script>
 		<script type="text/javascript" src="css/myalert.js"></script>
+		 <script type="text/javascript" src="css/my.js"></script>
 
 <title>User</title>
 </head>
@@ -37,13 +38,15 @@ jspTemplate
 
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
-                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
+                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >    
+                    <input type="reset" name="btnCetak" id="btnCetak" value="Cetak" onclick="doCetak()" >  
                 </div>
             </form> 
             <div id="result"></div>
         </div>
         <hr>
 <!-- ******************************END  FORM PENCARIAN******************************* -->  
+
 
 <!-- **********************TABLE RESULT************************************** -->
         <table id="dg" title="SEQ" class="easyui-datagrid" style="width:100%;"
@@ -107,7 +110,6 @@ var branchcode;
 		alert("testtttt..... click");
 	}
 
-/* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
 		var jsonurl = 'seqListAll.htm?'+
 'LastLogIn='+$('#LastLogIn').val()+"&"+'Keterangan='+$('#Keterangan').val()+"&"+'SeqName='+$('#SeqName').val()+"&"+'SeqNum='+$('#SeqNum').val()+"&"+'Tarif='+$('#Tarif').val()+"&"+"userId="+"${userId}";
@@ -144,7 +146,6 @@ var branchcode;
 		url = 'seqAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
-/* ---- seqedit*/
 	function doEdit() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
@@ -156,8 +157,10 @@ var branchcode;
 			onEdit();
 		}
 	}
-/*-- seqtampil*/
 	function doShow() {
+		doEdit();
+		onShow();
+	/*
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
 		if (row) {
@@ -167,6 +170,7 @@ var branchcode;
 			url = 'seqEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
+		*/
 	}
 	
 	function doDelete() {
@@ -177,7 +181,6 @@ var branchcode;
 						if (r) {
 							$.post('seqDelete.htm', {
 							                    seqName : row.seqName,
-                    seqNum : row.seqNum,
 							userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
@@ -218,16 +221,7 @@ var branchcode;
 	
 	
 	/* ================TAMBAHAN=================*/
-	//untuk mengisi combobox kode cabang keseluruhan dengan default value sesuai parameter
-	function addComboBranch() {
-		$('#branchCode').combobox({
-			url : 'comboAllBranch.htm?param=' + branchcode,
-			valueField : 'id',
-			textField : 'text',
-			panelHeight:'auto'
-		});
-		branchcode = '';
-	}
+
 	
 	/*Untuk membuat menjadi huruf besar semua */
 	function upperCase(t) {
@@ -238,44 +232,45 @@ var branchcode;
 	
 	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		//list button
-		//$('#userId').textbox('readonly', true);
-                    $('#lastLogIn').textbox('readonly', true);
+		                    $('#lastLogIn').textbox('readonly', true);
                     $('#keterangan').textbox('readonly', true);
                     $('#seqName').textbox('readonly', true);
                     $('#seqNum').textbox('readonly', true);
                     $('#tarif').textbox('readonly', true);
 
-		//form button
 		$('#btnSave').linkbutton('disable');
 	}
 	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		//list button
-		//$('#userId').textbox('readonly', false);		
-                    $('#lastLogIn').textbox('readonly', false);
+		                    $('#lastLogIn').textbox('readonly', false);
                     $('#keterangan').textbox('readonly', false);
                     $('#seqName').textbox('readonly', false);
                     $('#seqNum').textbox('readonly', false);
                     $('#tarif').textbox('readonly', false);
 		
-		//form button
 		$('#btnSave').linkbutton('enable');
 	}
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		//list button
-		//$('#userId').textbox('readonly', true);	
-                    $('#lastLogIn').textbox('readonly', true);
+		                    $('#lastLogIn').textbox('readonly', true);
                     $('#keterangan').textbox('readonly', true);
                     $('#seqName').textbox('readonly', true);
                     $('#seqNum').textbox('readonly', true);
                     $('#tarif').textbox('readonly', true);
 	
-		//form button
 		$('#btnSave').linkbutton('enable');
+	}
+/*===============================================REPORT==================================*/
+function doCetak(){
+		var repUrl = 'seqReport.htm?'+
+					  'LastLogIn='+$('#LastLogIn').val()+"&"+'Keterangan='+$('#Keterangan').val()+"&"+'SeqName='+$('#SeqName').val()+"&"+'SeqNum='+$('#SeqNum').val()+"&"+'Tarif='+$('#Tarif').val()+"&"+"userId="+"${userId}";;
+		var s = window.location.search.replace("?", "");
+		window.open(repUrl+"&"+s,
+				"_blank", 
+				"toolbar=no, scrollbars=yes, resizable=yes,	directories=no, location=no, \
+				 menubar=no, status=no,'");
 	}
 
 	

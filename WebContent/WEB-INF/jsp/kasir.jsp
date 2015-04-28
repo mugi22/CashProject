@@ -29,12 +29,11 @@ jspTemplate
 
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
-            <form name="FREG" id="formCari" method="post" action="#"  >                 
+            <form name="FREG" id="formCari" method="post" action="#"  >       
+             		<label>UserId</label> : <input name="UserId" type="text" id="UserId" size="30" maxlength="30"><br>
+              		<label>BranchCode</label> : <input name="BranchCode" type="text" id="BranchCode" size="30" maxlength="30"><br> 
+              		<label>Norek</label> : <input name="Norek" type="text" id="Norek" size="30" maxlength="30"><br>         
                     <label>Status</label> : <input name="Status" type="text" id="Status" size="30" maxlength="30"><br>
-                    <label>BranchCode</label> : <input name="BranchCode" type="text" id="BranchCode" size="30" maxlength="30"><br>
-                    <label>UserId</label> : <input name="UserId" type="text" id="UserId" size="30" maxlength="30"><br>
-                    <label>Norek</label> : <input name="Norek" type="text" id="Norek" size="30" maxlength="30"><br>
-
                 <div id="btn">     
                     <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
                     <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
@@ -53,16 +52,17 @@ jspTemplate
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-                    <th field="status" width="100"sortable="true">Status</th> 
-                    <th field="limitAmount" width="100"sortable="true"data-options="formatter:function(value, row){return accounting.formatNumber(row.tarif,0,'.',','); }"align="right">LimitAmount</th> 
+                	<th field="userId" width="100"sortable="true">User Id</th> 
+                	<th field="userName" width="100"sortable="true">Name</th>
+                	<th field="branchCode" width="100"sortable="true">BranchCode</th>
+                	<th field="branchName" width="100"sortable="true">Branch Name</th>
+                	<th field="norek" width="100"sortable="true">Norek</th>
+                   	<th field="status" width="100"sortable="true">Status</th> 
+                    <th field="LimitAmount" width="100"sortable="true"data-options="formatter:function(value, row){return accounting.formatNumber(row.tarif,0,'.',','); }"align="right">LimitAmount</th> 
                     <th field="branchMapping" width="100"sortable="true">BranchMapping</th> 
                     <th field="ccy" width="100"sortable="true">Ccy</th> 
                     <th field="amount" width="100"sortable="true"data-options="formatter:function(value, row){return accounting.formatNumber(row.tarif,0,'.',','); }"align="right">Amount</th> 
-                    <th field="branchCode" width="100"sortable="true">BranchCode</th> 
-                    <th field="userId" width="100"sortable="true">UserId</th> 
-                    <th field="norek" width="100"sortable="true">Norek</th> 
-                     
-                </tr>
+                 </tr>
             </thead>
         </table>        
         <div id="toolbar">
@@ -78,15 +78,21 @@ jspTemplate
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
 		<div class="ftitle">KASIR</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>Status</label> :<input name="status"	class="easyui-textbox" required="false" id="status">	</div>
-                    <div class="fitem">	<label>LimitAmount</label> :<input name="limitAmount"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" required="false" id="limitAmount">	</div>
-                    <div class="fitem">	<label>BranchMapping</label> :<input name="branchMapping"	class="easyui-textbox" required="false" id="branchMapping">	</div>
-                    <div class="fitem">	<label>Ccy</label> :<input name="ccy"	class="easyui-textbox" required="false" id="ccy">	</div>
-                    <div class="fitem">	<label>Amount</label> :<input name="amount"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" required="false" id="amount">	</div>
-                    <div class="fitem">	<label>BranchCode</label> :<input name="branchCode"	class="easyui-textbox" required="false" id="branchCode">	</div>
-                    <div class="fitem">	<label>UserId</label> :<input name="userId"	class="easyui-textbox" required="false" id="userId">	</div>
-                    <div class="fitem">	<label>Norek</label> :<input name="norek"	class="easyui-textbox" required="false" id="norek">	</div>
-			
+					 <div class="fitem">	
+					 	<label>User Id</label> :<input name="userId"	class="easyui-textbox" required="true" id="userId">	
+					 							<input name="userName"	class="easyui-textbox" id="userName">	
+					 </div>
+					 <div class="fitem"><label>Branch Code</label> :<input name="branchCode"	class="easyui-textbox" required="true" id="branchCode">	
+					 							<input name="branchName"	class="easyui-textbox"  id="branchName">	
+					 </div>
+					 <div class="fitem">	<label>No Rekening</label> :<input name="norek"	class="easyui-textbox" required="false" id="true">	</div>
+                    <div class="fitem">	<label>Status</label> :<input name="status"	class="easyui-textbox"  id="status">	</div>
+                    <div class="fitem">	<label>Limit Amount</label> :<input name="limitAmount"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" id="limitAmount">	</div>
+                    <div class="fitem">	<label>Branch Mapping</label> :<input name="branchMapping"	class="easyui-textbox"  id="branchMapping">	</div>
+                    <div class="fitem">	<label>CCY</label> :<input name="ccy"	class="easyui-textbox"  id="ccy">	</div>
+                    <div class="fitem">	<label>Amount</label> :<input name="amount"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','"  id="amount">	</div>
+                    
+                    
 		</form>
 	</div>
 	<div id="dlg-buttons">
@@ -103,16 +109,28 @@ jspTemplate
 <script>
 var url;
 var branchcode;
+
+function test(t) {
+	t.textbox('textbox').bind('blur', function(e) {
+		/*$(this).val($(this).val().toUpperCase());*/
+		//alert("oooooooooooooooooo ............");
+	});
+}
+
+
+
+
+
 	$("document").ready(function() {
 		$("#btnAdd").linkbutton('${btnAdd}');
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
 		$("#btnShow").linkbutton('${btnShow}');		
+		$('#userName').textbox('readonly', true);
+		$('#branchName').textbox('readonly', true);
 	});
 
-	function test() {
-		alert("testtttt..... click");
-	}
+	
 
 	function retrieve() {		
 		var jsonurl = 'kasirListAll.htm?'+
@@ -149,6 +167,7 @@ var branchcode;
 		$('#fm').form('clear');
 		url = 'kasirAdd.htm?'+"userId="+"${userId}";
 		onAdd();
+	    test($('#userId'));
 	}
 	function doEdit() {
 		$('#fm').form('clear');
@@ -232,7 +251,7 @@ var branchcode;
 	
 	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		                    $('#status').textbox('readonly', true);
+		            $('#status').textbox('readonly', true);
                     $('#limitAmount').textbox('readonly', true);
                     $('#branchMapping').textbox('readonly', true);
                     $('#ccy').textbox('readonly', true);
@@ -246,7 +265,7 @@ var branchcode;
 	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		                    $('#status').textbox('readonly', false);
+		            $('#status').textbox('readonly', false);
                     $('#limitAmount').textbox('readonly', false);
                     $('#branchMapping').textbox('readonly', false);
                     $('#ccy').textbox('readonly', false);
@@ -260,14 +279,14 @@ var branchcode;
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		                    $('#status').textbox('readonly', true);
-                    $('#limitAmount').textbox('readonly', true);
-                    $('#branchMapping').textbox('readonly', true);
-                    $('#ccy').textbox('readonly', true);
-                    $('#amount').textbox('readonly', true);
+		            $('#status').textbox('readonly', false);
+                    $('#limitAmount').textbox('readonly', false);
+                    $('#branchMapping').textbox('readonly', false);
+                    $('#ccy').textbox('readonly', false);
+                    $('#amount').textbox('readonly', false);
                     $('#branchCode').textbox('readonly', true);
                     $('#userId').textbox('readonly', true);
-                    $('#norek').textbox('readonly', true);
+                    $('#norek').textbox('readonly', false);
 	
 		$('#btnSave').linkbutton('enable');
 	}

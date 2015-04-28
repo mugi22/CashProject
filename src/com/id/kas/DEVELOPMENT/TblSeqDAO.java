@@ -41,11 +41,10 @@ public class TblSeqDAO {
 		session.update(tblseq);
 	}
 //====================================================================	
-	public TblSeq getById(String  seqName,long  seqNum){
+	public TblSeq getById(String  seqName){
 		Criteria criteria =null;
 		criteria = session.createCriteria(TblSeq.class);
                     if (seqName.length()>0){criteria.add(Restrictions.eq("seqName", seqName)); 	}
-                    if (seqNum>0){criteria.add(Restrictions.eq("seqNum", seqNum)); 	}
 
 		return (TblSeq)  criteria.uniqueResult();//session.get(TblSeq.class, id);
 	}
@@ -100,7 +99,12 @@ public class TblSeqDAO {
 		return map;
 	}
 
-
+//==============================REPORT====================================
+/** Retrieve by kriteria tanpa batasan row */
+	public List<TblSeq> getBy(Date LastLogIn,String Keterangan,String SeqName,long SeqNum,BigDecimal Tarif  ){
+		Criteria criteria =getCriteria(LastLogIn,Keterangan,SeqName,SeqNum,Tarif);
+		return (List<TblSeq>) criteria.list();
+	}
 
 
 }

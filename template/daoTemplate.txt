@@ -3,7 +3,7 @@
 *daoTemplate
 */
 
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.pojo.dacen;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
-import com.id.kas.pojo.XXXpojo;
+import com.id.kas.pojo.dacen.XXXpojo;
 
 public class XXXpojoDAO {
 	private Session session;
@@ -90,7 +90,12 @@ XXXgetCriteria
 		return map;
 	}
 
-
+//==============================REPORT====================================
+/** Retrieve by kriteria tanpa batasan row */
+	public List<XXXpojo> getBy(XXXgetCriParam  ){
+		Criteria criteria =getCriteria(XXX2getCriParam);
+		return (List<XXXpojo>) criteria.list();
+	}
 
 
 }

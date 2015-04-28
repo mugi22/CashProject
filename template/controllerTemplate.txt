@@ -3,7 +3,7 @@
 *controllerTemplate
 */
 
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.controller.dacen;
 import java.math.BigDecimal;
 
 import java.text.SimpleDateFormat;
@@ -27,8 +27,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
-import com.id.kas.DEVELOPMENT.XXtbl;//harap Sesuaikan
-
+import com.id.kas.pojo.dacen.XXtbl;//harap Sesuaikan
+import com.id.kas.pojo.dao.dacen.XXtblDAO;
 
 import com.id.kas.util.AbstractListScreen;
 
@@ -230,5 +230,56 @@ XXXByIdParam
 //		return x;
 //	}
 
+//===============================REPORT====================================================
+
+	@RequestMapping(value="/XXXmapReport.htm",method=RequestMethod.GET)
+	 public String doGetXXXmapReport(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
+	 	super.doGet(model, session, reg,res);
+	 	return "/report/XXXmapReport";
+	}
+	
+	
+		 @RequestMapping(value="/XXXmapDataReport.htm", method=RequestMethod.GET)
+     public @ResponseBody String XXXmapDataReport(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+XXXStringParam		 
+         String userId = reg.getParameter("userId");
+         String ses = (String) session.getAttribute("session"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+userId);
+  
+         model.put("session", ses);
+         if(!cekValidSession(session,userId)){
+        	 return "[]";
+         }
+         String result="";
+          Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
+         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+         Session sess = null;
+         try {
+        	long rowCount=0;
+			sess = HibernateUtil.getSessionFactory().openSession();
+			XXtblDAO dao = new XXtblDAO(sess);
+			List<XXtbl> l = new ArrayList<XXtbl>();
+				l = dao.getBy(XXXCritParam);
+			sess.close();
+            result = gson.toJson(l);
+            System.out.println(result);
+            
+            /**  BILA ADA PERUBAHAN DATA JSON
+            String x = changeJson(h, sess);
+            sess.close();
+        	result ="{"+'"'+"total"+'"'+":"+h.get("total")+","+'"'+"rows"+'"'+":["+x+']'+'}';
+            */
+            
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}         
+         return result;
+     }
+	
+	
+	
+	
 	
 }

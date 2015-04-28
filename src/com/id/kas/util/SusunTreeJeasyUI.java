@@ -58,15 +58,15 @@ public class SusunTreeJeasyUI {
 
             if(tblmenu.getHaveChild() =='0'){
             	//tambahkan parameter menu_id//            	prililedge
-            	sb.append(jarak+"<li"+" id='"+tblmenu.getMenuPage()+"?param="+priv+"&"+"param2="+this.sKey+"&userId="+this.user+"'"+">");
+            	sb.append(jarak+"<li"+" id='"+tblmenu.getMenuPage()+"?param="+priv+"&"+"param2="+this.sKey+"&UID="+this.user+"'"+">");
                 x=null;
                 sb.append(tblmenu.getMenuName());
                 SusunTreeJeasyUI susunTree = new SusunTreeJeasyUI();
                 susunTree(session,BigInteger.valueOf(tblmenu.getMenuId().longValue()),jarak,l);
             }else{
-                sb.append(jarak+"<li "+" id='"+"utamaMain.htm"+"?param="+priv+"&"+"param2="+this.sKey+"&userId="+this.user+"'"+"><span>");
+                sb.append(jarak+"<li "+" id='"+"utamaMain.htm"+"?param="+priv+"&"+"param2="+this.sKey+"&UID="+this.user+"'"+"><span>");
                 sb.append(tblmenu.getMenuName()+"</span>");
-                sb.append("\r\n"+jarak+"<ul"+" id='"+"utamaMain.htm"+"?param="+priv+"&"+"param2="+this.sKey+"&userId="+this.user+"'"+">\r\n");
+                sb.append("\r\n"+jarak+"<ul"+" id='"+"utamaMain.htm"+"?param="+priv+"&"+"param2="+this.sKey+"&UID="+this.user+"'"+">\r\n");
                 SusunTreeJeasyUI susunTree = new SusunTreeJeasyUI();
                 susunTree(session,BigInteger.valueOf(tblmenu.getMenuId().longValue()),jarak,l);           
                 sb.append(jarak+"</ul>\r\n");

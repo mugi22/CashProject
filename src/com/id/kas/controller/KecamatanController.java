@@ -3,7 +3,7 @@
 *controllerTemplate
 */
 
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.controller;
 import java.math.BigDecimal;
 
 import java.text.SimpleDateFormat;
@@ -26,21 +26,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
-import com.id.kas.pojo.TblKabupaten;
 import com.id.kas.pojo.TblUser;
-//import com.id.kas.pojo.TblKabupaten;//harap Sesuaikan
+import com.id.kas.pojo.TblKecamatan;//harap Sesuaikan
+import com.id.kas.pojo.dao.TblKecamatanDAO;
+
+
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class KabupatenController  extends AbstractListScreen{
-	@RequestMapping(value="/kabupaten.htm",method=RequestMethod.GET)
+public class KecamatanController  extends AbstractListScreen{
+	@RequestMapping(value="/kecamatan.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
 	 	return super.doGet(model, session, reg,res);
 	}
 	
 	
-	 @RequestMapping(value="/kabupaten.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/kecamatan.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
 		 super.doPost(model, session,reg,res);
 		return getView();		 
@@ -49,20 +51,19 @@ public class KabupatenController  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "kabupaten";
+		return "kecamatan";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/kabupatenListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String kabupatenListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                   String KodeProvinsi=reg.getParameter("KodeProvinsi");
+	 @RequestMapping(value="/kecamatanListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String kecamatanListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
                     String KodeKabupaten=reg.getParameter("KodeKabupaten");
-                    String NamaKabupaten=reg.getParameter("NamaKabupaten");		 
-                    System.out.println("KodeProvinsi "+KodeProvinsi);
+                    String NamaKecamatan=reg.getParameter("NamaKecamatan");
+                    String KodeKecamatan=reg.getParameter("KodeKecamatan");		 
          String userId = reg.getParameter("userId");
          String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
-        System.out.println("KodeProvinsi "+KodeProvinsi);
+  
          model.put("session", ses);
          if(!cekValidSession(session,userId)){
         	 return "[]";
@@ -76,10 +77,10 @@ public class KabupatenController  extends AbstractListScreen{
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblKabupatenDAO dao = new TblKabupatenDAO(sess);
+			TblKecamatanDAO dao = new TblKecamatanDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<TblKabupaten> l = new ArrayList<TblKabupaten>();
-				h = dao.getByPerPage(KodeProvinsi,KodeKabupaten,NamaKabupaten,loffset, row);
+			List<TblKecamatan> l = new ArrayList<TblKecamatan>();
+				h = dao.getByPerPage(KodeKabupaten,NamaKecamatan,KodeKecamatan,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -99,7 +100,7 @@ public class KabupatenController  extends AbstractListScreen{
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/kabupatenAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/kecamatanAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -115,11 +116,11 @@ public class KabupatenController  extends AbstractListScreen{
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblKabupatenDAO dao = new TblKabupatenDAO(sess);
-               TblKabupaten tbl = new TblKabupaten();
-                    tbl.setKodeProvinsi(reg.getParameter("kodeProvinsi"));
+               TblKecamatanDAO dao = new TblKecamatanDAO(sess);
+               TblKecamatan tbl = new TblKecamatan();
                     tbl.setKodeKabupaten(reg.getParameter("kodeKabupaten"));
-                    tbl.setNamaKabupaten(reg.getParameter("namaKabupaten"));
+                    tbl.setNamaKecamatan(reg.getParameter("namaKecamatan"));
+                    tbl.setKodeKecamatan(reg.getParameter("kodeKecamatan"));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
@@ -139,10 +140,10 @@ public class KabupatenController  extends AbstractListScreen{
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/kabupatenEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String kabupatenEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String KodeProvinsi=reg.getParameter("kodeProvinsi");
+	 @RequestMapping(value="/kecamatanEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String kecamatanEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
                     String KodeKabupaten=reg.getParameter("kodeKabupaten");
+                    String KodeKecamatan=reg.getParameter("kodeKecamatan");
 		 
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -158,12 +159,12 @@ public class KabupatenController  extends AbstractListScreen{
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblKabupatenDAO dao = new TblKabupatenDAO(sess);
-               TblKabupaten tbl = dao.getById(KodeProvinsi,KodeKabupaten);
+               TblKecamatanDAO dao = new TblKecamatanDAO(sess);
+               TblKecamatan tbl = dao.getById(KodeKabupaten,KodeKecamatan);
                 String tblOld = gson.toJson(tbl);
-                    tbl.setKodeProvinsi(reg.getParameter("kodeProvinsi"));
                     tbl.setKodeKabupaten(reg.getParameter("kodeKabupaten"));
-                    tbl.setNamaKabupaten(reg.getParameter("namaKabupaten"));
+                    tbl.setNamaKecamatan(reg.getParameter("namaKecamatan"));
+                    tbl.setKodeKecamatan(reg.getParameter("kodeKecamatan"));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -182,10 +183,10 @@ public class KabupatenController  extends AbstractListScreen{
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/kabupatenDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String kabupatenDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String KodeProvinsi=reg.getParameter("kodeProvinsi");
+	 @RequestMapping(value="/kecamatanDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String kecamatanDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
                     String KodeKabupaten=reg.getParameter("kodeKabupaten");
+                    String KodeKecamatan=reg.getParameter("kodeKecamatan");
 	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 String userId = reg.getParameter("userId");
@@ -201,8 +202,8 @@ public class KabupatenController  extends AbstractListScreen{
          Gson gson = new Gson();
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblKabupatenDAO dao = new TblKabupatenDAO(sess);
-               TblKabupaten tbl = dao.getById(KodeProvinsi,KodeKabupaten);
+               TblKecamatanDAO dao = new TblKecamatanDAO(sess);
+               TblKecamatan tbl = dao.getById(KodeKabupaten,KodeKecamatan);
                String tblDel = gson.toJson(tbl);
                sess.beginTransaction();
                dao.delete(tbl);

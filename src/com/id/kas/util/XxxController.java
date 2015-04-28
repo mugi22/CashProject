@@ -89,11 +89,17 @@ public class XxxController {
 		String sFileDAO="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+daoName+"DAO.java"; //DAO
 		String sFileController="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+conName+".java";//CONTROLER
 		String sFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\"+jspName+".jsp"; //JSP
+		String sReportFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\report\\"+jspName+"Report.jsp"; //JSP
+
 		String sFile;
 		sFile=sTemplate+"jspTemplate.txt";//baca template
 		List<String> l = new ArrayList<String>();
 		String strFile = (tem.readFile(sFile,lForm,lCol,lList,jspName,lSearch,lIds,lTipes));
 		tem.createFile(sFileCreate, strFile);
+//		JSP REPORT		
+		sFile=sTemplate+"reportJSP.txt";//baca template
+		String strReportFile = (tem.readFileReportJsp(sFile,lForm,lCol,lList,jspName,lSearch,lIds,lTipes));
+		tem.createFile(sReportFileCreate, strReportFile);
 		
 		
 //		COTROLLER	

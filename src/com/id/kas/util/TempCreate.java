@@ -201,7 +201,55 @@ public class TempCreate {
 			}
 	
 
-	
+	//REPORT JSP
+		public String readFileReportJsp(String s,List<String> lForm,List<String> lCol,List<String> lList,String jspName,List<String> lSearch,List<String>  lIds,List<String> lTipes){
+			StringBuffer sb = new StringBuffer();
+			BufferedReader br = null;
+			try {
+				String sCurrentLine;
+				br = new BufferedReader(new FileReader(s));
+				while ((sCurrentLine = br.readLine()) != null) {
+					String line = sCurrentLine;
+					if (sCurrentLine.contains("XXXDatafield")){
+						StringBuffer sbField = new StringBuffer();
+						int i =0;
+						for(String t :lList){						
+							sbField.append(j1+"<th"+" style="+d+"font-weight:bold"+" align="+d+"center"+d+" class="+d+"cfg_header"+d+" >"+lCol.get(i)+"</th> "+"\n");
+							i++;
+						}					
+						String z = line.replaceAll("XXXDatafield", Util.firstLowerr(sbField.toString()));
+						line =z;
+					}
+					if (sCurrentLine.contains("XXXjsonfield")){
+						StringBuffer sbField = new StringBuffer();
+						//"<td>"+ value.kodeKelompok + "</td>"+
+						int i =0;
+						for(String t :lList){						
+							sbField.append("        "+d+"<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +d+" + "+" value."+Util.firstLowerr(lCol.get(i))+" + "+d+"</font></div></td>"+d+"+\n");
+							i++;
+						}					
+						String z = line.replaceAll("XXXjsonfield", Util.firstLowerr(sbField.toString()));
+						line =z;
+					}
+					
+					
+					
+					//XXXRepJSP
+					if (sCurrentLine.contains("XXXRepJSP")){
+						StringBuffer sbField = new StringBuffer();
+						String z = line.replaceAll("XXXRepJSP", jspName);
+						line =z;
+					}
+					
+					
+					sb.append(line+"\n");	
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			return sb.toString();
+		}	
+			
 	
 	
 	

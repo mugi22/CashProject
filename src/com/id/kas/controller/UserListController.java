@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dframework.jpos.security.SecurityUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.id.kas.DEVELOPMENT.TblKabupatenDAO;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblKabupaten;
 import com.id.kas.pojo.TblPriviledge;
 import com.id.kas.pojo.TblUser;
 import com.id.kas.pojo.TblUserGroup;
+import com.id.kas.pojo.dao.TblKabupatenDAO;
 import com.id.kas.pojo.dao.TblUserDAO;
 import com.id.kas.util.AbstractListScreen;
 @Controller

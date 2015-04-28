@@ -210,15 +210,13 @@ function doAmbil(){ //ambil key dari row yang dipilih/klik
 		upperCase($('#namax'));
 		upperCase($('#userId'));
 		branchcode = ''; //combobox tidak ada default
-		addComboBranch();
-		addComboKanwil();
-		
+		addComboBranch();//dibuat dulu combonya
+		addComboKanwil();//baru combonya diisi		
 		onAdd();
 	}
 	
 
 	function addComboBranch(branchcode) {
-	//alert("branchcode "+branchcode);
 		$('#branchCodeAll').combobox({
 			url : 'comboAllBranch.htm?param=' + branchcode,
 			valueField : 'id',
@@ -273,7 +271,7 @@ function addComboKanwil(selectedValue,unit) {
 		textField : 'text',
 		panelHeight:'auto',
 		onSelect: function(rec) {	
-            //alert('kode kanwil   --->'+$('#branchCodeKanwil').combobox('getValue')+"unit  "+unit);
+            /*alert('kode kanwil   --->'+$('#branchCodeKanwil').combobox('getValue')+"unit  "+unit);*/
 			$('#branchCodeAll').combobox('clear');
 		     urlk = 'comboAllBranch.htm?param='+$('#branchCodeKanwil').combobox('getValue')+"&selected="+unit;//11875
 	         $('#branchCodeAll').combobox('reload', urlk);
@@ -283,6 +281,8 @@ function addComboKanwil(selectedValue,unit) {
 }
 
 	
+/*
+ * 
 function addComboByParent(parent) {	
 	$('#branchCodeKanwil').combobox({
 		url : 'comboAllBranch.htm?param=' + parent,
@@ -298,7 +298,7 @@ function addComboByParent(parent) {
 	branchcode = '';
 }	
 	
-	
+ */	
 	
 	
 	
