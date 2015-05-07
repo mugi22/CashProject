@@ -1,15 +1,15 @@
    
-            #formCari { margin:0 auto;width:500px;background-color:#CCCCCC;padding:10px;}    
+            #formCari { margin:0 auto;width:80%;background-color:#CCCCCC;padding:5px;}    
             h1 { padding:5px;margin:10px;text-align:center }     
             form label { float:left; width:100px;}     
             form br { clear:left;}     
-            #btn { margin:10px; text-align:center;padding:5px; } 
+            #btn { /*margin:10px;*/ text-align:center;margin-top: 5px;/*padding:5px; */} 
 
             #div2{
                 width:100%;	
                 position:fixed; top:0; left:0;
                 background-color:#66FFFF;
-                margin: 0 auto;
+                /*margin: 0 auto;*/
                 position:relative;
                 padding-bottom: 5px;
                 padding-top: 5px;

@@ -28,6 +28,9 @@ import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblSeq;
 import com.id.kas.pojo.TblUser;
+//import com.id.kas.pojo.dacen.TblSeq;//harap Sesuaikan
+//import com.id.kas.pojo.dao.dacen.TblSeqDAO;
+
 import com.id.kas.util.AbstractListScreen;
 
 
@@ -35,9 +38,6 @@ import com.id.kas.util.AbstractListScreen;
 public class SeqController  extends AbstractListScreen{
 	@RequestMapping(value="/seq.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
-		 System.out.println("Mulai     : "+new Date());			
-//      
-
 	 	return super.doGet(model, session, reg,res);
 	}
 	

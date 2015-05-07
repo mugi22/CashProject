@@ -9,33 +9,27 @@ jspTemplate
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
-   <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
-        <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
-        <link rel="stylesheet" type="text/css" href="css/demo.css">
-        <link rel="stylesheet" type="text/css" href="css/color.css">
-        <link rel="stylesheet" type="text/css" href="css/searchcss.css">     
-        
-        <script type="text/javascript" src="css/jquery-1.11.2.js"></script>
-        <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
-        <script type="text/javascript" src="css/formater.js"></script>
-		<script type="text/javascript" src="css/accounting.min.js"></script>
-		<script type="text/javascript" src="css/myalert.js"></script>
-		<script type="text/javascript" src="css/my.js"></script>
-
+<%@ include file="include.jsp" %>  
 <title>User</title>
 </head>
 <body>
 
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
-            <form name="FREG" id="formCari" method="post" action="#"  >                 
+            <form name="FREG" id="formCari" method="post" action="#"  >   
+            <table align="center">  	                       
 XXXsearch
-                <div id="btn">     
-                    <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
-                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >    
-                    <input type="reset" name="btnCetak" id="btnCetak" value="Cetak" onclick="doCetak()" >  
-                </div>
+				 <tr>
+	            	<td colspan="1">
+	                <div id="btn">     
+	                    <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
+	                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >    
+	                    <input type="reset" name="btnCetak" id="btnCetak" value="Cetak" onclick="doCetak()" >  
+	                </div>
+            	</td>
+	            	
+	            </tr>  
+            </table>  
             </form> 
             <div id="result"></div>
         </div>

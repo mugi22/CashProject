@@ -18,7 +18,7 @@
 <link rel="stylesheet" type="text/css"
 	href="css/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="../demo.css">
+<link rel="stylesheet" type="text/css" href="css/demo.css">
 <script type="text/javascript" src="css/jquery.min.js"></script>
 <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
 
@@ -71,15 +71,31 @@ $("document").ready(function(){
 });
 $('#tt').tree({
 	onClick: function(node){
+		//$.messager.progress();
 		//alert(node.id);  // alert node text property when clicked
-		$('#iframe').attr('src',node.id);
-		$('#cc').layout('panel', 'center').panel('setTitle', node.text);
+		$.messager.progress({  title:'Your Title',  msg:'Processing, Please Wait'});
+		//$.when(callMenu(node)).done(function(){call2();});
+		callMenu(node).done(call2());
 	}
+	
 });
 
+
+function callMenu(node){
+	var r = $.Deferred();
+	$('#iframe').attr('src',node.id);
+	$('#cc').layout('panel', 'center').panel('setTitle', node.text);	
+	r.resolve();
+	return r;
+}
+
+function call2(){
+	$.messager.progress("close");
+}
 function test(){
 	alert("test");
-	$('#cc').layout('panel', 'center').panel('setTitle', 'abc');
+	$.messager.progress('close');
+	//$('#cc').layout('panel', 'center').panel('setTitle', 'abc');
 }
 
 </script>

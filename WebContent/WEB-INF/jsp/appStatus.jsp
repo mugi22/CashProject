@@ -3,17 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
- <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
-        <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
-        <link rel="stylesheet" type="text/css" href="css/demo.css">
-        <link rel="stylesheet" type="text/css" href="css/color.css">
-        <link rel="stylesheet" type="text/css" href="css/searchcss.css">     
-        
-        <script type="text/javascript" src="css/jquery-1.11.2.js"></script>
-        <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
-        <script type="text/javascript" src="css/formater.js"></script>
-
-		<script type="text/javascript" src="css/myalert.js"></script>
+ <%@ include file="include.jsp" %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>

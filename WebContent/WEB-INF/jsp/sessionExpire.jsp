@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<%@ include file="include.jsp" %>
 <title>Session Expired</title>
 </head>
 <body>

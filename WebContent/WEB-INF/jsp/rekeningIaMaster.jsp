@@ -10,35 +10,44 @@ jspTemplate
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-   <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
-        <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
-        <link rel="stylesheet" type="text/css" href="css/demo.css">
-        <link rel="stylesheet" type="text/css" href="css/color.css">
-        <link rel="stylesheet" type="text/css" href="css/searchcss.css">     
-        
-        <script type="text/javascript" src="css/jquery-1.11.2.js"></script>
-        <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
-        <script type="text/javascript" src="css/formater.js"></script>
-		<script type="text/javascript" src="css/accounting.min.js"></script>
-		<script type="text/javascript" src="css/myalert.js"></script>
-		 <script type="text/javascript" src="css/my.js"></script>
-
+ <%@ include file="include.jsp" %>
 <title>User</title>
 </head>
 <body>
 
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
-            <form name="FREG" id="formCari" method="post" action="#"  >                 
-                    <label>Description</label> : <input name="Description" type="text" id="Description" size="30" maxlength="30"><br>
-                    <label>NoCoa</label> : <input name="NoCoa" type="text" id="NoCoa" size="30" maxlength="30"><br>
-                    <label>NoRek</label> : <input name="NoRek" type="text" id="NoRek" size="30" maxlength="30"><br>
-                    <label>SaldoNormal</label> : <input name="SaldoNormal" type="text" id="SaldoNormal" size="30" maxlength="30"><br>
-
-                <div id="btn">     
-                    <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
-                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
-                </div>
+            <form name="FREG" id="formCari" method="post" action="#"  >    
+            <table align="center">  
+	            <tr>
+	            	<td>
+	            		<label>Description</label> : <input name="Description" type="text" id="Description" size="30" maxlength="30"><br>
+	            	</td>
+	            	<td>
+	            		<label>NoCoa</label> : <input name="NoCoa" type="text" id="NoCoa" size="30" maxlength="30"><br>
+	            	</td>
+	            </tr>      
+                  <tr>
+	            	<td> 
+	            		<label>NoRek</label> : <input name="NoRek" type="text" id="NoRek" size="30" maxlength="30"><br>
+	            	</td>
+	            	<td>
+	            		<label>SaldoNormal</label> : <input name="SaldoNormal" type="text" id="SaldoNormal" size="30" maxlength="30"><br>
+	            	</td>
+	            </tr>    
+                 <tr>
+	            	<td colspan="2">
+			            <div id="btn">     
+		                    <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
+		                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >     
+		                </div>
+	            	</td>
+	            	
+	            </tr>     
+                   
+                    
+			</table>     
+                
             </form> 
             <div id="result"></div>
         </div>

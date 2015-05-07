@@ -50,7 +50,9 @@ public class TempCreate {
 							int i = 0;
 							for(String t :lSearch){
 								if(t.equals("Y")){
-                                 sbField.append(j1+"<label>"+Util.firstUpper(lCol.get(i))+"</label> : "+"<input name="+'"'+Util.firstUpper(lCol.get(i))+'"'+" type="+'"'+"text"+'"'+" id="+'"'+lCol.get(i)+'"'+" size="+'"'+"30"+'"'+" maxlength="+'"'+"30"+'"'+"><br>\n");
+                                 sbField.append(j1+"<tr><td><label>"+Util.firstUpper(lCol.get(i))+"</label> : "+"<input name="+'"'+
+                                                Util.firstUpper(lCol.get(i))+'"'+" type="+'"'+"text"+'"'+" id="+'"'+lCol.get(i)+'"'+" size="+'"'+"30"+'"'+
+                                                " maxlength="+'"'+"30"+'"'+"></td></tr>\n");
 								}
 							i++;
 							}

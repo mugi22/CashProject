@@ -9,38 +9,38 @@ jspTemplate
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
-   <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
-        <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
-        <link rel="stylesheet" type="text/css" href="css/demo.css">
-        <link rel="stylesheet" type="text/css" href="css/color.css">
-        <link rel="stylesheet" type="text/css" href="css/searchcss.css">     
-        
-        <script type="text/javascript" src="css/jquery-1.11.2.js"></script>
-        <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
-        <script type="text/javascript" src="css/formater.js"></script>
-		<script type="text/javascript" src="css/accounting.min.js"></script>
-		<script type="text/javascript" src="css/myalert.js"></script>
-		 <script type="text/javascript" src="css/my.js"></script>
-
+<%@ include file="include.jsp" %>  
 <title>User</title>
 </head>
-<body>
+<body onload="test()">
 
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
-            <form name="FREG" id="formCari" method="post" action="#"  >                 
-                    <label>LastLogIn</label> : <input name="LastLogIn" type="text" id="LastLogIn" size="30" maxlength="30"><br>
-                    <label>Keterangan</label> : <input name="Keterangan" type="text" id="Keterangan" size="30" maxlength="30"><br>
-                    <label>SeqName</label> : <input name="SeqName" type="text" id="SeqName" size="30" maxlength="30"><br>
-                    <label>SeqNum</label> : <input name="SeqNum" type="text" id="SeqNum" size="30" maxlength="30"><br>
-                    <label>Tarif</label> : <input name="Tarif" type="text" id="Tarif" size="30" maxlength="30"><br>
+            <form name="FREG" id="formCari" method="post" action="#"  >   
+            <table align="center">  	                       
+                    <tr>
+                    	<td><label>LastLogIn</label> : <input name="LastLogIn" type="text" id="LastLogIn" size="30" maxlength="30"></td>
+                    	<td><label>Keterangan</label> : <input name="Keterangan" type="text" id="Keterangan" size="30" maxlength="30"></td>
+                    </tr>
+                    <tr>
+                    	<td><label>SeqName</label> : <input name="SeqName" type="text" id="SeqName" size="30" maxlength="30"></td>
+                    	<td><label>SeqNum</label> : <input name="SeqNum" type="text" id="SeqNum" size="30" maxlength="30"></td>
+                    </tr>
+                    <tr>
+                    	<td><label>Tarif</label> : <input name="Tarif" type="text" id="Tarif" size="30" maxlength="30"></td>
+                    </tr>
 
-                <div id="btn">     
-                    <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
-                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >    
-                    <input type="reset" name="btnCetak" id="btnCetak" value="Cetak" onclick="doCetak()" >  
-                </div>
+				 <tr>
+	            	<td colspan="2">
+	                <div id="btn">     
+	                    <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
+	                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >    
+	                    <input type="reset" name="btnCetak" id="btnCetak" value="Cetak" onclick="doCetak()" >  
+	                </div>
+            	</td>
+	            	
+	            </tr>  
+            </table>  
             </form> 
             <div id="result"></div>
         </div>
@@ -50,15 +50,14 @@ jspTemplate
 
 <!-- **********************TABLE RESULT************************************** -->
         <table id="dg" title="SEQ" class="easyui-datagrid" style="width:100%;"
-               toolbar="#toolbar" pagination="true"
-               data-options="total:2000,pageSize:10"
+               toolbar="#toolbar" pagination="true"  data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
                     <th field="lastLogIn" width="100"sortable="true">LastLogIn</th> 
                     <th field="keterangan" width="100"sortable="true">Keterangan</th> 
                     <th field="seqName" width="100"sortable="true">SeqName</th> 
-                    <th field="seqNum" width="100"sortable="true"data-options="formatter:function(value, row){return accounting.formatNumber(row.tarif,0,'.',','); }"align="right">SeqNum</th> 
+                    <th field="seqNum" width="100"sortable="true"data-options="formatter:function(value, row){return accounting.formatNumber(row.seqNum,0,'.',','); }"align="right">SeqNum</th> 
                     <th field="tarif" width="100"sortable="true"data-options="formatter:function(value, row){return accounting.formatNumber(row.tarif,0,'.',','); }"align="right">Tarif</th> 
                      
                 </tr>
@@ -77,11 +76,11 @@ jspTemplate
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
 		<div class="ftitle">SEQ</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>LastLogIn</label> :<input name="lastLogIn"	class="easyui-textbox" required="false" id="lastLogIn">	</div>
-                    <div class="fitem">	<label>Keterangan</label> :<input name="keterangan"	class="easyui-textbox" required="false" id="keterangan">	</div>
-                    <div class="fitem">	<label>SeqName</label> :<input name="seqName"	class="easyui-textbox" required="false" id="seqName">	</div>
-                    <div class="fitem">	<label>SeqNum</label> :<input name="seqNum"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" required="false" id="seqNum">	</div>
-                    <div class="fitem">	<label>Tarif</label> :<input name="tarif"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" required="false" id="tarif">	</div>
+                    <div class="fitem">	<label>LastLogIn</label> :<input name="lastLogIn"	class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" id="lastLogIn">	</div>
+                    <div class="fitem">	<label>Keterangan</label> :<input name="keterangan"	class="easyui-textbox" id="keterangan">	</div>
+                    <div class="fitem">	<label>SeqName</label> :<input name="seqName"	class="easyui-textbox" id="seqName">	</div>
+                    <div class="fitem">	<label>SeqNum</label> :<input name="seqNum"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" id="seqNum">	</div>
+                    <div class="fitem">	<label>Tarif</label> :<input name="tarif"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" id="tarif">	</div>
 			
 		</form>
 	</div>
@@ -100,15 +99,19 @@ jspTemplate
 var url;
 var branchcode;
 	$("document").ready(function() {
+		
 		$("#btnAdd").linkbutton('${btnAdd}');
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
 		$("#btnShow").linkbutton('${btnShow}');		
+		
 	});
 
-	function test() {
-		alert("testtttt..... click");
-	}
+	//function test() {
+		//alert("testtttt..... click");
+	//	$.messager.progress('close');
+		
+	//}
 
 	function retrieve() {		
 		var jsonurl = 'seqListAll.htm?'+
@@ -141,12 +144,14 @@ var branchcode;
 	/* ============FORM FUNCTION ========== seqtambah*/
 
 	function doAdd() { 
+		idRequired(true);
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
 		url = 'seqAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 	function doEdit() {
+		idRequired(false);
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
@@ -158,8 +163,10 @@ var branchcode;
 		}
 	}
 	function doShow() {
+		idRequired(false);
 		doEdit();
 		onShow();
+		$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 	/*
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
@@ -174,6 +181,7 @@ var branchcode;
 	}
 	
 	function doDelete() {
+		idRequired(false);
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
@@ -198,6 +206,7 @@ var branchcode;
 	}
 
 	function doSave() {
+	idRequired(false);
 		$('#fm').form('submit', {
 			url : url,
 			onSubmit : function() {
@@ -218,6 +227,16 @@ var branchcode;
 			}
 		});
 	}
+	
+	
+function idRequired(t){
+                    $('#seqName').textbox({   required: t});
+
+
+	/*$('#idJurnalTransaksi').textbox({   required: t			});
+	$('#jurnalId').textbox({   required: t	});
+	*/
+}	
 	
 	
 	/* ================TAMBAHAN=================*/
@@ -254,11 +273,11 @@ var branchcode;
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		                    $('#lastLogIn').textbox('readonly', true);
-                    $('#keterangan').textbox('readonly', true);
+		                    $('#lastLogIn').textbox('readonly', false);
+                    $('#keterangan').textbox('readonly', false);
                     $('#seqName').textbox('readonly', true);
-                    $('#seqNum').textbox('readonly', true);
-                    $('#tarif').textbox('readonly', true);
+                    $('#seqNum').textbox('readonly', false);
+                    $('#tarif').textbox('readonly', false);
 	
 		$('#btnSave').linkbutton('enable');
 	}
