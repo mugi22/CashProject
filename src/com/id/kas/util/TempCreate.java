@@ -28,6 +28,10 @@ public class TempCreate {
 
 	//JSP
 	public String readFile(String s,List<String> lForm,List<String> lCol,List<String> lList,String jspName,List<String> lSearch,List<String>  lIds,List<String> lTipes){
+		
+//		for(String v:lIds){
+//			System.out.println(" v : "+v);
+//		}
 		StringBuffer sb = new StringBuffer();
 		BufferedReader br = null;	
 				try {
@@ -77,7 +81,7 @@ public class TempCreate {
 								if(t.equals("Y")){
 									if(lTipes.get(i).equals("long")||lTipes.get(i).equals("BigDecimal")){
 										sbField.append(j1+"<th field="+'"'+Util.firstLowerr(lCol.get(i))+'"'+" width="+'"'+"100"+'"'+ "sortable="+'"'+"true"+'"'+
-												"data-options="+'"'+"formatter:function(value, row){return accounting.formatNumber(row.tarif,0,'.',','); }"+'"'+
+												"data-options="+'"'+"formatter:function(value, row){return accounting.formatNumber(row."+Util.firstLowerr(lCol.get(i))+",0,'.',','); }"+'"'+
 												"align="+'"'+"right"+'"'+">"+lCol.get(i)+"</th> "+"\n");
 									}else{
 									sbField.append(j1+"<th field="+'"'+Util.firstLowerr(lCol.get(i))+'"'+" width="+'"'+"100"+'"'+ "sortable="+'"'+"true"+'"'+">"+lCol.get(i)+"</th> "+"\n");
@@ -97,12 +101,16 @@ public class TempCreate {
 							for(String t :lForm){
 								if(t.equals("Y")){
 									if(lCol.get(i).equals("CreateDate")||lCol.get(i).equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
-									}else if(lTipes.get(i).equals("String")||lTipes.get(i).equals("Date")){
-										sbField.append(j1+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-textbox"+d+" required="+d+"false"+d+" id="+d+Util.firstLowerr(lCol.get(i))+d+">	</div>\n");
+									}else if(lTipes.get(i).equals("String")){
+										sbField.append(j1+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-textbox"+d+" id="+d+Util.firstLowerr(lCol.get(i))+d+">	</div>\n");
 									}else if(lTipes.get(i).equals("long")||lTipes.get(i).equals("BigDecimal")){
 										sbField.append(j1+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-numberbox"+d+
 												" "+"data-options="+'"'+"min:0,precision:0,groupSeparator:','"+'"'
-												+" required="+d+"false"+d+" id="+d+Util.firstLowerr(lCol.get(i))+d+">	</div>\n");
+												+" id="+d+Util.firstLowerr(lCol.get(i))+d+">	</div>\n");
+									}else if(lTipes.get(i).equals("Date")||lTipes.get(i).equals("date")){
+										sbField.append(j1+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-datebox"+d+
+												" "+"data-options="+'"'+"formatter:myformatter,parser:myparser"+'"'
+												+" id="+d+Util.firstLowerr(lCol.get(i))+d+">	</div>\n");
 									}
 								}
 								i++;
@@ -154,11 +162,12 @@ public class TempCreate {
 								if(lCol.get(i).equals("CreateDate")||lCol.get(i).equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
 								}else{
 									String z =j1+"\\$('#"+Util.firstLowerr(lCol.get(i))+"').textbox('readonly', false);"+"\n";
-									for(String k :lIds){
-										if(t.equals(k)){
+//									for(String k :lIds){
+										System.out.println("t   : "+t+" k :"+k+" lIds.get(i) "+lIds.get(i)); 
+										if(t.equals(/*k*/lIds.get(i))){											
 											z =j1+"\\$('#"+Util.firstLowerr(lCol.get(i))+"').textbox('readonly', true);"+"\n";
 										}
-									}
+//									}
 									sbField.append(z);
 								}	
 								i++;
@@ -186,7 +195,34 @@ public class TempCreate {
 							String z = line.replaceAll("XXXZ", jspName/*.toLowerCase()*/);
 							line =z;
 						}	
-						sb.append(line+"\n");						
+//						sb.append(line+"\n");
+						
+						
+						//XXXidRequired
+						if (sCurrentLine.contains("XXXREQ")){
+							StringBuffer sbField = new StringBuffer();
+							int i = 0;
+							for(String t :lForm){
+							if(t.equals("Y")){
+								if(lCol.get(i).equals("CreateDate")||lCol.get(i).equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
+								}else{
+									String x ="";//j1+"\\$('#"+Util.firstLowerr(lCol.get(i))+"').textbox('readonly', false);"+"\n";
+//									
+										System.out.println("ttttttt   : "+t+" kkkkkk :"+k+" lIds.get(i) "+lIds.get(i)); 
+										if(t.equals(lIds.get(i))){											
+											x =j1+"\\$('#"+Util.firstLowerr(lCol.get(i))+"').textbox({   required: t});"+"\n";
+											sbField.append(x);
+											System.out.println("xxxx : "+x);
+										}										
+								}	
+								i++;
+							}
+							}
+							String z = line.replaceAll("XXXREQ", sbField.toString());
+							line =z;
+						}		
+						sb.append(line+"\n");
+						
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -214,7 +250,7 @@ public class TempCreate {
 						StringBuffer sbField = new StringBuffer();
 						int i =0;
 						for(String t :lList){						
-							sbField.append(j1+"<th"+" style="+d+"font-weight:bold"+" align="+d+"center"+d+" class="+d+"cfg_header"+d+" >"+lCol.get(i)+"</th> "+"\n");
+							sbField.append(j1+"<th"+" style="+d+"font-weight:bold"+'"'+" align="+d+"center"+d+" class="+d+"cfg_header"+d+" >"+lCol.get(i)+"</th> "+"\n");
 							i++;
 						}					
 						String z = line.replaceAll("XXXDatafield", Util.firstLowerr(sbField.toString()));
@@ -524,7 +560,7 @@ public class TempCreate {
 							int i =0;
 							for(String t :lIds){
 								if(t.equals("Y")){
-									System.out.println("t :"+t+" ---- "+lTipes.get(i));
+//									System.out.println("t :"+t+" ---- "+lTipes.get(i));
 									sbx.append(/*"String "*/lTipes.get(i)+"  "+Util.firstLowerr(lCol.get(i))+",");	
 								}
 								i++;

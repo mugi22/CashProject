@@ -20,50 +20,60 @@
 		<script type="text/javascript" src="css/myalert.js"></script>
 		<script type="text/javascript" src="css/my.js"></script>
 
-
-</style>
-
 <title>Insert title here</title>
 </head>
 <body>
-<table width="90%"	style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;">
+<!-- javascript:printDiv('printed') -->
+<input type="button" value="Cetak" onclick="cetak()">
+<div id="printArea">
+
+
+	<table width="90%"	style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;">
 		<tr>
-			<td colspan="3" style="font-weight: bold;" align="left">Daftar
-				Pelunasan (KCA)</td>
-			<td colspan="3" style="font-weight: bold;" align="right">PIN000X</td>
+			<td colspan="3" style="font-weight: bold;" align="left">
+				Daftar XXXXXXXXX
+			</td>
+			<td colspan="3" style="font-weight: bold;" align="right">
+				PIN000X
+			</td>
 		</tr>
 		<tr>
-			<td colspan="3" style="font-weight: bold;" align="left">PT.
-				Pegadaian (Persero)</td>
-			<td colspan="3" style="font-weight: bold;" align="right">Tgl
-				Cetak : 28/04/2015</td>
+			<td colspan="3" style="font-weight: bold;" align="left">
+				PT.	XXXXXXXX
+			</td>
+			<td colspan="3" style="font-weight: bold;" align="right">
+				Tgl	Cetak : 28/04/2015
+			</td>
 		</tr>
 		<tr>
-			<td colspan="6" style="font-weight: bold;" align="center">Daftar
-				Pelunasan - Gadai(KCA)</td>
+			<td colspan="6" style="font-weight: bold;" align="center">
+				Daftar XXXXXXXXX
+			</td>
 		</tr>
 		<tr>
-			<td colspan="6" style="font-weight: bold;" align="center">KANWIL
-				JAKARTA 1 - CP PETAMBURAN(12293) - CP PETAMBURAN(12293)</td>
+			<td colspan="6" style="font-weight: bold;" align="center">
+				KANWIL XXXXXXXX
+			</td>
 
 		</tr>
 		<tr>
-			<td colspan="6" style="font-weight: bold;" align="center">Per
-				Tanggal : 27/04/2015</td>
+			<td colspan="6" style="font-weight: bold;" align="center">
+				Per	Tanggal : 27/04/2015
+			</td>
 		</tr>
 	</table>
 	<br>
 	<br>
 
 
-<table id="myData" align="center" width="90%" style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;">
+<table id="myData" align="center" width="90%" cellpadding="0" cellspacing="0"  style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;">
 	<thead>            
     	<tr>
 			XXXDatafield                     
     	</tr>
 	</thead>
 </table>
-
+</div>
 </body>
 
 <script type="text/javascript">
@@ -89,6 +99,26 @@
 		});
 	});
 
+function cetak(){
+	printDiv('printed');
+}
 
+function printDiv(divID) {
+    //Get the HTML of div
+    var divElements = document.getElementById(divID).innerHTML;
+    //Get the HTML of whole page
+    var oldPage = document.body.innerHTML;
+
+    //Reset the page's HTML with div's HTML only
+    document.body.innerHTML = 
+      "<html><head><title></title></head><body>" + 
+      divElements + "</body>";
+
+    //Print Page
+    window.print();
+
+    //Restore orignal HTML
+    document.body.innerHTML = oldPage; 
+}
 </script>
 </html>

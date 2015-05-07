@@ -40,6 +40,7 @@ import com.id.kas.pojo.dao.TblUserGroupDAO;
 import com.id.kas.util.AbstractFormScreen;
 import com.id.kas.util.AbstractListScreen;
 import com.id.kas.util.AppProp;
+import com.id.kas.util.Constants;
 @Controller
 public class GenerateAllRekIAbyBranchController extends /*AbstractFormScreen*/AbstractListScreen {
 final static Logger logger = Logger.getLogger(GenerateAllRekIAbyBranchController.class);
@@ -60,11 +61,12 @@ final static Logger logger = Logger.getLogger(GenerateAllRekIAbyBranchController
 			String ses = (String) session.getAttribute("session"+userId);
 			TblUser user = (TblUser) session.getAttribute("user"+userId);
 			
-		String sUnit = reg.getParameter("branchCode");
+		String sUnit = reg.getParameter("branchCode");//branchCode
 		System.out.println("sUnit "+sUnit);
 //		Session sess =null;
 //		int iRec =0;
 		generateIA(sUnit);
+		model.put("message", "Selesai............... "+iRec+" record");
 		super.doPost(model, session, reg,res);
 
 		return getView();		 
@@ -76,21 +78,21 @@ final static Logger logger = Logger.getLogger(GenerateAllRekIAbyBranchController
 		return "generateAllRekIA";
 	}
 	
-	
+	private long iRec=0;
 	public void generateIA(String kdUnit){
 		Session sess = null;
 		try {
 			sess = HibernateUtil.getSessionFactory().openSession();
 			TblRekeningIaMasterDAO iaMasterDAO = new TblRekeningIaMasterDAO(sess);
 			List<TblRekeningIaMaster> l = iaMasterDAO.getAll();
-			
+			iRec = l.size();
 			sess.beginTransaction();
 			for(TblRekeningIaMaster tbl :l ){
-				System.out.println(tbl.getDescription().toString());
+				//System.out.println(tbl.getDescription().toString());
 				TblRekeningIA ia = new TblRekeningIA();
 				TblRekeningIADAO iadao = new TblRekeningIADAO(sess);
 				ia.setBranchCode(kdUnit);
-				ia.setNorek(kdUnit+tbl.getNoRek().toString());
+				ia.setNorek(kdUnit+tbl.getNoRek().toString()+Constants.Currency.Idr);
 				ia.setBranchCode(kdUnit);
 				ia.setCreateBy("ADMIN");//nanti ganti
 				ia.setDescription(tbl.getDescription());
@@ -109,8 +111,17 @@ final static Logger logger = Logger.getLogger(GenerateAllRekIAbyBranchController
 			sess.close();
 			System.out.println("Generate IA "+kdUnit+" DONE...");
 		} catch (Exception e) {
+			sess.getTransaction().rollback();
+			sess.clear();
+			sess.flush();
+			if(sess.isOpen()) sess.close();
 			e.printStackTrace();
+			//sess.flush();
+			
 			// TODO: handle exception
+		}finally{
+			if(sess.isOpen()) sess.close();
+			
 		}
 		}
 		

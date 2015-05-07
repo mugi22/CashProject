@@ -58,13 +58,13 @@ if (reg.getParameter("GroupId").length()>0){
 
 
 String UserId=reg.getParameter("UserId");		 
-String userId = reg.getParameter("userId");
-System.out.println("---------------------------------------------UserId"+UserId+"==========userId"+userId);
+String UID = reg.getParameter("UID");
+System.out.println("---------------------------------------------UserId"+UserId+"==========UID"+UID);
 //String ses = (String) session.getAttribute("session"+userId);
 TblUser user = (TblUser) session.getAttribute("user"+UserId);
 
 //model.put("session", ses);
-if(!cekValidSession(session,userId)){
+if(!cekValidSession(session,UID)){
         	 return "[]";
          }
          String result="";
@@ -101,12 +101,13 @@ if(!cekValidSession(session,userId)){
 // *********************ADD***********************
  @RequestMapping(value="/userGroupAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+	 String  UID = reg.getParameter("UID");
 	 String userId = reg.getParameter("userId");
      //String ses = (String) session.getAttribute("session"+userId);
-     TblUser user = (TblUser) session.getAttribute("user"+userId);
+     TblUser user = (TblUser) session.getAttribute("user"+UID);
      
      //model.put("session", ses);
-     if(!cekValidSession(session,userId)){
+     if(!cekValidSession(session,UID)){
         	 return "fail";
          }
          Session sess = null;

@@ -25,6 +25,10 @@
 <title>Insert title here</title>
 </head>
 <body>
+<!-- javascript:printDiv('printed') -->
+<input type="button" value="Cetak" onclick="cetak()">
+<div id="printArea">
+
 	<table width="90%"
 		style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;">
 		<tr>
@@ -35,8 +39,8 @@
 		<tr>
 			<td colspan="3" style="font-weight: bold;" align="left">PT.
 				Pegadaian (Persero)</td>
-			<td colspan="3" style="font-weight: bold;" align="right">Tgl
-				Cetak : 28/04/2015</td>
+			<td colspan="3" style="font-weight: bold;" align="right">
+				Tgl	Cetak : <div id="tglCetak"></div></td>
 		</tr>
 		<tr>
 			<td colspan="6" style="font-weight: bold;" align="center">Daftar
@@ -57,35 +61,30 @@
 
 	<table id="myData" align="center" width="90%" cellpadding="0" cellspacing="0">
 <thead> 
-           
     <tr>
-                    <th style="font-weight:bold"  align="center" class="cfg_header">LastLogIn</th> 
-                    <th style="font-weight:bold"  align="center" class="cfg_header">Keterangan</th> 
-                    <th style="font-weight:bold"  align="center" class="cfg_header">SeqName</th> 
-                    <th style="font-weight:bold"  align="center" class="cfg_header">SeqNum</th> 
-                    <th style="font-weight:bold"  align="center" class="cfg_header">Tarif</th> 
-                     
+    <th style="font-weight:bold"  align="center" class="cfg_header">Seq Name</th> 
+    <th style="font-weight:bold"  align="center" class="cfg_header">Seq Number</th> 
+    <th style="font-weight:bold"  align="center" class="cfg_header">Last LogIn</th> 
+    <th style="font-weight:bold"  align="center" class="cfg_header">Keterangan</th> 
+    <th style="font-weight:bold"  align="center" class="cfg_header">Tarif</th> 
     </tr>
-           
 </thead>
 </table>
 
+<!-- -->
 
-<!-- 
-<td align='left'><div class='cfg_detail'><font class='f_boldhd'>&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;&nbsp;1229314010049201</font></div></td>
-
- data-options="
-					formatter:function(value, row){				      
-					return accounting.formatNumber(row.tarif,0,'.',',');
-					}" align="right"
- -->
-
-
+</div>
 </body>
 
 <script type="text/javascript">
 
+
+
+
+
+
 $("document").ready(function(){
+	$('#tglCetak').text(getDateTime());
 	var uri ='seqDataReport.htm?';
 	var s = window.location.search.replace("?", "") ;
 	//alert("uri "+uri);
@@ -94,19 +93,24 @@ $("document").ready(function(){
 		success	: function(result){			
 			var x = JSON.parse(result);
 			var no = 1;
+			var tot = 0;
 			 $.each(x, function( index, value ) {
 				 var z = accounting.formatNumber(value.tarif,0,'.',',');
                  var row = ("<tr>"+
+                		"<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.seqName + "</font></div></td>"+
+                		"<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.seqNum + "</font></div></td>"+
                         "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.lastLogIn + "</font></div></td>"+
-				        "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.keterangan + "</font></div></td>"+
-				        "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.seqName + "</font></div></td>"+
-				        "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.seqNum + "</font></div></td>"+
+				        "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.keterangan + "</font></div></td>"+		        
 				        "<td align='right' > <div class='cfg_detail'><font class='f_boldhd'>" +  z + "</font></div></td>"+	
                 		"</tr>");
                  $("#myData").append(row);
+                 tot = tot + value.tarif;
                  no++;
               });
-			var z =  ("<tr> <td colspan='5' align='left' style='background-color:#CCF;'> <div class='cfg_detailx'><font class='f_boldhd'>" +'T O T A L'+ "</font></div></td></tr>");
+			var stotal = accounting.formatNumber(tot,0,'.',',');
+			var z =  ("<tr> <td colspan='4' align='left' style='background-color:#CCF;'> <div class='cfg_detailx'><font class='f_boldhd'>" +'T O T A L'+ "</font></div></td>"+
+			          "<td  align='right' style='background-color:#CCF;'> <div class='cfg_detailx'><font class='f_boldhd'>" +stotal+"</font></div></td>"+
+			         "</tr>");
 			$("#myData").append(z);
 		}
 	});

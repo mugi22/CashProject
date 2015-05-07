@@ -21,7 +21,7 @@ jspTemplate
         <script type="text/javascript" src="css/formater.js"></script>
 		<script type="text/javascript" src="css/accounting.min.js"></script>
 		<script type="text/javascript" src="css/myalert.js"></script>
-		 <script type="text/javascript" src="css/my.js"></script>
+		<script type="text/javascript" src="css/my.js"></script>
 
 <title>User</title>
 </head>
@@ -45,8 +45,7 @@ XXXsearch
 
 <!-- **********************TABLE RESULT************************************** -->
         <table id="dg" title="XXXjudul" class="easyui-datagrid" style="width:100%;"
-               toolbar="#toolbar" pagination="true"
-               data-options="total:2000,pageSize:10"
+               toolbar="#toolbar" pagination="true"  data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
@@ -126,12 +125,14 @@ XXXparamSearch
 	/* ============FORM FUNCTION ========== XXXZtambah*/
 
 	function doAdd() { 
+		idRequired(true);
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
 		url = 'XXXZAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 	function doEdit() {
+		idRequired(false);
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
@@ -143,8 +144,10 @@ XXXparamSearch
 		}
 	}
 	function doShow() {
+		idRequired(false);
 		doEdit();
 		onShow();
+		$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 	/*
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');		
@@ -159,6 +162,7 @@ XXXparamSearch
 	}
 	
 	function doDelete() {
+		idRequired(false);
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
@@ -183,6 +187,7 @@ XXXparamSearch
 	}
 
 	function doSave() {
+	idRequired(false);
 		$('#fm').form('submit', {
 			url : url,
 			onSubmit : function() {
@@ -203,6 +208,15 @@ XXXparamSearch
 			}
 		});
 	}
+	
+	
+function idRequired(t){
+XXXREQ
+
+	/*$('#idJurnalTransaksi').textbox({   required: t			});
+	$('#jurnalId').textbox({   required: t	});
+	*/
+}	
 	
 	
 	/* ================TAMBAHAN=================*/

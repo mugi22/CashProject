@@ -31,20 +31,22 @@ public abstract class AbstractListScreen {
 	//=========================
 	
 	 public String doGet(Map<String, Object> model,HttpSession session,HttpServletRequest reg,HttpServletResponse res) {
+
+		 
 		 String param =reg.getParameter("param");//.replace(" ", "");
 		 String param2 =reg.getParameter("param2");//param2 dari klik menu -> key(random string)
 		 String UID =reg.getParameter("UID");
 		 //String Key = reg.getParameter("paramB");
 		 
 		 //untuk form yang tidak ada tombol add delete dll nya
-		 if (param==null) {
-			 param="ud5QqNn792ilaMP05ijYm8/uVEYl3fND5MVdd9WTr35xDpucRJe3bcM3K8S2kbi0WbUfbvyFpQZer47TYkhJ2g==";
-			 param2="xntldrqmbpqwhrry";
-		 }
-
+//		 if (param==null) {
+//			 param="ud5QqNn792ilaMP05ijYm8/uVEYl3fND5MVdd9WTr35xDpucRJe3bcM3K8S2kbi0WbUfbvyFpQZer47TYkhJ2g==";
+//			 param2="xntldrqmbpqwhrry";
+//		 }
 		 JCrypto crypto = new JCrypto(param2);
 			 String sPriv = crypto.decrypt(param);
-			 System.out.println("sPriv    : "+sPriv);
+//			 System.out.println("sPriv    : "+sPriv);
+			
 			 String sDec[] =sPriv.split("&");//==
 			 String sIsAdd ="";		 String sIsEdit ="";		 String sIsDelete ="";		 String sIsView="";				 
 			 for(String s: sDec){
@@ -60,9 +62,9 @@ public abstract class AbstractListScreen {
 				if (s.contains("isView=")){
 					sIsView = /*crypto.decrypt*/(((s.replace("isView=", ""))));
 				}
-				 
 			 }
-		 
+			
+				 
 			 String sUserId = reg.getParameter("UID");
 	         String ses = (String) session.getAttribute("session"+sUserId);
 	         TblUser user = (TblUser) session.getAttribute("user"+sUserId);
@@ -106,15 +108,18 @@ public abstract class AbstractListScreen {
         	 }catch (Exception e){
         		 e.printStackTrace();
         	 }
-        	
          }
+         
+	
+ 
          
          //cek single longin
          if(!isSinleLogin(user.getUserId(),(String) session.getAttribute("key"+user.getUserId()),session,/*Key*/param2)){
         	 System.out.println("key  :"+(String) session.getAttribute("key"+user.getUserId()));
         	 ret =  "redirect:/sessionExpire.htm";
          }
-        	 return ret;
+         System.out.println("Akhir     : "+new Date());
+      	 return ret;
         
      }
 	
@@ -152,7 +157,7 @@ public abstract class AbstractListScreen {
 	public void simpanLog(String sUserId,String sLog){
 		String logger =sUserId+"  "/*+ new Date()*/+" "+sLog; //engga [perlu pake data suda ada dari looger
 		log.warn(logger);
-		System.out.println(sLog);
+//		System.out.println(sLog);
 	}
 /*
  * Cek single login

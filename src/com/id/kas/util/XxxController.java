@@ -38,23 +38,21 @@ public class XxxController {
         List<String> lTipes = new ArrayList<String>();
         List<String> lCol = new ArrayList<String>();
 //		System.out.println("Form "+par.length);
-		int i = 0;
-		
-		
+		int i = 0;		
 		for(String s : col){
 			i++;
-			System.out.println(i+" col : "+s);
+//			System.out.println(i+" col : "+s);
 			lCol.add(s);
 		}
 		
 		i = 0;
 		for(String s : par){
 			i++;
-			System.out.println(i+" par : "+s);
+//			System.out.println(i+" par : "+s);
 			lForm.add(s);
 		}
 		
-		System.out.println("List "+list.length);
+//		System.out.println("List "+list.length);
 		i = 0;
 		for(String s : list){
 			i++;
@@ -62,7 +60,7 @@ public class XxxController {
 			lList.add(s);
 		}
 		
-        System.out.println("search "+list.length);
+//        System.out.println("search "+list.length);
 		i = 0;
 		for(String s : search){
 			i++;
@@ -73,13 +71,13 @@ public class XxxController {
 		i = 0;
 		for(String s : ids){
 			i++;
-//			System.out.println(i+"  : "+s);
+			System.out.println(i+" ids  : "+s);
 			lIds.add(s);
 		}
-		
+		i = 0;
 		for(String s : tipes){
 			i++;
-			System.out.println(i+"tipes  : "+s);
+//			System.out.println(i+"tipes  : "+s);
 			lTipes.add(s);
 		}
                 
@@ -90,7 +88,7 @@ public class XxxController {
 		String sFileController="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+conName+".java";//CONTROLER
 		String sFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\"+jspName+".jsp"; //JSP
 		String sReportFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\report\\"+jspName+"Report.jsp"; //JSP
-
+//JSP FORM
 		String sFile;
 		sFile=sTemplate+"jspTemplate.txt";//baca template
 		List<String> l = new ArrayList<String>();

@@ -34,7 +34,7 @@ ${message}
 
 
 <script>
-$("document").ready(function() {
+	$("document").ready(function() {
 	$('#submit').prop("disabled", false); 
 	$("#branchCode").textbox("readonly", true); 
 	//addComboStatusUnit();

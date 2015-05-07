@@ -96,7 +96,7 @@ var branchcode;
 /* function untuk list data      param=' + $('#idSearch').val();//+'&param2='++ $('#idSearch2').val();*/
 	function retrieve() {		
 		var jsonurl = 'userGroupListAll.htm?'+
-'GroupId='+$('#GroupId').val()+"&"+'UserId='+$('#UserId').val();
+'GroupId='+$('#GroupId').val()+"&"+'UserId='+$('#UserId').val()+"&"+"UID="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -127,7 +127,7 @@ var branchcode;
 	function doAdd() { 
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah ');
 		$('#fm').form('clear');
-		url = 'userGroupAdd.htm';
+		url = 'userGroupAdd.htm?'+"UID="+"${userId}";
 		onAdd();
 	}
 

@@ -27,10 +27,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblBranch;
+import com.id.kas.pojo.TblRekeningIA;
 import com.id.kas.pojo.TblUser;
 import com.id.kas.pojo.TblKasir;//harap Sesuaikan
 import com.id.kas.pojo.dao.TblBranchDAO;
 import com.id.kas.pojo.dao.TblKasirDAO;
+import com.id.kas.pojo.dao.TblRekeningIADAO;
 import com.id.kas.pojo.dao.TblUserDAO;
 
 
@@ -106,7 +108,7 @@ public class KasirController  extends AbstractListScreen{
 // *********************ADD***********************
  @RequestMapping(value="/kasirAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-		String userId = reg.getParameter("userId");
+		String userId = reg.getParameter("UID");
          //String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
          
@@ -151,12 +153,13 @@ public class KasirController  extends AbstractListScreen{
 //	 EDIT	 
 	 @RequestMapping(value="/kasirEdit.htm", method=RequestMethod.POST)
      public @ResponseBody String kasirEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String UserId=reg.getParameter("userId");
+        System.out.println("Do Edit.......");
+		 String UserId=reg.getParameter("userId");
 		 
-		String userId = reg.getParameter("userId");
+		 String UID = reg.getParameter("UID");
          //String ses = (String) session.getAttribute("session"+userId);
-         TblUser user = (TblUser) session.getAttribute("user"+userId);
-         if(!cekValidSession(session,userId)){        	 
+         TblUser user = (TblUser) session.getAttribute("user"+UID);
+         if(!cekValidSession(session,UID)){        	 
          	return "fail";
          }
          
@@ -198,14 +201,12 @@ public class KasirController  extends AbstractListScreen{
 //	***********************************DELETE**************************************** 
 	 @RequestMapping(value="/kasirDelete.htm", method=RequestMethod.POST)
      public @ResponseBody String kasirDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String UserId=reg.getParameter("userId");
-	
-//		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
+                    String UID=reg.getParameter("UID");	
 		 String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
-         TblUser user = (TblUser) session.getAttribute("user"+userId);
+         TblUser user = (TblUser) session.getAttribute("user"+UID);
          //model.put("session", ses);
-          if(!cekValidSession(session,userId)){
+          if(!cekValidSession(session,UID)){
                 	 return "fail";
          }
          Session sess = null;
@@ -215,7 +216,7 @@ public class KasirController  extends AbstractListScreen{
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
                TblKasirDAO dao = new TblKasirDAO(sess);
-               TblKasir tbl = dao.getById(UserId);
+               TblKasir tbl = dao.getById(userId);
                String tblDel = gson.toJson(tbl);
                sess.beginTransaction();
                dao.delete(tbl);
@@ -247,7 +248,19 @@ public class KasirController  extends AbstractListScreen{
 			TblBranchDAO branchDAO = new TblBranchDAO(sess);
 			TblBranch tblBranch = branchDAO.getById(user.getBranchCode());
 			String branchName = ","+'"'+"branchName"+'"'+":"+'"'+tblBranch.getName()+'"';
-			String a = s.replace("}", userName+branchName+"},");
+			
+			
+			//namaRekening
+			TblRekeningIADAO iadao = new TblRekeningIADAO(sess);
+			TblRekeningIA rekeningIA = iadao.getById(pr.getNorek());
+			String namaNorek = ","+'"'+"namaNorek"+'"'+":"+'"'+rekeningIA.getDescription()+'"';
+			
+			
+			
+			
+			
+			
+			String a = s.replace("}", userName+branchName+namaNorek+"},");
 			sb.append(a);
 		}
 		String x="";

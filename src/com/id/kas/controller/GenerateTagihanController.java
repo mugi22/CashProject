@@ -37,13 +37,19 @@ final static Logger logger = Logger.getLogger(GenerateTagihanController.class);
 	
 	@RequestMapping(value="/generateTagihan.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg,HttpServletResponse res){ 
-		String userId = reg.getParameter("userId");
+		String uri = (String) reg.getAttribute("javax.servlet.forward.request_uri");
+		
+		
+		String userId = reg.getParameter("UID");
 		String ses = (String) session.getAttribute("session"+userId);
 		TblUser user = (TblUser) session.getAttribute("user"+userId);
 
 		Session sess =null;
 		sess = HibernateUtil.getSessionFactory().openSession();
 		TblBranchDAO dao =new TblBranchDAO(sess);
+		
+		System.out.println(" ===== userId "+userId);
+		
 		TblBranch tblBranch = dao.getById(user.getBranchCode());
 		
 		model.put("branchCode", user.getBranchCode());
@@ -54,7 +60,7 @@ final static Logger logger = Logger.getLogger(GenerateTagihanController.class);
 	
 	 @RequestMapping(value="/generateTagihan.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session,HttpServletRequest reg,HttpServletResponse res) {
-		 String userId = reg.getParameter("userId");
+		 String userId = reg.getParameter("UID");
 			String ses = (String) session.getAttribute("session"+userId);
 			TblUser user = (TblUser) session.getAttribute("user"+userId);
 		 

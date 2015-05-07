@@ -47,7 +47,7 @@
 					
 					<tr>
 						<td>Tagihan:</td>
-						<td><input class="easyui-textbox" type="text" name="tagihan" id='tagihan'></input></td>
+						<td><input class="easyui-textbox" type="text" style="width:300px"  name="tagihan" id='tagihan'></input></td>
 					</tr>
 					<tr>
 						<td>Jumlah Tunggakan:</td>

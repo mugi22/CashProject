@@ -26,9 +26,9 @@
 </head>
 <body>
 	
-	<div style="margin: 20px 0;"></div> 
-	<div id="cc" class="easyui-layout" style="width: 100%; height: 650px;">
-		<div data-options="region:'north'" style="height: 110px; background-color:aqua;">
+	<div style="margin:  0px;"></div> 
+	<div id="cc" class="easyui-layout" style="width: 100%; height: 600px; padding: 0px;">
+		<div data-options="region:'north'" style="height: 100px; background-color:aqua;">
 			<h2>Cash Project</h2>
 			<table width="100%">
 			<tr>
@@ -36,16 +36,16 @@
 				<input type="hidden" id="key" value="${key}" >
 				</td>
 				<td align="right">
-					<img alt="" src="image/java.jpg"  height="42" width="60">
-					<img alt="" src="image/eclipse.png"  height="42" width="100">
-					<img alt="" src= "image/hibernate.png" height="42" width="70">
-					<img alt="" src="image/mysql.png"  height="42" width="60">
-					<img alt="" src= "image/easyui.jpg" height="42" width="60">
-					<img alt="" src= "image/jquery.png" height="42" width="50">
-					<img alt="" src="image/json.png"  height="42" width="60">
-					<img alt="" src= "image/javascript.jpg" height="42" width="60">
-					<img alt="" src="image/ajax.jpg"  height="42" width="60">
-					<img alt="" src="image/accounting-js.png" height="42" width="60">
+					<img alt="" src="image/java.jpg"  height="35" width="60">
+					<img alt="" src="image/eclipse.png"  height="35" width="100">
+					<img alt="" src= "image/hibernate.png" height="35" width="70">
+					<img alt="" src="image/mysql.png"  height="35" width="60">
+					<img alt="" src= "image/easyui.jpg" height="35" width="60">
+					<img alt="" src= "image/jquery.png" height="35" width="50">
+					<img alt="" src="image/json.png"  height="35" width="60">
+					<img alt="" src= "image/javascript.jpg" height="35" width="60">
+					<img alt="" src="image/ajax.jpg"  height="35" width="60">
+					<img alt="" src="image/accounting-js.png" height="35" width="60">
 				</td>
 			</tr>
 			</table>
@@ -60,7 +60,7 @@
 			<iframe src="utamaMain.htm?${paramx}" style="width: 100%; height: 100%" id="iframe" frameborder="0"></iframe>			
 		</div>
 	</div>
-<a href="cariPegawai.htm">Test</a>
+<!-- a href="cariPegawai.htm">Test</a-->
 </body>
 </html>
 

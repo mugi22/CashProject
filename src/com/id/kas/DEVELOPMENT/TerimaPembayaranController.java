@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblBranch;
+import com.id.kas.pojo.TblKasir;
 import com.id.kas.pojo.TblPegawai;
 import com.id.kas.pojo.TblTagihan;
 import com.id.kas.pojo.TblTarif;
 import com.id.kas.pojo.TblUser;
 import com.id.kas.pojo.TblUserGroup;
 import com.id.kas.pojo.dao.TblBranchDAO;
+import com.id.kas.pojo.dao.TblKasirDAO;
 import com.id.kas.pojo.dao.TblPegawaiDAO;
 import com.id.kas.pojo.dao.TblTagihanDAO;
 import com.id.kas.pojo.dao.TblTarifDAO;
@@ -40,28 +42,35 @@ final static Logger logger = Logger.getLogger(TerimaPembayaranController.class);
 	
 	@RequestMapping(value="/pembayaranTagihan.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg,HttpServletResponse res){ 
-		String userId = reg.getParameter("userId");
+		String userId = reg.getParameter("UID");
 		String ses = (String) session.getAttribute("session"+userId);
 		TblUser user = (TblUser) session.getAttribute("user"+userId);
-
 	   
 		Session sess =null;
 		sess = HibernateUtil.getSessionFactory().openSession();
 		TblBranchDAO dao =new TblBranchDAO(sess);
 		TblBranch tblBranch = dao.getById(userId);
-		
 		model.put("branchCode",userId);
+//		cek kasir a tau bukan
+		TblKasirDAO kasirDAO = new  TblKasirDAO(sess);
+		TblKasir kasir = kasirDAO.getById(userId);
 		sess.close();
-	 	return /*getView();*/super.doGet(model, session, reg,res);
+		
+		if (kasir!=null){
+			System.out.println("ada.....");
+		
+			return super.doGet(model, session, reg,res);
+	 	}else{
+	 		System.out.println("tidak Ada.............");
+	 		return "notKasir";
+	 	}
 	}
 	
 	
 	 @RequestMapping(value="/pembayaranTagihan.htm", method=RequestMethod.POST)
 	 public @ResponseBody String doPost(Map<String, Object> model,HttpSession session,HttpServletRequest reg,HttpServletResponse res) {
-		//String mode = reg.getParameter("branchCode");
 		 System.out.println("pembayaranTagihan........POST");
-//		TblUser user = (TblUser) session.getAttribute("user");
-		 String userId = reg.getParameter("userId");
+		 String userId = reg.getParameter("UID");
 			String ses = (String) session.getAttribute("session"+userId);
 			TblUser user = (TblUser) session.getAttribute("user"+userId);
 		

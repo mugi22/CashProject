@@ -13,14 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblBranch;
 import com.id.kas.pojo.TblGroup;
 import com.id.kas.pojo.TblLookup;
 import com.id.kas.pojo.TblProvinsi;
+import com.id.kas.pojo.TblRekeningIA;
+import com.id.kas.pojo.TblUser;
 import com.id.kas.pojo.dao.TblBranchDAO;
 import com.id.kas.pojo.dao.TblGroupDAO;
 import com.id.kas.pojo.dao.TblProvinsiDAO;
+import com.id.kas.pojo.dao.TblRekeningIADAO;
+import com.id.kas.pojo.dao.TblUserDAO;
 //import com.id.kas.pojo.dao.TblProvinsiDAO;
 import com.id.kas.pojo.dao.TblLookupDAO;
 
@@ -67,6 +72,7 @@ public class UtilityController {
 			}
 			x = (sb.toString()).substring(0,sb.toString().length()-1);
 			 z = x+"]";
+			 sess.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -80,8 +86,6 @@ public class UtilityController {
 	@RequestMapping(value="/comboAllKanwil.htm", method=RequestMethod.POST)
     public @ResponseBody String comboAllKanwil(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		 String param =reg.getParameter("param");
-
-		System.out.println("param  "+param);
 		 Session sess = null;
 		 String x="";String z ="";
 		 try {
@@ -109,6 +113,7 @@ public class UtilityController {
 			}
 			x = (sb.toString()).substring(0,sb.toString().length()-1);
 			 z = x+"]";
+			 sess.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -147,6 +152,7 @@ public class UtilityController {
 				}
 				x = (sb.toString()).substring(0,sb.toString().length()-1);
 				 z = x+"]";
+				 sess.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -209,6 +215,7 @@ public class UtilityController {
 				}
 				x = (sb.toString()).substring(0,sb.toString().length()-1);
 				 z = x+"]";
+				 sess.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -220,8 +227,6 @@ public class UtilityController {
 	 @RequestMapping(value="/comboGroup.htm", method=RequestMethod.POST)
 	  public @ResponseBody String comboGroup(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 			 String param =reg.getParameter("param");
-//			 String param2 =reg.getParameter("param2");
-//			 System.out.println("param2 : "+param2);
 			 Session sess = null;
 			 String x="";String z ="";
 			 try {
@@ -248,6 +253,7 @@ public class UtilityController {
 				}
 				x = (sb.toString()).substring(0,sb.toString().length()-1);
 				 z = x+"]";
+				 sess.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -271,6 +277,112 @@ public class UtilityController {
 		 Session sess = HibernateUtil.getSessionFactory().openSession();
 		 TblBranchDAO branchDAO = new TblBranchDAO(sess);
 		 TblBranch branch = branchDAO.getById(kdUnit);
+		 sess.close();
 	 	return branch.getParentId();
 	 }
+	 
+	 
+	 
+	 @RequestMapping(value="/cekUserBaranch.htm", method=RequestMethod.GET)
+	 public @ResponseBody String cekUserBaranch(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+		 String userId = reg.getParameter("nik");
+		 String sUID =  reg.getParameter("UID");
+		 System.out.println("userId..............................................     "+userId+" sUID "+sUID);
+		 String message ="";
+		 String a="";
+		 try {
+			 Session sess = HibernateUtil.getSessionFactory().openSession();
+			 TblUserDAO tblUserDAO = new TblUserDAO(sess);
+			 TblUser tblUser = tblUserDAO.getById(userId);
+			 if(tblUser.getUserId().length()<1){
+				 sess.close();
+				 return "{}";
+			 }
+			 //cek tblUser mempunyai unit yang sama dengan user penginput (UID)
+			 TblUser tblUserInput = tblUserDAO.getById(sUID);
+			 
+			 if(tblUser.getBranchCode().equals(tblUserInput.getBranchCode())){
+				 System.out.println("ADA........................");
+				 Gson gson = new  Gson();
+				 message = gson.toJson(tblUser);
+				 /** * tambhakan nama branc  */
+				 TblBranchDAO branchDAO = new TblBranchDAO(sess);
+				 TblBranch branch = branchDAO.getById(tblUser.getBranchCode());
+				 a = message.replace("}", ","+'"'+"branchName"+'"'+":"+'"'+branch.getName()+'"'+"}");
+		
+			 }else{
+				 //message="User Tidak Ada Untuk Unit ......."+tblUserInput.getBranchCode();
+				 a="{}";
+				 System.out.println("TIDAK.......................................");
+			 }
+			 		sess.close();
+			 
+	            /**  BILA ADA PERUBAHAN DATA JSON
+	             * String a = s.replace("}", ","+'"'+"groupName"+'"'+":"+'"'+group.getGroupName()+'"'+","+'"'+"menuName"+'"'+":"+'"'+menu.getMenuName()+'"'+"},");
+//		
+	            String x = changeJson(h, sess);
+	            sess.close();
+	        	result ="{"+'"'+"total"+'"'+":"+h.get("total")+","+'"'+"rows"+'"'+":["+x+']'+'}';
+	            */
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		System.out.println(a);
+	 	return a;//;branch.getParentId();
+	 }
+	 
+	 @RequestMapping(value="/cekRekening.htm", method=RequestMethod.GET)
+	 public @ResponseBody String cekRekening(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+		 String norek = reg.getParameter("norek");
+		 String sUID =  reg.getParameter("UID");
+		 
+		 String rek = null;
+		 Session sess = null;
+		 try {
+			sess = HibernateUtil.getSessionFactory().openSession();
+			TblRekeningIADAO rekeningIADAO = new TblRekeningIADAO(sess);
+			TblRekeningIA ia = rekeningIADAO.getById(norek);
+			if(ia.getNorek().length()>0){
+				rek = new Gson().toJson(ia);
+			}else{
+				rek="{}";
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		 System.out.println("norek  "+norek);
+		 sess.close();
+		 System.out.println("rek "+rek);
+		 return rek;
+	 }
+	 
+	 //Ambil Branch berdasarkan ID
+	 
+	 @RequestMapping(value="/getBranchByID.htm", method=RequestMethod.GET)
+	 public @ResponseBody String getBranchByID(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+//		 String sUID =  reg.getParameter("UID");
+		 String branchCode = reg.getParameter("branchCode");
+		 Session sess = null;
+		 String sBranch="";
+		 try {
+			 sess = HibernateUtil.getSessionFactory().openSession();
+			 TblBranchDAO branchDAO = new TblBranchDAO(sess);
+			 TblBranch branch = branchDAO.getById(branchCode);
+			 if(branch.getName().length()> 0){
+				 Gson gson = new Gson();
+				 sBranch = gson.toJson(branch);
+			 }else{
+				 sBranch="{}";
+			 }
+			sess.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		 System.out.println(sBranch);
+		return sBranch;
+	 }
+	 
+	 
+	 
+	 
 }

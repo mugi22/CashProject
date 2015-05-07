@@ -16,14 +16,19 @@
 
 
 
-<title>Insert title here</title>
+<title>GenerateAllRekIA</title>
 </head>
 <body>
 
-<form action="" method="post">
-<label>Unit Kerja</label> :<input name="branchCode"	class="easyui-textbox"  id="branchCode" >	</div><br>
+<form action="" method="post" id="ff">
+<label>Unit Kerja</label> :
+<input name="branchCode"	class="easyui-textbox"  id="branchCode" >	
+<input type="button" value="Cek Unit" onclick="CekBranch()">
 
+<br>
 <input type="submit" value="Generate" id="submit">
+<!-- 
+ -->
 </form>
 ${message}
 </body>
@@ -31,21 +36,44 @@ ${message}
 
 
 <script>
-$("document").ready(function() {
-	$('#submit').prop("disabled", false); 
+$("document").ready(function() {	
+	$('#submit').prop("disabled", true);  
 	$("#branchCode").textbox("readonly", false); 
+	keyEnter($("#branchCode"));
 	//addComboStatusUnit();
 });
 
-//satatus Unit kerja
-//function addComboStatusUnit() {
-//		$('#branchCode').combobox({
-//			url : 'comboLookup.htm?param=' + branchCode+'&param2=STATUS-BRANCH',
-//			valueField : 'id',
-//			textField : 'text',
-//			panelHeight:'auto'
-//		});
-//		branchCode = '';
-//	}
+
+
+function CekBranch(){
+	$.ajax({
+		url:'getBranchByID.htm?branchCode='+$('#branchCode').val(),
+		success : function(result){			
+			if(result==''||result=="{}"){
+				alert($('#branchCode').val()+" Tidak Ditemukn");				
+			}else{
+				$('#submit').prop("disabled", false); 
+			}
+		}		
+	});	
+}
+
+$('#ff').submit(function() {	 
+	  $.messager.progress();
+	  return true;
+	});
+
+function clearForm(){  
+	$('#ff').form('clear');  
+	$('#submit').linkbutton("disable"); 
+}
+
+function keyEnter(t) {
+	t.textbox('textbox').bind('keyup', function(e) {
+		if(e.keyCode==13){
+			CekBranch();
+		}
+	});
+}
 
 </script>

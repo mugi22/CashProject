@@ -79,13 +79,18 @@ jspTemplate
 		<div class="ftitle">KASIR</div>
 		<form id="fm" method="post" novalidate>
 					 <div class="fitem">	
-					 	<label>User Id</label> :<input name="userId"	class="easyui-textbox" required="true" id="userId">	
+					 	<label>User Id</label> :<input name="userId"	style="width: 80px"  class="easyui-textbox" required="true" id="userId">	
+					 	<input type="button" value="Check" style="width: 50px" onclick="check();">
 					 							<input name="userName"	class="easyui-textbox" id="userName">	
 					 </div>
-					 <div class="fitem"><label>Branch Code</label> :<input name="branchCode"	class="easyui-textbox" required="true" id="branchCode">	
-					 							<input name="branchName"	class="easyui-textbox"  id="branchName">	
+					 <div class="fitem"><label>Branch Code</label> :<input name="branchCode"	style="width: 60px"class="easyui-textbox" required="true" id="branchCode">	
+					 							<input name="branchName"	class="easyui-textbox"  id="branchName" style="width: 200px" >	
 					 </div>
-					 <div class="fitem">	<label>No Rekening</label> :<input name="norek"	class="easyui-textbox" required="false" id="true">	</div>
+					 <div class="fitem">	
+					 		<label>No Rekening</label> :<input name="norek"	class="easyui-textbox" required="false" id="norek">	
+					 		<input type="button" value="Check Rekening" style="width: 100px" onclick="checkRekening();">
+					 		<input name="namaNorek"	class="easyui-textbox"  id="namaNorek">	
+					 </div>
                     <div class="fitem">	<label>Status</label> :<input name="status"	class="easyui-textbox"  id="status">	</div>
                     <div class="fitem">	<label>Limit Amount</label> :<input name="limitAmount"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" id="limitAmount">	</div>
                     <div class="fitem">	<label>Branch Mapping</label> :<input name="branchMapping"	class="easyui-textbox"  id="branchMapping">	</div>
@@ -110,31 +115,81 @@ jspTemplate
 var url;
 var branchcode;
 
-function test(t) {
-	t.textbox('textbox').bind('blur', function(e) {
-		/*$(this).val($(this).val().toUpperCase());*/
-		//alert("oooooooooooooooooo ............");
+
+function check(){
+	var param = window.location.search.replace("?", "");
+	var nik = $('#userId').val();
+	$.ajax({
+		url:'cekUserBaranch.htm?nik='+nik+'&'+param,
+		 success	: function(result){		
+			if(result==''||result=='{}'){
+				alert("User Tidak Ditemukan");
+			}else{
+				var x = JSON.parse(result);
+				 $('#userName').textbox('setValue',x.name);
+				 $('#branchCode').textbox('setValue',x.branchCode);
+				 $('#norek').textbox('setValue',x.branchCode);
+				 $('#branchName').textbox('setValue',x.branchName);
+				 
+				 $('#status').textbox('readonly', true);
+                 $('#limitAmount').textbox('readonly', true);
+                 $('#branchMapping').textbox('readonly', true);
+                 $('#ccy').textbox('readonly', true);
+                 $('#amount').textbox('readonly', true);
+                 $('#branchCode').textbox('readonly', true);
+                 $('#userId').textbox('readonly', true);
+                 $('#norek').textbox('readonly', false);
+			}
+			 
+			
+		 }
 	});
 }
 
+//"namaNorek"
 
+	function checkRekening() {
+		var param = window.location.search.replace("?", "");
+		var norek = $('#norek').val();
+		$.ajax({
+			url : 'cekRekening.htm?norek=' + norek + '&' + param,
+			success : function(result) {
+				if (result == '' || result == "{}") {
+					alert("rek Tidak Ditemukan");
+				} else {
+					var x = JSON.parse(result);
+					$('#namaNorek').textbox('setValue', x.description);
+					$('#status').textbox('readonly', false);
+					$('#limitAmount').textbox('readonly', false);
+					$('#branchMapping').textbox('readonly', false);
+					$('#ccy').textbox('readonly', false);
+					$('#amount').textbox('readonly', false);
+				}
+			}
+		});
+	}
 
-
-
+	function test(t) {
+		t.textbox('textbox').bind('blur', function(e) {
+			/*$(this).val($(this).val().toUpperCase());*/
+			//alert("oooooooooooooooooo ............");
+		});
+	}
 	$("document").ready(function() {
 		$("#btnAdd").linkbutton('${btnAdd}');
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
-		$("#btnShow").linkbutton('${btnShow}');		
+		$("#btnShow").linkbutton('${btnShow}');
 		$('#userName').textbox('readonly', true);
 		$('#branchName').textbox('readonly', true);
 	});
 
 	
-
-	function retrieve() {		
-		var jsonurl = 'kasirListAll.htm?'+
-'Status='+$('#Status').val()+"&"+'BranchCode='+$('#BranchCode').val()+"&"+'UserId='+$('#UserId').val()+"&"+'Norek='+$('#Norek').val()+"&"+"userId="+"${userId}";
+	function retrieve() {
+		var jsonurl = 'kasirListAll.htm?' + 'Status=' + $('#Status').val()
+				+ "&" + 'BranchCode=' + $('#BranchCode').val() + "&"
+				+ 'UserId=' + $('#UserId').val() + "&" + 'Norek='
+				+ $('#Norek').val() + "&" + "userId=" + "${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -159,16 +214,17 @@ function test(t) {
 	}
 
 	/* END function untuk list data*/
-	
+
 	/* ============FORM FUNCTION ========== kasirtambah*/
 
-	function doAdd() { 
+
+	function doAdd() {
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'kasirAdd.htm?'+"userId="+"${userId}";
+		url = 'kasirAdd.htm?' + "UID=" + "${userId}";
 		onAdd();
-	    test($('#userId'));
 	}
+	
 	function doEdit() {
 		$('#fm').form('clear');
 		var row = $('#dg').datagrid('getSelected');
@@ -176,22 +232,22 @@ function test(t) {
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'kasirEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'kasirEdit.htm?' + "UID=" + "${userId}";
 			onEdit();
 		}
 	}
 	function doShow() {
 		$('#fm').form('clear');
-		var row = $('#dg').datagrid('getSelected');		
+		var row = $('#dg').datagrid('getSelected');
 		if (row) {
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'kasirEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'kasirEdit.htm?' + "userId=" + "${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 	}
-	
+
 	function doDelete() {
 		var row = $('#dg').datagrid('getSelected');
 		if (row) {
@@ -199,8 +255,8 @@ function test(t) {
 					function(r) {
 						if (r) {
 							$.post('kasirDelete.htm', {
-							                    userId : row.userId,
-							userId:"${userId}"
+								userId : row.userId,
+								UID : "${userId}"
 							}, function(result) {
 								if (result.success) {
 									$('#dg').datagrid('reload'); // reload the user data
@@ -225,7 +281,7 @@ function test(t) {
 			success : function(result) {
 				var resultx = eval('(' + result + ')');
 				if (resultx === 'fail' || result === null) {
-					alertError("Simpan Gagal");					
+					alertError("Simpan Gagal");
 				} else {
 					alertAll('Simpan Sukses');
 					$('#dlg').dialog('close'); // close the dialog
@@ -237,59 +293,53 @@ function test(t) {
 			}
 		});
 	}
-	
-	
+
 	/* ================TAMBAHAN=================*/
 
-	
 	/*Untuk membuat menjadi huruf besar semua */
 	function upperCase(t) {
 		t.textbox('textbox').bind('keyup', function(e) {
 			$(this).val($(this).val().toUpperCase());
 		});
 	}
-	
+
 	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		            $('#status').textbox('readonly', true);
-                    $('#limitAmount').textbox('readonly', true);
-                    $('#branchMapping').textbox('readonly', true);
-                    $('#ccy').textbox('readonly', true);
-                    $('#amount').textbox('readonly', true);
-                    $('#branchCode').textbox('readonly', true);
-                    $('#userId').textbox('readonly', true);
-                    $('#norek').textbox('readonly', true);
-
+		$('#status').textbox('readonly', true);
+		$('#limitAmount').textbox('readonly', true);
+		$('#branchMapping').textbox('readonly', true);
+		$('#ccy').textbox('readonly', true);
+		$('#amount').textbox('readonly', true);
+		$('#branchCode').textbox('readonly', true);
+		$('#userId').textbox('readonly', true);
+		$('#norek').textbox('readonly', true);
+		$('#namaNorek').textbox('readonly', true);
 		$('#btnSave').linkbutton('disable');
 	}
-	
+
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		            $('#status').textbox('readonly', false);
-                    $('#limitAmount').textbox('readonly', false);
-                    $('#branchMapping').textbox('readonly', false);
-                    $('#ccy').textbox('readonly', false);
-                    $('#amount').textbox('readonly', false);
-                    $('#branchCode').textbox('readonly', false);
-                    $('#userId').textbox('readonly', false);
-                    $('#norek').textbox('readonly', false);
-		
-		$('#btnSave').linkbutton('enable');
-	}
-	
-	/*inputan readonly atau tidak saat Edit */
-	function onEdit() {
-		            $('#status').textbox('readonly', false);
-                    $('#limitAmount').textbox('readonly', false);
-                    $('#branchMapping').textbox('readonly', false);
-                    $('#ccy').textbox('readonly', false);
-                    $('#amount').textbox('readonly', false);
-                    $('#branchCode').textbox('readonly', true);
-                    $('#userId').textbox('readonly', true);
-                    $('#norek').textbox('readonly', false);
-	
+		$('#status').textbox('readonly', true);
+		$('#limitAmount').textbox('readonly', true);
+		$('#branchMapping').textbox('readonly', true);
+		$('#ccy').textbox('readonly', true);
+		$('#amount').textbox('readonly', true);
+		$('#branchCode').textbox('readonly', true);
+		$('#userId').textbox('readonly', false);
+		$('#norek').textbox('readonly', true);
 		$('#btnSave').linkbutton('enable');
 	}
 
-	
+	/*inputan readonly atau tidak saat Edit */
+	function onEdit() {
+		$('#status').textbox('readonly', false);
+		$('#limitAmount').textbox('readonly', false);
+		$('#branchMapping').textbox('readonly', false);
+		$('#ccy').textbox('readonly', false);
+		$('#amount').textbox('readonly', false);
+		$('#branchCode').textbox('readonly', true);
+		$('#userId').textbox('readonly', true);
+		$('#norek').textbox('readonly', false);
+		$('#btnSave').linkbutton('enable');
+	}
 </script>

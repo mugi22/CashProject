@@ -19,12 +19,12 @@
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">password</property>
     
-    <property name="hibernate.show_sql">false</property>
+    <property name="hibernate.show_sql">true</property>
     
     <!-- property name="connection.autocommit">false</property-->
 		
 		<!-- Optional configuration -->
-		<property name="show_sql">true</property>
+		<property name="show_sql">false</property>
 		<property name="format_sql">false</property>
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="use_sql_comments">false</property>
@@ -78,7 +78,10 @@
     <mapping class="com.id.kas.pojo.TblCoaMaster" />
     <mapping class="com.id.kas.pojo.TblRekeningIA" />
     <mapping class="com.id.kas.pojo.TblRekeningIaMaster" />
-     <mapping class="com.id.kas.pojo.TblKasir" />
+    <mapping class="com.id.kas.pojo.TblKasir" />
+     
+    <mapping class="com.id.kas.pojo.TblJurnal" />
+    <mapping class="com.id.kas.pojo.TblJurnalTransaksi" /> 
      
   </session-factory>
     
