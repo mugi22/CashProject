@@ -60,7 +60,9 @@ XXXfield
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
 		<div class="ftitle">XXXjudul</div>
 		<form id="fm" method="post" novalidate>
+		<table align="center"> 
 XXXlist			
+		</table>
 		</form>
 	</div>
 	<div id="dlg-buttons">

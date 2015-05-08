@@ -99,20 +99,22 @@ public class TempCreate {
 						//FORM
 						if (sCurrentLine.contains("XXXlist")){
 							StringBuffer sbField = new StringBuffer();
+							String trtd="<tr><td>";
+							String trtdx="</td></tr>";
 							int i =0;
 							for(String t :lForm){
 								if(t.equals("Y")){
 									if(lCol.get(i).equals("CreateDate")||lCol.get(i).equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
 									}else if(lTipes.get(i).equals("String")){
-										sbField.append(j1+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-textbox"+d+" id="+d+Util.firstLowerr(lCol.get(i))+d+">	</div>\n");
+										sbField.append(j1+trtd+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-textbox"+d+" id="+d+Util.firstLowerr(lCol.get(i))+d+">"+trtdx+"	</div>\n");
 									}else if(lTipes.get(i).equals("long")||lTipes.get(i).equals("BigDecimal")){
-										sbField.append(j1+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-numberbox"+d+
+										sbField.append(j1+trtd+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-numberbox"+d+
 												" "+"data-options="+'"'+"min:0,precision:0,groupSeparator:','"+'"'
-												+" id="+d+Util.firstLowerr(lCol.get(i))+d+">	</div>\n");
+												+" id="+d+Util.firstLowerr(lCol.get(i))+d+">"+trtdx+"	</div>\n");
 									}else if(lTipes.get(i).equals("Date")||lTipes.get(i).equals("date")){
-										sbField.append(j1+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-datebox"+d+
+										sbField.append(j1+trtd+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-datebox"+d+
 												" "+"data-options="+'"'+"formatter:myformatter,parser:myparser"+'"'
-												+" id="+d+Util.firstLowerr(lCol.get(i))+d+">	</div>\n");
+												+" id="+d+Util.firstLowerr(lCol.get(i))+d+">"+trtdx+"	</div>\n");
 									}
 								}
 								i++;
@@ -248,6 +250,7 @@ public class TempCreate {
 				br = new BufferedReader(new FileReader(s));
 				while ((sCurrentLine = br.readLine()) != null) {
 					String line = sCurrentLine;
+					//TABLE HEADER
 					if (sCurrentLine.contains("XXXDatafield")){
 						StringBuffer sbField = new StringBuffer();
 						int i =0;
@@ -258,12 +261,17 @@ public class TempCreate {
 						String z = line.replaceAll("XXXDatafield", Util.firstLowerr(sbField.toString()));
 						line =z;
 					}
+					//TABLE DATA
 					if (sCurrentLine.contains("XXXjsonfield")){
 						StringBuffer sbField = new StringBuffer();
 						//"<td>"+ value.kodeKelompok + "</td>"+
 						int i =0;
-						for(String t :lList){						
-							sbField.append("        "+d+"<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +d+" + "+" value."+Util.firstLowerr(lCol.get(i))+" + "+d+"</font></div></td>"+d+"+\n");
+						for(String t :lList){	
+							if(lTipes.get(i).equals("long")||lTipes.get(i).equals("int")||lTipes.get(i).equals("BigDecimal")||lTipes.get(i).equals("Long")||lTipes.get(i).equals("Int")){
+								sbField.append("        "+d+"<td align='right'> <div class='cfg_detail'><font class='f_boldhd'>" +d+" + "+"accounting.formatNumber(value."+Util.firstLowerr(lCol.get(i))+",0,'.',',')" +" + "+d+"</font></div></td>"+d+"+\n");
+							}else{
+								sbField.append("        "+d+"<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +d+" + "+" value."+Util.firstLowerr(lCol.get(i))+" + "+d+"</font></div></td>"+d+"+\n");
+							}
 							i++;
 						}					
 						String z = line.replaceAll("XXXjsonfield", Util.firstLowerr(sbField.toString()));

@@ -3,7 +3,7 @@
 *controllerTemplate
 */
 
-package com.id.kas.controller.dacen;
+package com.id.kas.DEVELOPMENT;
 import java.math.BigDecimal;
 
 import java.text.SimpleDateFormat;
@@ -27,8 +27,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
-import com.id.kas.pojo.dacen.XXtbl;//harap Sesuaikan
-import com.id.kas.pojo.dao.dacen.XXtblDAO;
+import com.id.kas.pojo.XXtbl;//harap Sesuaikan
+import com.id.kas.DEVELOPMENT.XXtblDAO;
 
 import com.id.kas.util.AbstractListScreen;
 
