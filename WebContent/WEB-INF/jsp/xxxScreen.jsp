@@ -17,7 +17,17 @@ onclick="testAjax()">
 JSP Name : <input type="text" style="width: 300px" id="jspName" name="jspName" value="seq" >
 Mapping : <input type="text" style="width: 300px" id="maping" name="maping" value="seq"  ><br>
 Controller : <input type="text" style="width: 300px" id="cont" name="cont" value="SeqController"  >
-DAO : <input type="text" style="width: 300px" id="dao" name="dao" value="TblSeq" ><br>
+DAO : <input type="text" style="width: 300px" id="dao" name="dao" value="TblSeq" ><br><br>
+
+JSP : <select name="jsp">	<option>Y</option>	<option>N</option>	</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DAO : <select name="dao2">	<option>Y</option>	<option>N</option>	</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Controller : <select name="controller">	<option>Y</option>	<option>N</option>	</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Report : <select name="report">	<option>N</option> <option>Y</option>		</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+Form JSP : <select name="formx">	<option>N</option>	<option>Y</option>	</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Controller Form : <select name="controllerFormx"><option>N</option>	<option>Y</option>		</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br><br>
+
+
 <table border="1" id="ddReferences">
             <thead>
                 <tr>

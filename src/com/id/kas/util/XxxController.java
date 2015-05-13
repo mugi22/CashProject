@@ -37,47 +37,38 @@ public class XxxController {
         List<String> lIds = new ArrayList<String>();
         List<String> lTipes = new ArrayList<String>();
         List<String> lCol = new ArrayList<String>();
-//		System.out.println("Form "+par.length);
 		int i = 0;		
 		for(String s : col){
 			i++;
-//			System.out.println(i+" col : "+s);
 			lCol.add(s);
 		}
 		
 		i = 0;
 		for(String s : par){
 			i++;
-//			System.out.println(i+" par : "+s);
 			lForm.add(s);
 		}
 		
-//		System.out.println("List "+list.length);
 		i = 0;
 		for(String s : list){
 			i++;
-//			System.out.println(i+"  : "+s);
 			lList.add(s);
 		}
 		
-//        System.out.println("search "+list.length);
 		i = 0;
 		for(String s : search){
 			i++;
-//			System.out.println(i+"  : "+s);
 			lSearch.add(s);
 		}
              
 		i = 0;
 		for(String s : ids){
 			i++;
-			System.out.println(i+" ids  : "+s);
 			lIds.add(s);
 		}
 		i = 0;
 		for(String s : tipes){
 			i++;
-//			System.out.println(i+"tipes  : "+s);
 			lTipes.add(s);
 		}
                 
@@ -86,32 +77,60 @@ public class XxxController {
 		String sTemplate="H:\\Workspace\\CashProject\\template\\"; //TEMPLATE FoLDER
 		String sFileDAO="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+daoName+"DAO.java"; //DAO
 		String sFileController="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+conName+".java";//CONTROLER
+		String sFormFileController="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\Form"+conName+".java";//CONTROLER
 		String sFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\"+jspName+".jsp"; //JSP
+		String sFileCreateFrom="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\"+jspName+"form.jsp"; //JSP FORM
 		String sReportFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\report\\"+jspName+"Report.jsp"; //JSP
-//JSP FORM
 		String sFile;
-		sFile=sTemplate+"jspTemplate.txt";//baca template
-		List<String> l = new ArrayList<String>();
-		String strFile = (tem.readFile(sFile,lForm,lCol,lList,jspName,lSearch,lIds,lTipes));
-		tem.createFile(sFileCreate, strFile);
-//		JSP REPORT		
-		sFile=sTemplate+"reportJSP.txt";//baca template
-		String strReportFile = (tem.readFileReportJsp(sFile,lForm,lCol,lList,jspName,lSearch,lIds,lTipes));
-		tem.createFile(sReportFileCreate, strReportFile);
 		
+//		JSP FORM 		controllerFormx
+		if(reg.getParameter("formx").equals("Y")){
+			sFile=sTemplate+"jspFormTemplate.txt";//baca template
+			List<String> l = new ArrayList<String>();
+			String strFile = (tem.readFileFormJsp(sFile,lForm,lCol,lList,jspName,lSearch,lIds,lTipes));
+			tem.createFile(sFileCreateFrom, strFile);
+		}
+		
+//		FORM  COTROLLER	
+		if(reg.getParameter("controllerFormx").equals("Y")){
+			String sFileConTemp=sTemplate+"controllerFormTemplate.txt";
+			String strControl = tem.readFileControllerTemp(sFileConTemp,"Form"+mapName,jspName,"Form"+conName,daoName,lCol,lForm,lSearch,lIds,lTipes);
+			tem.createFile(sFormFileController, strControl);
+		}   	
+		
+//		JSP 		
+		if(reg.getParameter("jsp").equals("Y")){
+			sFile=sTemplate+"jspTemplate.txt";//baca template
+			List<String> l = new ArrayList<String>();
+			String strFile = (tem.readFile(sFile,lForm,lCol,lList,jspName,lSearch,lIds,lTipes));
+			tem.createFile(sFileCreate, strFile);
+		}
+		
+//		JSP REPORT	
+		if(reg.getParameter("report").equals("Y")){
+			sFile=sTemplate+"reportJSP.txt";//baca template
+			String strReportFile = (tem.readFileReportJsp(sFile,lForm,lCol,lList,jspName,lSearch,lIds,lTipes));
+			tem.createFile(sReportFileCreate, strReportFile);
+		}
 		
 //		COTROLLER	
-		String sFileConTemp=sTemplate+"controllerTemplate.txt";
-		String strControl = tem.readFileControllerTemp(sFileConTemp,mapName,jspName,conName,daoName,lCol,lForm,lSearch,lIds,lTipes);
-		tem.createFile(sFileController, strControl);
-		      
-//		D A O  mula
-		String sFileDAOTemp=sTemplate+"daoTemplate.txt";
-		String strDAO = tem.readFileDAOTemp(sFileDAOTemp, daoName,lCol,lSearch,lIds,lTipes);
-		tem.createFile(sFileDAO, strDAO);
-			
-//		System.out.println("POST  disini.......");
-//		readFile();
+		if(reg.getParameter("controller").equals("Y")){
+			String sFileConTemp=sTemplate+"controllerTemplate.txt";
+			String strControl = tem.readFileControllerTemp(sFileConTemp,mapName,jspName,conName,daoName,lCol,lForm,lSearch,lIds,lTipes);
+			tem.createFile(sFileController, strControl);
+		}     
+		
+
+		
+		
+		
+		
+//		D A O  
+		if(reg.getParameter("dao2").equals("Y")){
+			String sFileDAOTemp=sTemplate+"daoTemplate.txt";
+			String strDAO = tem.readFileDAOTemp(sFileDAOTemp, daoName,lCol,lSearch,lIds,lTipes);
+			tem.createFile(sFileDAO, strDAO);
+		}	
 		return "xxxScreen";
 	}
 

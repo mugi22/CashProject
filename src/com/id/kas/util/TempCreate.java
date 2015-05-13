@@ -29,9 +29,6 @@ public class TempCreate {
 	//JSP
 	public String readFile(String s,List<String> lForm,List<String> lCol,List<String> lList,String jspName,List<String> lSearch,List<String>  lIds,List<String> lTipes){
 		
-//		for(String v:lIds){
-//			System.out.println(" v : "+v);
-//		}
 		StringBuffer sb = new StringBuffer();
 		BufferedReader br = null;	
 				try {
@@ -49,10 +46,25 @@ public class TempCreate {
 							StringBuffer sbField = new StringBuffer();     
 							int i = 0;
 							for(String t :lSearch){
+								String sLable = "";
 								if(t.equals("Y")){
-                                 sbField.append(j1+"<tr><td><label>"+Util.firstUpper(lCol.get(i))+"</label> : "+"<input name="+'"'+
-                                                Util.firstUpper(lCol.get(i))+'"'+" type="+'"'+"text"+'"'+" id="+'"'+lCol.get(i)+'"'+" size="+'"'+"30"+'"'+
-                                                " maxlength="+'"'+"30"+'"'+"></td></tr>\n");
+									sLable = jspName+"."+Util.firstUpper(lCol.get(i));//+"="+Util.firstUpper(lCol.get(i));
+									String sPropert = "<\\%=properties.getProperty("+'"'+sLable+'"'+")\\%>";
+									String slabelCheck =sLable+"="+Util.firstUpper(lCol.get(i));
+									ReadPropertiesFile rp = new ReadPropertiesFile();
+									rp.propertesChek(slabelCheck);
+									
+									sbField.append(j1+"<tr>\n<td><label style="+'"'+"width: 150px;"+'"'+">"+sPropert  +"</label> : "+"<input name="+'"'+
+                                             Util.firstUpper(lCol.get(i))+'"'+" type="+'"'+"text"+'"'+" id="+'"'+lCol.get(i)+'"'+" size="+'"'+"30"+'"'+
+                                             " maxlength="+'"'+"30"+'"'+"></td>\n</tr>\n");
+                              
+									
+									
+									
+//                                 sbField.append(j1+"<tr>\n<td><label style="+'"'+"width: 150px;"+'"'+">"+Util.firstUpper(lCol.get(i))+"</label> : "+"<input name="+'"'+
+//                                                Util.firstUpper(lCol.get(i))+'"'+" type="+'"'+"text"+'"'+" id="+'"'+lCol.get(i)+'"'+" size="+'"'+"30"+'"'+
+//                                                " maxlength="+'"'+"30"+'"'+"></td>\n</tr>\n");
+//                                 
 								}
 							i++;
 							}
@@ -81,12 +93,18 @@ public class TempCreate {
 							int i =0;
 							for(String t :lList){
 								if(t.equals("Y")){
+									String sLable = jspName+"."+Util.firstUpper(lCol.get(i));//+"="+Util.firstUpper(lCol.get(i));
+									String sPropert = "<\\%=properties.getProperty("+'"'+sLable+'"'+")\\%>";
+									String slabelCheck =sLable+"="+Util.firstUpper(lCol.get(i));
+									ReadPropertiesFile rp = new ReadPropertiesFile();
+									rp.propertesChek(slabelCheck);
+									
 									if(lTipes.get(i).equals("long")||lTipes.get(i).equals("BigDecimal")){
 										sbField.append(j1+"<th field="+'"'+Util.firstLowerr(lCol.get(i))+'"'+" width="+'"'+"100"+'"'+ "sortable="+'"'+"true"+'"'+
 												"data-options="+'"'+"formatter:function(value, row){return accounting.formatNumber(row."+Util.firstLowerr(lCol.get(i))+",0,'.',','); }"+'"'+
-												"align="+'"'+"right"+'"'+">"+lCol.get(i)+"</th> "+"\n");
+												"align="+'"'+"right"+'"'+">"+/*lCol.get(i)*/sPropert+"</th> "+"\n");
 									}else{
-									sbField.append(j1+"<th field="+'"'+Util.firstLowerr(lCol.get(i))+'"'+" width="+'"'+"100"+'"'+ "sortable="+'"'+"true"+'"'+">"+lCol.get(i)+"</th> "+"\n");
+									sbField.append(j1+"<th field="+'"'+Util.firstLowerr(lCol.get(i))+'"'+" width="+'"'+"100"+'"'+ "sortable="+'"'+"true"+'"'+">"+/*lCol.get(i)*/sPropert+"</th> "+"\n");
 									}
 								}
 								i++;
@@ -104,15 +122,23 @@ public class TempCreate {
 							int i =0;
 							for(String t :lForm){
 								if(t.equals("Y")){
+									
+									String sLable = jspName+"."+Util.firstUpper(lCol.get(i));//+"="+Util.firstUpper(lCol.get(i));
+									String sPropert = "<\\%=properties.getProperty("+'"'+sLable+'"'+")\\%>";
+									String slabelCheck =sLable+"="+Util.firstUpper(lCol.get(i));
+									ReadPropertiesFile rp = new ReadPropertiesFile();
+									rp.propertesChek(slabelCheck);
+									
+									
 									if(lCol.get(i).equals("CreateDate")||lCol.get(i).equals("CreateBy")||lCol.get(i).equals("UpdateDate")||lCol.get(i).equals("UpdateBy")||lCol.get(i).equals("Versi")||lCol.get(i).equals("")){									
 									}else if(lTipes.get(i).equals("String")){
-										sbField.append(j1+trtd+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-textbox"+d+" id="+d+Util.firstLowerr(lCol.get(i))+d+">"+trtdx+"	</div>\n");
+										sbField.append(j1+trtd+"<div class="+d+"fitem"+d+">	<label>"+/*lCol.get(i)*/sPropert+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-textbox"+d+" id="+d+Util.firstLowerr(lCol.get(i))+d+">"+trtdx+"	</div>\n");
 									}else if(lTipes.get(i).equals("long")||lTipes.get(i).equals("BigDecimal")){
-										sbField.append(j1+trtd+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-numberbox"+d+
+										sbField.append(j1+trtd+"<div class="+d+"fitem"+d+">	<label>"+/*lCol.get(i)*/sPropert+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-numberbox"+d+
 												" "+"data-options="+'"'+"min:0,precision:0,groupSeparator:','"+'"'
 												+" id="+d+Util.firstLowerr(lCol.get(i))+d+">"+trtdx+"	</div>\n");
 									}else if(lTipes.get(i).equals("Date")||lTipes.get(i).equals("date")){
-										sbField.append(j1+trtd+"<div class="+d+"fitem"+d+">	<label>"+lCol.get(i)+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-datebox"+d+
+										sbField.append(j1+trtd+"<div class="+d+"fitem"+d+">	<label>"+/*lCol.get(i)*/sPropert+"</label> :<input name="+d+Util.firstLowerr(lCol.get(i))+d+"	class="+d+"easyui-datebox"+d+
 												" "+"data-options="+'"'+"formatter:myformatter,parser:myparser"+'"'
 												+" id="+d+Util.firstLowerr(lCol.get(i))+d+">"+trtdx+"	</div>\n");
 									}
@@ -635,9 +661,67 @@ public class TempCreate {
 			
 			
 		} catch (IOException e) {
+			System.out.println("file : "+fileName);
 			e.printStackTrace();
 		}
 	}
+	
+	
+	//FORM JSP
+			public String readFileFormJsp(String s,List<String> lForm,List<String> lCol,List<String> lList,String jspName,List<String> lSearch,List<String>  lIds,List<String> lTipes){
+				StringBuffer sb = new StringBuffer();
+				BufferedReader br = null;
+				try {
+					String sCurrentLine;
+					br = new BufferedReader(new FileReader(s));
+					while ((sCurrentLine = br.readLine()) != null) {
+						String line = sCurrentLine;
+						//TABLE HEADER
+						if (sCurrentLine.contains("XXXDatafield")){
+							StringBuffer sbField = new StringBuffer();
+							int i =0;
+							for(String t :lForm){
+								//System.out.println("*******   ===> "+lCol.get(i));
+								sbField.append("\n"+j1+"<tr>\n<td style="+d+"width : 200px"+d+"> "+lCol.get(i)+"<td>\n"+
+												"<td><input class="+d+"easyui-textbox"+d+"type="+d+"text"+d+" name="+d+lCol.get(i)+d+" id="+d+lCol.get(i)+d+
+												" data-options="+d+"required:false"+d+" value="+d+d+"></td>\n"+
+												"</tr> "+"\n");
+								i++;
+							}					
+							String z = line.replaceAll("XXXDatafield", Util.firstLowerr(sbField.toString()));
+							line =z;
+						}
+						
+						//TABLE DATA
+						sb.append(line+"\n");	
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				return sb.toString();
+			}		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 //	
 }

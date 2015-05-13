@@ -12,30 +12,22 @@ jspTemplate
 <%@ include file="include.jsp" %>  
 <title>User</title>
 </head>
-<body onload="test()">
+<body>
 
 <!-- ******************************FORM PENCARIAN******************************* -->   
         <div id="div2">
-            <form name="FREG" id="formCari" method="post" action="#"  >   
-            <table align="center">  	                       
-                    <tr>
-                    	<td><label>LastLogIn</label> : <input name="LastLogIn" type="text" id="LastLogIn" size="30" maxlength="30"></td>
-                    	<td><label>Keterangan</label> : <input name="Keterangan" type="text" id="Keterangan" size="30" maxlength="30"></td>
-                    </tr>
-                    <tr>
-                    	<td><label>SeqName</label> : <input name="SeqName" type="text" id="SeqName" size="30" maxlength="30"></td>
-                    	<td><label>SeqNum</label> : <input name="SeqNum" type="text" id="SeqNum" size="30" maxlength="30"></td>
-                    </tr>
-                    <tr>
-                    	<td><label>Tarif</label> : <input name="Tarif" type="text" id="Tarif" size="30" maxlength="30"></td>
-                    </tr>
+            <form name="FREG" id="formCari" method="post" action="#" style="width: 80%;" >   
+            <table align="center" >  	                       
+                    <tr><td><label style="width: 150px;"><%=properties.getProperty("lastLogIn")%></label> : <input name="LastLogIn" type="text" id="LastLogIn" size="30" maxlength="30"></td></tr>
+                    <tr><td><label style="width: 150px;"><%=properties.getProperty("keterangan")%></label> : <input name="Keterangan" type="text" id="Keterangan" size="30" maxlength="30"></td></tr>
+                    <tr><td><label style="width: 150px;"><%=properties.getProperty("seqName")%></label> : <input name="SeqName" type="text" id="SeqName" size="30" maxlength="30"></td></tr>
+                    <tr><td><label style="width: 150px;"><%=properties.getProperty("seqNum")%></label> : <input name="SeqNum" type="text" id="SeqNum" size="30" maxlength="30"></td></tr>
+                    <tr><td><label style="width: 150px;"><%=properties.getProperty("tarif")%></label> : <input name="Tarif" type="text" id="Tarif" size="30" maxlength="30"></td></tr>
 
 				 <tr>
-	            	<td colspan="2">
+	            	<td colspan="1">
 	                <div id="btn">     
-	                    <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
-	                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >    
-	                    <input type="reset" name="btnCetak" id="btnCetak" value="Cetak" onclick="doCetak()" >  
+	                    <%@ include file="searchButton.jsp" %>
 	                </div>
             	</td>
 	            	
@@ -63,11 +55,16 @@ jspTemplate
                 </tr>
             </thead>
         </table>        
+                
         <div id="toolbar">
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="doAdd()" id="btnAdd" >Tambah</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="doEdit()" id="btnEdit">Edit</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="doDelete()" id="btnDelete">Hapus</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="doShow()" id="btnShow">Tampil</a>
+        <%@ include file="toolbar.jsp" %>          
+        	<td align="right">
+        	<!-- 
+        		 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-authorize" plain="true" onclick="" id="btnAdd" ><%=otorize %></a>
+        	-->
+        	</td>
+        	</tr>
+        </table>
         </div>
  <!-- ************************** END LIST/TABLE ******************************************** -->       
     
@@ -76,12 +73,14 @@ jspTemplate
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
 		<div class="ftitle">SEQ</div>
 		<form id="fm" method="post" novalidate>
-                    <div class="fitem">	<label>LastLogIn</label> :<input name="lastLogIn"	class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" id="lastLogIn">	</div>
-                    <div class="fitem">	<label>Keterangan</label> :<input name="keterangan"	class="easyui-textbox" id="keterangan">	</div>
-                    <div class="fitem">	<label>SeqName</label> :<input name="seqName"	class="easyui-textbox" id="seqName">	</div>
-                    <div class="fitem">	<label>SeqNum</label> :<input name="seqNum"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" id="seqNum">	</div>
-                    <div class="fitem">	<label>Tarif</label> :<input name="tarif"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" id="tarif">	</div>
+		<table align="center"> 
+                    <tr><td><div class="fitem">	<label>LastLogIn</label> :<input name="lastLogIn"	class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" id="lastLogIn"></td></tr>	</div>
+                    <tr><td><div class="fitem">	<label>Keterangan</label> :<input name="keterangan"	class="easyui-textbox" id="keterangan"></td></tr>	</div>
+                    <tr><td><div class="fitem">	<label>SeqName</label> :<input name="seqName"	class="easyui-textbox" id="seqName"></td></tr>	</div>
+                    <tr><td><div class="fitem">	<label>SeqNum</label> :<input name="seqNum"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" id="seqNum"></td></tr>	</div>
+                    <tr><td><div class="fitem">	<label>Tarif</label> :<input name="tarif"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" id="tarif"></td></tr>	</div>
 			
+		</table>
 		</form>
 	</div>
 	<div id="dlg-buttons">
@@ -99,19 +98,15 @@ jspTemplate
 var url;
 var branchcode;
 	$("document").ready(function() {
-		
 		$("#btnAdd").linkbutton('${btnAdd}');
 		$("#btnEdit").linkbutton('${btnEdit}');
 		$("#btnDelete").linkbutton('${btnDelete}');
 		$("#btnShow").linkbutton('${btnShow}');		
-		
 	});
 
-	//function test() {
-		//alert("testtttt..... click");
-	//	$.messager.progress('close');
-		
-	//}
+	function test() {
+		alert("testtttt..... click");
+	}
 
 	function retrieve() {		
 		var jsonurl = 'seqListAll.htm?'+

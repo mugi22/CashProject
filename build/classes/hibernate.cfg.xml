@@ -74,7 +74,7 @@
      <!-- package sesuaikan -->
     <mapping class="com.id.kas.DEVELOPMENT.TblTest"/>
     <!--TblRekeningIaMaster -->
-    <mapping class="com.id.kas.DEVELOPMENT.TblKaryawan"/> 
+    <mapping class="com.id.kas.pojo.TblKaryawan"/> 
     <mapping class="com.id.kas.pojo.TblCoaMaster" />
     <mapping class="com.id.kas.pojo.TblRekeningIA" />
     <mapping class="com.id.kas.pojo.TblRekeningIaMaster" />

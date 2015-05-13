@@ -5,6 +5,11 @@ jspTemplate
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+<%@page import="java.io.*" %>
+<%@page import="java.util.*" %>
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -27,9 +32,7 @@ jspTemplate
 				 <tr>
 	            	<td colspan="1">
 	                <div id="btn">     
-	                    <input type="button" name="btnKirim" id="btnCari" value="Cari" onclick="retrieve()">     
-	                    <input type="reset" name="btnUlangi" id="btnReset" value="Reset" onclick="doClear()" >    
-	                    <input type="reset" name="btnCetak" id="btnCetak" value="Cetak" onclick="doCetak()" >  
+	                    <%@ include file="searchButton.jsp" %>
 	                </div>
             	</td>
 	            	
@@ -61,12 +64,17 @@ jspTemplate
                      
                 </tr>
             </thead>
-        </table>        
+        </table>    
+            
         <div id="toolbar">
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="doAdd()" id="btnAdd" >Tambah</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="doEdit()" id="btnEdit">Edit</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="doDelete()" id="btnDelete">Hapus</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="doShow()" id="btnShow">Tampil</a>
+        <%@ include file="toolbar.jsp" %>          
+        	<td align="right">
+        	<!-- 
+        		 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-authorize" plain="true" onclick="" id="btnAdd" ><%=otorize %></a>
+        	-->
+        	</td>
+        	</tr>
+        </table>
         </div>
  <!-- ************************** END LIST/TABLE ******************************************** -->       
     

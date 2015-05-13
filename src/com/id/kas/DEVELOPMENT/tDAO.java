@@ -41,11 +41,10 @@ public class tDAO {
 		session.update(t);
 	}
 //====================================================================	
-	public t getById(long  jurnalId,long  idJurnalTransaksi){
+	public t getById(String  nama){
 		Criteria criteria =null;
 		criteria = session.createCriteria(t.class);
-                    if (jurnalId>0){criteria.add(Restrictions.eq("jurnalId", jurnalId)); 	}
-                    if (idJurnalTransaksi>0){criteria.add(Restrictions.eq("idJurnalTransaksi", idJurnalTransaksi)); 	}
+                    if (nama.length()>0){criteria.add(Restrictions.eq("nama", nama)); 	}
 
 		return (t)  criteria.uniqueResult();//session.get(t.class, id);
 	}
@@ -65,39 +64,31 @@ public class tDAO {
 	}
 
 /*//SESUAIKAN DENGAN KRITERIA*/	
-	public Criteria getCriteria(String NoCoa,long JurnalId,Date TglPosting,Date TglTransaksi,long IdJurnalTransaksi){
+	public Criteria getCriteria(String Nama,String UnitKerja,String Nik){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Criteria criteria =null;
 		criteria = session.createCriteria(t.class);
-                    if (NoCoa.length()>0){criteria.add(Restrictions.eq("noCoa", NoCoa)); 	}
-                    if (JurnalId>0){criteria.add(Restrictions.eq("jurnalId", JurnalId)); 	}
-                    try {
-                    if (TglPosting.after(formatter.parse("00-00-0000"))){criteria.add(Restrictions.eq("tglPosting", TglPosting)); 	}
-                    } catch (ParseException e) {
-                    e.printStackTrace();
-                    }                    try {
-                    if (TglTransaksi.after(formatter.parse("00-00-0000"))){criteria.add(Restrictions.eq("tglTransaksi", TglTransaksi)); 	}
-                    } catch (ParseException e) {
-                    e.printStackTrace();
-                    }                    if (IdJurnalTransaksi>0){criteria.add(Restrictions.eq("idJurnalTransaksi", IdJurnalTransaksi)); 	}
+                    if (Nama.length()>0){criteria.add(Restrictions.eq("nama", Nama)); 	}
+                    if (UnitKerja.length()>0){criteria.add(Restrictions.eq("unitKerja", UnitKerja)); 	}
+                    if (Nik.length()>0){criteria.add(Restrictions.eq("nik", Nik)); 	}
 		
 		return criteria;
 	}
 
-	public List<t> getBy(String NoCoa,long JurnalId,Date TglPosting,Date TglTransaksi,long IdJurnalTransaksi ,int start, int rowcount ){
-		Criteria criteria =getCriteria(NoCoa,JurnalId,TglPosting,TglTransaksi,IdJurnalTransaksi);
+	public List<t> getBy(String Nama,String UnitKerja,String Nik ,int start, int rowcount ){
+		Criteria criteria =getCriteria(Nama,UnitKerja,Nik);
 		return (List<t>) criteria.setFirstResult(start).setMaxResults(rowcount).list();
 	}
 	
-	public Long getByCount(String NoCoa,long JurnalId,Date TglPosting,Date TglTransaksi,long IdJurnalTransaksi, int start, int rowcount  ){
-		Criteria criteria =getCriteria(NoCoa,JurnalId,TglPosting,TglTransaksi,IdJurnalTransaksi);
+	public Long getByCount(String Nama,String UnitKerja,String Nik, int start, int rowcount  ){
+		Criteria criteria =getCriteria(Nama,UnitKerja,Nik);
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	public Map<String,Object> getByPerPage(String NoCoa,long JurnalId,Date TglPosting,Date TglTransaksi,long IdJurnalTransaksi ,int start, int rowcount ){
+	public Map<String,Object> getByPerPage(String Nama,String UnitKerja,String Nik ,int start, int rowcount ){
 		Map map = new HashMap<String, Object>();		
-		long rowCount =  getByCount(NoCoa,JurnalId,TglPosting,TglTransaksi,IdJurnalTransaksi,  start,rowcount);//total jumlah row
-		List<t> l = getBy(NoCoa,JurnalId,TglPosting,TglTransaksi,IdJurnalTransaksi, start,rowcount);//data result nya
+		long rowCount =  getByCount(Nama,UnitKerja,Nik,  start,rowcount);//total jumlah row
+		List<t> l = getBy(Nama,UnitKerja,Nik, start,rowcount);//data result nya
 		map.put("total", rowCount);
 		map.put("rows", l);
 		return map;
@@ -105,8 +96,8 @@ public class tDAO {
 
 //==============================REPORT====================================
 /** Retrieve by kriteria tanpa batasan row */
-	public List<t> getBy(String NoCoa,long JurnalId,Date TglPosting,Date TglTransaksi,long IdJurnalTransaksi  ){
-		Criteria criteria =getCriteria(NoCoa,JurnalId,TglPosting,TglTransaksi,IdJurnalTransaksi);
+	public List<t> getBy(String Nama,String UnitKerja,String Nik  ){
+		Criteria criteria =getCriteria(Nama,UnitKerja,Nik);
 		return (List<t>) criteria.list();
 	}
 

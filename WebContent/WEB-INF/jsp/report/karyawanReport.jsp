@@ -69,11 +69,9 @@
 <table id="myData" align="center" width="90%" cellpadding="0" cellspacing="0"  style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;">
 	<thead>            
     	<tr>
-			                    <th style="font-weight:bold" align="center" class="cfg_header" >LastLogIn</th> 
-                    <th style="font-weight:bold" align="center" class="cfg_header" >Keterangan</th> 
-                    <th style="font-weight:bold" align="center" class="cfg_header" >SeqName</th> 
-                    <th style="font-weight:bold" align="center" class="cfg_header" >SeqNum</th> 
-                    <th style="font-weight:bold" align="center" class="cfg_header" >Tarif</th> 
+			                    <th style="font-weight:bold" align="center" class="cfg_header" >Nik</th> 
+                    <th style="font-weight:bold" align="center" class="cfg_header" >Nama</th> 
+                    <th style="font-weight:bold" align="center" class="cfg_header" >UnitKerja</th> 
                      
     	</tr>
 	</thead>
@@ -84,7 +82,7 @@
 <script type="text/javascript">
 
 	$("document").ready(function(){
-		var uri ='seqDataReport.htm?';
+		var uri ='karyawanDataReport.htm?';
 		var s = window.location.search.replace("?", "") ;
 		$.ajax({
 			url:uri+"&"+s,
@@ -93,11 +91,9 @@
 				var no = 1;
 				 $.each(x, function( index, value ) {
 	                 var row = $("<tr>"+
-	                       			        "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.lastLogIn + "</font></div></td>"+
-        "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.keterangan + "</font></div></td>"+
-        "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.seqName + "</font></div></td>"+
-        "<td align='right'> <div class='cfg_detail'><font class='f_boldhd'>" + accounting.formatNumber(value.seqNum,0,'.',',') + "</font></div></td>"+
-        "<td align='right'> <div class='cfg_detail'><font class='f_boldhd'>" + accounting.formatNumber(value.tarif,0,'.',',') + "</font></div></td>"+
+	                       			        "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.nik + "</font></div></td>"+
+        "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.nama + "</font></div></td>"+
+        "<td align='left'> <div class='cfg_detail'><font class='f_boldhd'>" +  value.unitKerja + "</font></div></td>"+
 
 	                		     "</tr>");
 	                 $("#myData").append(row);

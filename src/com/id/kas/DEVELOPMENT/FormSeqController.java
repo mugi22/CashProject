@@ -1,4 +1,10 @@
-package com.id.kas.controller;
+/*
+*Create by CodeGenerator
+*controllerTemplate
+*/
+
+package com.id.kas.DEVELOPMENT;
+import java.math.BigDecimal;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,83 +25,78 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.id.kas.DEVELOPMENT.TblKaryawan;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
-import com.id.kas.pojo.dao.TblKaryawanDAO;
-//import com.id.kas.pojo.TblKaryawan;//harap tambahain coyyy
+import com.id.kas.pojo.TblSeq;//harap Sesuaikan
+import com.id.kas.DEVELOPMENT.TblSeqDAO;
+
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class KaryawanController  extends AbstractListScreen{
-	@RequestMapping(value="/karyawan.htm",method=RequestMethod.GET)
+public class FormSeqController  extends AbstractListScreen{
+	@RequestMapping(value="/Formseq.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
 	 	return super.doGet(model, session, reg,res);
 	}
 	
 	
-	 @RequestMapping(value="/karyawan.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/Formseq.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
 		 super.doPost(model, session,reg,res);
 		return getView();		 
 	 }
 	 
 	 @Override
-	protected String getView() {
-		// TODO Auto-generated method stub
-		return "karyawan";
+	protected String getView() {		
+		return "seqForm";//seqForm
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/karyawanListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String karyawanListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Nik=reg.getParameter("Nik");		 
-String Nama=reg.getParameter("Nama");	           
-         String userId = reg.getParameter("userId");
-         String ses = (String) session.getAttribute("session"+userId);
-         TblUser user = (TblUser) session.getAttribute("user"+userId);
-         
-         //model.put("session", ses);
-         
-         
-         model.put("session", ses);
-         if(!cekValidSession(session,userId)){
-        	 return "[]";
-         }
-         String result="";
-         int row = Integer.parseInt(reg.getParameter("rows"));
-         int loffset = (Integer.parseInt(reg.getParameter("page"))-1)*row;
-         Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
-         
-         Session sess = null;
-         try {
-        	long rowCount=0;
-			sess = HibernateUtil.getSessionFactory().openSession();
-			TblKaryawanDAO dao = new TblKaryawanDAO(sess);
-			Map h = new HashMap<String, Object>();
-			List<TblKaryawan> l = new ArrayList<TblKaryawan>();
-				h = dao.getByPerPage(Nik,Nama,loffset, row);
-			sess.close();
-            result = gson.toJson(h);
-            System.out.println(result);
-            
-            /**  BILA ADA PERUBAHAN DATA JSON
-            String x = changeJson(h, sess);
-            sess.close();
-        	result ="{"+'"'+"total"+'"'+":"+h.get("total")+","+'"'+"rows"+'"'+":["+x+']'+'}';
-            */
-            
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}         
-         return result;
-     }
+//	 @RequestMapping(value="/FormseqListAll.htm", method=RequestMethod.POST)
+//     public @ResponseBody String FormseqListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+//X//XXStringParam		 
+//         String userId = reg.getParameter("userId");
+//         String ses = (String) session.getAttribute("session"+userId);
+//         TblUser user = (TblUser) session.getAttribute("user"+userId);
+//  
+//         model.put("session", ses);
+//         if(!cekValidSession(session,userId)){
+//        	 return "[]";
+//         }
+//         String result="";
+//         int row = Integer.parseInt(reg.getParameter("rows"));
+//         int loffset = (Integer.parseInt(reg.getParameter("page"))-1)*row;
+//         Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
+//         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+//         Session sess = null;
+//         try {
+//        	long rowCount=0;
+//			sess = HibernateUtil.getSessionFactory().openSession();
+//			X//XtblDAO dao = new TblSeqDAO(sess);
+//			Map h = new HashMap<String, Object>();
+//			List<X//Xtbl> l = new ArrayList<TblSeq>();
+//				h = dao.getByPerPage(formatter.parse(LastLogIn),Keterangan,SeqName,Long.parseLong(SeqNum),new BigDecimal(Tarif),loffset, row);
+//			sess.close();
+//           result = gson.toJson(h);
+//            System.out.println(result);
+//            
+//            /**  BILA ADA PERUBAHAN DATA JSON
+//            String x = changeJson(h, sess);
+//            sess.close();
+//        	result ="{"+'"'+"total"+'"'+":"+h.get("total")+","+'"'+"rows"+'"'+":["+x+']'+'}';
+//            */
+//            
+//			
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//		}         
+//         return result;
+//     }
 
 // *********************ADD***********************
- @RequestMapping(value="/karyawanAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/FormseqAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -111,11 +112,13 @@ String Nama=reg.getParameter("Nama");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
-               TblKaryawan tbl = new TblKaryawan();
-                    tbl.setNik(reg.getParameter("nik"));
-                    tbl.setNama(reg.getParameter("nama"));
-                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
+               TblSeqDAO dao = new TblSeqDAO(sess);
+               TblSeq tbl = new TblSeq();
+                    tbl.setLastLogIn(formatter.parse(reg.getParameter("lastLogIn")));
+                    tbl.setKeterangan(reg.getParameter("keterangan"));
+                    tbl.setSeqName(reg.getParameter("seqName"));
+                    tbl.setSeqNum(Long.parseLong((reg.getParameter("seqNum"))));
+                    tbl.setTarif(new BigDecimal((reg.getParameter("tarif"))));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
@@ -135,9 +138,9 @@ String Nama=reg.getParameter("Nama");
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/karyawanEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String karyawanEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Nik=reg.getParameter("nik");
+	 @RequestMapping(value="/FormseqEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String FormseqEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String SeqName=reg.getParameter("seqName");
 		 
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -153,12 +156,14 @@ String Nik=reg.getParameter("nik");
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
-               TblKaryawan tbl = dao.getById(Nik);
+               TblSeqDAO dao = new TblSeqDAO(sess);
+               TblSeq tbl = dao.getById(SeqName);
                 String tblOld = gson.toJson(tbl);
-                    tbl.setNik(reg.getParameter("nik"));
-                    tbl.setNama(reg.getParameter("nama"));
-                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
+                    tbl.setLastLogIn(formatter.parse(reg.getParameter("lastLogIn")));
+                    tbl.setKeterangan(reg.getParameter("keterangan"));
+                    tbl.setSeqName(reg.getParameter("seqName"));
+                    tbl.setSeqNum(Long.parseLong((reg.getParameter("seqNum"))));
+                    tbl.setTarif(new BigDecimal((reg.getParameter("tarif"))));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -177,12 +182,12 @@ String Nik=reg.getParameter("nik");
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/karyawanDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String karyawanDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-String Nik=reg.getParameter("nik");
+	 @RequestMapping(value="/FormseqDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String FormseqDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String SeqName=reg.getParameter("seqName");
 	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
-String userId = reg.getParameter("userId");
+		 String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
          //model.put("session", ses);
@@ -195,8 +200,8 @@ String userId = reg.getParameter("userId");
          Gson gson = new Gson();
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
-               TblKaryawan tbl = dao.getById(Nik);
+               TblSeqDAO dao = new TblSeqDAO(sess);
+               TblSeq tbl = dao.getById(SeqName);
                String tblDel = gson.toJson(tbl);
                sess.beginTransaction();
                dao.delete(tbl);
@@ -236,5 +241,56 @@ String userId = reg.getParameter("userId");
 //		return x;
 //	}
 
+//===============================REPORT====================================================
+//
+//	@RequestMapping(value="/FormseqReport.htm",method=RequestMethod.GET)
+//	 public String doGetFormseqReport(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
+//	 	super.doGet(model, session, reg,res);
+//	 	return "/report/FormseqReport";
+//	}
+	
+	
+//		 @RequestMapping(value="/FormseqDataReport.htm", method=RequestMethod.GET)
+//     public @ResponseBody String FormseqDataReport(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+//XX//XStringParam		 
+//         String userId = reg.getParameter("userId");
+//         String ses = (String) session.getAttribute("session"+userId);
+//         TblUser user = (TblUser) session.getAttribute("user"+userId);
+//  
+//         model.put("session", ses);
+//         if(!cekValidSession(session,userId)){
+//        	 return "[]";
+//         }
+//         String result="";
+//          Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
+//         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+//         Session sess = null;
+//         try {
+//        	long rowCount=0;
+//			sess = HibernateUtil.getSessionFactory().openSession();
+//			TblSeqDAO dao = new TblSeqDAO(sess);
+//			List<TblSeq> l = new ArrayList<TblSeq>();
+//				l = dao.getBy(formatter.parse(LastLogIn),Keterangan,SeqName,Long.parseLong(SeqNum),new BigDecimal(Tarif));
+//			sess.close();
+ //           result = gson.toJson(l);
+//            System.out.println(result);
+//            
+//            /**  BILA ADA PERUBAHAN DATA JSON
+//            String x = changeJson(h, sess);
+//            sess.close();
+//        	result ="{"+'"'+"total"+'"'+":"+h.get("total")+","+'"'+"rows"+'"'+":["+x+']'+'}';
+//            */
+//            
+			
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//		}         
+//         return result;
+//     }
+	
+	
+	
+	
 	
 }

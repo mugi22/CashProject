@@ -27,21 +27,21 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.id.kas.db.HibernateUtil;
 import com.id.kas.pojo.TblUser;
-import com.id.kas.pojo.TblSeq;//harap Sesuaikan
-//import com.id.kas.DEVELOPMENT.TblSeqDAO;
+import com.id.kas.pojo.TblKaryawan;//harap Sesuaikan
+import com.id.kas.DEVELOPMENT.TblKaryawanDAO;
 
 import com.id.kas.util.AbstractListScreen;
 
 
 @Controller
-public class SeqController  extends AbstractListScreen{
-	@RequestMapping(value="/seq.htm",method=RequestMethod.GET)
+public class KaryawanController  extends AbstractListScreen{
+	@RequestMapping(value="/karyawan.htm",method=RequestMethod.GET)
 	 public String doGet(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
 	 	return super.doGet(model, session, reg,res);
 	}
 	
 	
-	 @RequestMapping(value="/seq.htm", method=RequestMethod.POST)
+	 @RequestMapping(value="/karyawan.htm", method=RequestMethod.POST)
 	 public String doPost(Map<String, Object> model,HttpSession session, HttpServletRequest reg, HttpServletResponse res) {
 		 super.doPost(model, session,reg,res);
 		return getView();		 
@@ -50,26 +50,15 @@ public class SeqController  extends AbstractListScreen{
 	 @Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return "seq";
+		return "karyawan";
 	}
 	
 //	 ***************************** LIST  **************************************************************
-	 @RequestMapping(value="/seqListAll.htm", method=RequestMethod.POST)
-     public @ResponseBody String seqListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String LastLogIn ="00-00-0000";
-                    if(reg.getParameter("LastLogIn").length()>0){
-                    LastLogIn = (reg.getParameter("LastLogIn"));
-                    }
-                    String Keterangan=reg.getParameter("Keterangan");
-                    String SeqName=reg.getParameter("SeqName");
-                    String SeqNum ="0";
-                    if(reg.getParameter("SeqNum").length()>0){
-                    SeqNum = (reg.getParameter("SeqNum"));
-                    }
-                    String Tarif ="0";
-                    if(reg.getParameter("Tarif").length()>0){
-                    Tarif = (reg.getParameter("Tarif"));
-                    }		 
+	 @RequestMapping(value="/karyawanListAll.htm", method=RequestMethod.POST)
+     public @ResponseBody String karyawanListAll(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String Nik=reg.getParameter("Nik");
+                    String Nama=reg.getParameter("Nama");
+                    String UnitKerja=reg.getParameter("UnitKerja");		 
          String userId = reg.getParameter("userId");
          String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
@@ -87,10 +76,10 @@ public class SeqController  extends AbstractListScreen{
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblSeqDAO dao = new TblSeqDAO(sess);
+			TblKaryawanDAO dao = new TblKaryawanDAO(sess);
 			Map h = new HashMap<String, Object>();
-			List<TblSeq> l = new ArrayList<TblSeq>();
-				h = dao.getByPerPage(formatter.parse(LastLogIn),Keterangan,SeqName,Long.parseLong(SeqNum),new BigDecimal(Tarif),loffset, row);
+			List<TblKaryawan> l = new ArrayList<TblKaryawan>();
+				h = dao.getByPerPage(Nik,Nama,UnitKerja,loffset, row);
 			sess.close();
             result = gson.toJson(h);
             System.out.println(result);
@@ -110,7 +99,7 @@ public class SeqController  extends AbstractListScreen{
      }
 
 // *********************ADD***********************
- @RequestMapping(value="/seqAdd.htm", method=RequestMethod.POST)
+ @RequestMapping(value="/karyawanAdd.htm", method=RequestMethod.POST)
      public @ResponseBody String userAdd(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -126,13 +115,11 @@ public class SeqController  extends AbstractListScreen{
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblSeqDAO dao = new TblSeqDAO(sess);
-               TblSeq tbl = new TblSeq();
-                    tbl.setLastLogIn(formatter.parse(reg.getParameter("lastLogIn")));
-                    tbl.setKeterangan(reg.getParameter("keterangan"));
-                    tbl.setSeqName(reg.getParameter("seqName"));
-                    tbl.setSeqNum(Long.parseLong((reg.getParameter("seqNum"))));
-                    tbl.setTarif(new BigDecimal((reg.getParameter("tarif"))));
+               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
+               TblKaryawan tbl = new TblKaryawan();
+                    tbl.setNik(reg.getParameter("nik"));
+                    tbl.setNama(reg.getParameter("nama"));
+                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
                              
                tbl.setCreateBy(user.getUserId());
                tbl.setCreateDate(new Date());
@@ -152,9 +139,9 @@ public class SeqController  extends AbstractListScreen{
 
 //**************************************EDIT*************************************
 //	 EDIT	 
-	 @RequestMapping(value="/seqEdit.htm", method=RequestMethod.POST)
-     public @ResponseBody String seqEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String SeqName=reg.getParameter("seqName");
+	 @RequestMapping(value="/karyawanEdit.htm", method=RequestMethod.POST)
+     public @ResponseBody String karyawanEdit(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String Nik=reg.getParameter("nik");
 		 
 		String userId = reg.getParameter("userId");
          //String ses = (String) session.getAttribute("session"+userId);
@@ -170,14 +157,12 @@ public class SeqController  extends AbstractListScreen{
          SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblSeqDAO dao = new TblSeqDAO(sess);
-               TblSeq tbl = dao.getById(SeqName);
+               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
+               TblKaryawan tbl = dao.getById(Nik);
                 String tblOld = gson.toJson(tbl);
-                    tbl.setLastLogIn(formatter.parse(reg.getParameter("lastLogIn")));
-                    tbl.setKeterangan(reg.getParameter("keterangan"));
-                    tbl.setSeqName(reg.getParameter("seqName"));
-                    tbl.setSeqNum(Long.parseLong((reg.getParameter("seqNum"))));
-                    tbl.setTarif(new BigDecimal((reg.getParameter("tarif"))));
+                    tbl.setNik(reg.getParameter("nik"));
+                    tbl.setNama(reg.getParameter("nama"));
+                    tbl.setUnitKerja(reg.getParameter("unitKerja"));
                
                tbl.setUpdateBy(user.getUserId());
                tbl.setUpdateDate(new Date());
@@ -196,9 +181,9 @@ public class SeqController  extends AbstractListScreen{
  	 }
 	 
 //	***********************************DELETE**************************************** 
-	 @RequestMapping(value="/seqDelete.htm", method=RequestMethod.POST)
-     public @ResponseBody String seqDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String SeqName=reg.getParameter("seqName");
+	 @RequestMapping(value="/karyawanDelete.htm", method=RequestMethod.POST)
+     public @ResponseBody String karyawanDelete(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String Nik=reg.getParameter("nik");
 	
 //		 String sId = reg.getParameter("param"); //param sesuaikan dengan yg di jsp
 		 String userId = reg.getParameter("userId");
@@ -214,8 +199,8 @@ public class SeqController  extends AbstractListScreen{
          Gson gson = new Gson();
          try {
                sess = HibernateUtil.getSessionFactory().openSession();
-               TblSeqDAO dao = new TblSeqDAO(sess);
-               TblSeq tbl = dao.getById(SeqName);
+               TblKaryawanDAO dao = new TblKaryawanDAO(sess);
+               TblKaryawan tbl = dao.getById(Nik);
                String tblDel = gson.toJson(tbl);
                sess.beginTransaction();
                dao.delete(tbl);
@@ -257,29 +242,18 @@ public class SeqController  extends AbstractListScreen{
 
 //===============================REPORT====================================================
 
-	@RequestMapping(value="/seqReport.htm",method=RequestMethod.GET)
-	 public String doGetseqReport(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
+	@RequestMapping(value="/karyawanReport.htm",method=RequestMethod.GET)
+	 public String doGetkaryawanReport(java.util.Map<String,Object> model, HttpSession session, HttpServletRequest reg, HttpServletResponse res){ 
 	 	super.doGet(model, session, reg,res);
-	 	return "/report/seqReport";
+	 	return "/report/karyawanReport";
 	}
 	
 	
-		 @RequestMapping(value="/seqDataReport.htm", method=RequestMethod.GET)
-     public @ResponseBody String seqDataReport(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
-                    String LastLogIn ="00-00-0000";
-                    if(reg.getParameter("LastLogIn").length()>0){
-                    LastLogIn = (reg.getParameter("LastLogIn"));
-                    }
-                    String Keterangan=reg.getParameter("Keterangan");
-                    String SeqName=reg.getParameter("SeqName");
-                    String SeqNum ="0";
-                    if(reg.getParameter("SeqNum").length()>0){
-                    SeqNum = (reg.getParameter("SeqNum"));
-                    }
-                    String Tarif ="0";
-                    if(reg.getParameter("Tarif").length()>0){
-                    Tarif = (reg.getParameter("Tarif"));
-                    }		 
+		 @RequestMapping(value="/karyawanDataReport.htm", method=RequestMethod.GET)
+     public @ResponseBody String karyawanDataReport(Map<String, Object> model,HttpSession session,HttpServletRequest reg) {
+                    String Nik=reg.getParameter("Nik");
+                    String Nama=reg.getParameter("Nama");
+                    String UnitKerja=reg.getParameter("UnitKerja");		 
          String userId = reg.getParameter("userId");
          String ses = (String) session.getAttribute("session"+userId);
          TblUser user = (TblUser) session.getAttribute("user"+userId);
@@ -295,9 +269,9 @@ public class SeqController  extends AbstractListScreen{
          try {
         	long rowCount=0;
 			sess = HibernateUtil.getSessionFactory().openSession();
-			TblSeqDAO dao = new TblSeqDAO(sess);
-			List<TblSeq> l = new ArrayList<TblSeq>();
-				l = dao.getBy(formatter.parse(LastLogIn),Keterangan,SeqName,Long.parseLong(SeqNum),new BigDecimal(Tarif));
+			TblKaryawanDAO dao = new TblKaryawanDAO(sess);
+			List<TblKaryawan> l = new ArrayList<TblKaryawan>();
+				l = dao.getBy(Nik,Nama,UnitKerja);
 			sess.close();
             result = gson.toJson(l);
             System.out.println(result);

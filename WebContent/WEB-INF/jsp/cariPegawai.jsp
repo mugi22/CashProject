@@ -28,12 +28,16 @@
                 </tr>
             </thead>
         </table>        
+                  
         <div id="toolbar">
-        <label>Nik</label> :<input name="Nik"	type="hidden" class="easyui-textbox" id="userId" value="${user}">	
-            	<label>Nik</label> :<input name="Nik"	class="easyui-textbox" id="Nik">	                 
- 			 	<label>Nama</label> :<input name="Nama"	class="easyui-textbox"  id="Nama">	
-				  <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="retrieve()" id="btnShow">Cari</a>
-          
+        <%@ include file="toolbar.jsp" %>          
+        	<td align="right">
+        	<!-- 
+        		 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-authorize" plain="true" onclick="" id="btnAdd" ><%=otorize %></a>
+        	-->
+        	</td>
+        	</tr>
+        </table>
         </div>
  <!-- ************************** END LIST/TABLE ******************************************** -->       
     

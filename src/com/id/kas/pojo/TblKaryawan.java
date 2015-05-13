@@ -1,4 +1,4 @@
-package com.id.kas.DEVELOPMENT;
+package com.id.kas.pojo;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import com.id.kas.pojo.AuditTrail;
 
 @Entity
 @Table(name = "TBL_KARYAWAN", schema = "TESTDB")

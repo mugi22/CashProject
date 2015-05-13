@@ -21,8 +21,6 @@ import org.hibernate.criterion.Restrictions;
 
 import com.id.kas.pojo.TblSeq;
 
-//import com.id.kas.pojo.dacen.TblSeq;
-
 public class TblSeqDAO {
 	private Session session;
 	

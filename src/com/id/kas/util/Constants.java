@@ -10,4 +10,8 @@ public interface Constants {
 	public interface Currency{
 		public String Idr ="360";
 	}
+	
+	public interface SysParam{
+		public String DownloadFolder  ="c:/download/";
+	}
 }

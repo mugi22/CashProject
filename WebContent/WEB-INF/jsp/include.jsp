@@ -1,3 +1,18 @@
+<%@page import="java.io.*" %>
+<%@page import="java.util.*" %>
+
+<!-- membaca file properties -->
+<%
+	Properties properties = new Properties();
+	properties.load(getServletContext().getResourceAsStream("/WEB-INF/myapp.properties"));
+	String add=properties.getProperty("add");
+	String edit=properties.getProperty("edit");
+	String delete=properties.getProperty("delete");
+	String otorize=properties.getProperty("otorize");
+	String show=properties.getProperty("show");
+%>    
+    
+
 <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
         <link rel="stylesheet" type="text/css" href="css/demo.css">
