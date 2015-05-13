@@ -19,13 +19,16 @@ jspTemplate
             <form name="FREG" id="formCari" method="post" action="#"  >   
             <table align="center">  	                       
                     <tr>
-<td><label style="width: 150px;"><%=properties.getProperty("karyawan.Nama")%></label> : <input name="Nama" type="text" id="Nama" size="30" maxlength="30"></td>
+<td><label style="width: 150px;"><%=properties.getProperty("coba.Tarif")%></label> : <input name="Tarif" type="text" id="Tarif" size="30" maxlength="30"></td>
 </tr>
                     <tr>
-<td><label style="width: 150px;"><%=properties.getProperty("karyawan.UnitKerja")%></label> : <input name="UnitKerja" type="text" id="UnitKerja" size="30" maxlength="30"></td>
+<td><label style="width: 150px;"><%=properties.getProperty("coba.Nik")%></label> : <input name="Nik" type="text" id="Nik" size="30" maxlength="30"></td>
 </tr>
                     <tr>
-<td><label style="width: 150px;"><%=properties.getProperty("karyawan.Nik")%></label> : <input name="Nik" type="text" id="Nik" size="30" maxlength="30"></td>
+<td><label style="width: 150px;"><%=properties.getProperty("coba.Nama")%></label> : <input name="Nama" type="text" id="Nama" size="30" maxlength="30"></td>
+</tr>
+                    <tr>
+<td><label style="width: 150px;"><%=properties.getProperty("coba.TglLahir")%></label> : <input name="TglLahir" type="text" id="TglLahir" size="30" maxlength="30"></td>
 </tr>
 
 				 <tr>
@@ -45,29 +48,23 @@ jspTemplate
 
 
 <!-- **********************TABLE RESULT************************************** -->
-        <table id="dg" title="KARYAWAN" class="easyui-datagrid" style="width:100%;"
+        <table id="dg" title="COBA" class="easyui-datagrid" style="width:100%;"
                toolbar="#toolbar" pagination="true"  data-options="total:2000,pageSize:10"
                rownumbers="true" fitColumns="true" singleSelect="true">
             <thead>
                 <tr>
-                    <th field="nama" width="100"sortable="true"><%=properties.getProperty("karyawan.Nama")%></th> 
-                    <th field="unitKerja" width="100"sortable="true"><%=properties.getProperty("karyawan.UnitKerja")%></th> 
-                    <th field="nik" width="100"sortable="true"><%=properties.getProperty("karyawan.Nik")%></th> 
+                    <th field="tarif" width="100"sortable="true"data-options="formatter:function(value, row){return accounting.formatNumber(row.tarif,0,'.',','); }"align="right"><%=properties.getProperty("coba.Tarif")%></th> 
+                    <th field="nik" width="100"sortable="true"><%=properties.getProperty("coba.Nik")%></th> 
+                    <th field="nama" width="100"sortable="true"><%=properties.getProperty("coba.Nama")%></th> 
+                    <th field="tglLahir" width="100"sortable="true"><%=properties.getProperty("coba.TglLahir")%></th> 
                      
                 </tr>
             </thead>
         </table>  
           <div id="toolbar">
-        <table width="100%">
-        	<tr>
-        	<td align="left">
-	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="doAdd()" id="btnAdd" ><%= add %></a>
-	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="doEdit()" id="btnEdit"><%= edit %></a>
-	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="doDelete()" id="btnDelete"><%= delete %></a>
-	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="doShow()" id="btnShow"><%= show %></a>
-        	</td>
+        	<%@ include file="toolbar.jsp" %>
         	<td align="right">
-        	<!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-authorize" plain="true" onclick="" id="btnAdd" ><%=properties.getProperty("button.otorize")  %></a>
+        	<!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-authorize" plain="true" onclick="" id="btnAdd" ><%=properties.getProperty("button.otorize") %></a>
         	 -->
         	</td>
         	</tr>
@@ -78,12 +75,13 @@ jspTemplate
           
 <!-- ************************** FORM ******************************************** -->
 	<div id="dlg" class="easyui-dialog"	style="width: 750px;  padding: 10px 20px" closed="true"	buttons="#dlg-buttons" data-options="modal:true">
-		<div class="ftitle">KARYAWAN</div>
+		<div class="ftitle">COBA</div>
 		<form id="fm" method="post" novalidate>
 		<table align="center"> 
-                    <tr><td><div class="fitem">	<label><%=properties.getProperty("karyawan.Nama")%></label> :<input name="nama"	class="easyui-textbox" id="nama"></td></tr>	</div>
-                    <tr><td><div class="fitem">	<label><%=properties.getProperty("karyawan.UnitKerja")%></label> :<input name="unitKerja"	class="easyui-textbox" id="unitKerja"></td></tr>	</div>
-                    <tr><td><div class="fitem">	<label><%=properties.getProperty("karyawan.Nik")%></label> :<input name="nik"	class="easyui-textbox" id="nik"></td></tr>	</div>
+                    <tr><td><div class="fitem">	<label><%=properties.getProperty("coba.Tarif")%></label> :<input name="tarif"	class="easyui-numberbox" data-options="min:0,precision:0,groupSeparator:','" id="tarif"></td></tr>	</div>
+                    <tr><td><div class="fitem">	<label><%=properties.getProperty("coba.Nik")%></label> :<input name="nik"	class="easyui-textbox" id="nik"></td></tr>	</div>
+                    <tr><td><div class="fitem">	<label><%=properties.getProperty("coba.Nama")%></label> :<input name="nama"	class="easyui-textbox" id="nama"></td></tr>	</div>
+                    <tr><td><div class="fitem">	<label><%=properties.getProperty("coba.TglLahir")%></label> :<input name="tglLahir"	class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" id="tglLahir"></td></tr>	</div>
 			
 		</table>
 		</form>
@@ -114,8 +112,8 @@ var branchcode;
 	}
 
 	function retrieve() {		
-		var jsonurl = 'karyawanListAll.htm?'+
-'Nama='+$('#Nama').val()+"&"+'UnitKerja='+$('#UnitKerja').val()+"&"+'Nik='+$('#Nik').val()+"&"+"userId="+"${userId}";
+		var jsonurl = 'cobaListAll.htm?'+
+'Tarif='+$('#Tarif').val()+"&"+'Nik='+$('#Nik').val()+"&"+'Nama='+$('#Nama').val()+"&"+'TglLahir='+$('#TglLahir').val()+"&"+"userId="+"${userId}";
 		$('#dg').datagrid({
 			url : jsonurl,
 			onLoadSuccess : function(data) {
@@ -141,13 +139,13 @@ var branchcode;
 
 	/* END function untuk list data*/
 	
-	/* ============FORM FUNCTION ========== karyawantambah*/
+	/* ============FORM FUNCTION ========== cobatambah*/
 
 	function doAdd() { 
 		idRequired(true);
 		$('#dlg').dialog('open').dialog('setTitle', 'Tambah');
 		$('#fm').form('clear');
-		url = 'karyawanAdd.htm?'+"userId="+"${userId}";
+		url = 'cobaAdd.htm?'+"userId="+"${userId}";
 		onAdd();
 	}
 	function doEdit() {
@@ -158,7 +156,7 @@ var branchcode;
 			$('#dlg').dialog('open').dialog('setTitle', 'Edit');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'karyawanEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
+			url = 'cobaEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten; //SESUAIKAN
 			onEdit();
 		}
 	}
@@ -174,7 +172,7 @@ var branchcode;
 			$('#dlg').dialog('open').dialog('setTitle', 'Tampil');
 			$('#fm').form('clear');
 			$('#fm').form('load', row);
-			url = 'karyawanEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
+			url = 'cobaEdit.htm?'+"userId="+"${userId}";//?param='+row.kodeProvinsi+'&param2='+row.kodeKabupaten;
 			onShow();
 		}
 		*/
@@ -187,8 +185,8 @@ var branchcode;
 			$.messager.confirm('Confirm', 'Anda Ingin Mengapus Data?',
 					function(r) {
 						if (r) {
-							$.post('karyawanDelete.htm', {
-							                    nama : row.nama,
+							$.post('cobaDelete.htm', {
+							                    nik : row.nik,
 							userId:"${userId}"
 							}, function(result) {
 								if (result.success) {
@@ -230,7 +228,7 @@ var branchcode;
 	
 	
 function idRequired(t){
-                    $('#nama').textbox({   required: t});
+                    $('#nik').textbox({   required: t});
 
 
 	/*$('#idJurnalTransaksi').textbox({   required: t			});
@@ -251,34 +249,37 @@ function idRequired(t){
 	
 	/*inputan readonly atau tidak saat onShow  XXXenableField */
 	function onShow() {
-		                    $('#nama').textbox('readonly', true);
-                    $('#unitKerja').textbox('readonly', true);
+		                    $('#tarif').textbox('readonly', true);
                     $('#nik').textbox('readonly', true);
+                    $('#nama').textbox('readonly', true);
+                    $('#tglLahir').textbox('readonly', true);
 
 		$('#btnSave').linkbutton('disable');
 	}
 	
 	/*inputan readonly atau tidak saat Add*/
 	function onAdd() {
-		                    $('#nama').textbox('readonly', false);
-                    $('#unitKerja').textbox('readonly', false);
+		                    $('#tarif').textbox('readonly', false);
                     $('#nik').textbox('readonly', false);
+                    $('#nama').textbox('readonly', false);
+                    $('#tglLahir').textbox('readonly', false);
 		
 		$('#btnSave').linkbutton('enable');
 	}
 	
 	/*inputan readonly atau tidak saat Edit */
 	function onEdit() {
-		                    $('#nama').textbox('readonly', true);
-                    $('#unitKerja').textbox('readonly', false);
-                    $('#nik').textbox('readonly', false);
+		                    $('#tarif').textbox('readonly', false);
+                    $('#nik').textbox('readonly', true);
+                    $('#nama').textbox('readonly', false);
+                    $('#tglLahir').textbox('readonly', false);
 	
 		$('#btnSave').linkbutton('enable');
 	}
 /*===============================================REPORT==================================*/
 function doCetak(){
-		var repUrl = 'karyawanReport.htm?'+
-					  'Nama='+$('#Nama').val()+"&"+'UnitKerja='+$('#UnitKerja').val()+"&"+'Nik='+$('#Nik').val()+"&"+"userId="+"${userId}";;
+		var repUrl = 'cobaReport.htm?'+
+					  'Tarif='+$('#Tarif').val()+"&"+'Nik='+$('#Nik').val()+"&"+'Nama='+$('#Nama').val()+"&"+'TglLahir='+$('#TglLahir').val()+"&"+"userId="+"${userId}";;
 		var s = window.location.search.replace("?", "");
 		window.open(repUrl+"&"+s,
 				"_blank", 

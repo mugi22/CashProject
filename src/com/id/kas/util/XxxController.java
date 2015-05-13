@@ -73,14 +73,15 @@ public class XxxController {
 		}
                 
 		TempCreate tem = new TempCreate();
-//		V I E W H:\Workspace\CashProject\WebContent\WEB-INF\jsp
-		String sTemplate="H:\\Workspace\\CashProject\\template\\"; //TEMPLATE FoLDER
-		String sFileDAO="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+daoName+"DAO.java"; //DAO
-		String sFileController="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\"+conName+".java";//CONTROLER
-		String sFormFileController="H:\\Workspace\\CashProject\\src\\com\\id\\kas\\DEVELOPMENT\\Form"+conName+".java";//CONTROLER
-		String sFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\"+jspName+".jsp"; //JSP
-		String sFileCreateFrom="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\"+jspName+"form.jsp"; //JSP FORM
-		String sReportFileCreate="H:\\Workspace\\CashProject\\WebContent\\WEB-INF\\jsp\\report\\"+jspName+"Report.jsp"; //JSP
+//		V I E W H:\Workspace\CashProject\WebContent\WEB-INF\jspH:\\Workspace\\CashProject
+		String sWorkSpaceFolder =Constants.SysParam.WorkSpaceFroder;
+		String sTemplate=sWorkSpaceFolder+"\\template\\"; //TEMPLATE FoLDER
+		String sFileDAO=sWorkSpaceFolder+"\\src\\com\\id\\kas\\DEVELOPMENT\\"+daoName+"DAO.java"; //DAO
+		String sFileController=sWorkSpaceFolder+"\\src\\com\\id\\kas\\DEVELOPMENT\\"+conName+".java";//CONTROLER
+		String sFormFileController=sWorkSpaceFolder+"\\src\\com\\id\\kas\\DEVELOPMENT\\Form"+conName+".java";//CONTROLER
+		String sFileCreate=sWorkSpaceFolder+"\\WebContent\\WEB-INF\\jsp\\"+jspName+".jsp"; //JSP
+		String sFileCreateFrom=sWorkSpaceFolder+"\\WebContent\\WEB-INF\\jsp\\"+jspName+"form.jsp"; //JSP FORM
+		String sReportFileCreate=sWorkSpaceFolder+"\\WebContent\\WEB-INF\\jsp\\report\\"+jspName+"Report.jsp"; //JSP
 		String sFile;
 		
 //		JSP FORM 		controllerFormx

@@ -21,7 +21,7 @@ public class ReadPropertiesFile {
 	public  void propertesChek(String stringToChek) {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader br = null;	
-		String s = "H:/Workspace/CashProject/WebContent/WEB-INF/myapp.properties";
+		String s = Constants.SysParam.WorkSpaceFroder+"/WebContent/WEB-INF/myapp.properties";
 		try{
 			String sCurrentLine;
 			br = new BufferedReader(new FileReader(s));

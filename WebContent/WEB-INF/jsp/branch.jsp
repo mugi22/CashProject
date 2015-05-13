@@ -39,17 +39,16 @@
                 </tr>
             </thead>
         </table>        
-                  
         <div id="toolbar">
-        <%@ include file="toolbar.jsp" %>          
+        	<%@ include file="toolbar.jsp" %>
         	<td align="right">
-        	<!-- 
-        		 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-authorize" plain="true" onclick="" id="btnAdd" ><%=otorize %></a>
-        	-->
+        	<!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-authorize" plain="true" onclick="" id="btnAdd" ><%=properties.getProperty("button.otorize") %></a>
+        	 -->
         	</td>
         	</tr>
         </table>
         </div>
+
  <!-- ************************** END LIST/TABLE ******************************************** -->       
     
           

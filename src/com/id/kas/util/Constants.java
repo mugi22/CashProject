@@ -12,6 +12,11 @@ public interface Constants {
 	}
 	
 	public interface SysParam{
-		public String DownloadFolder  ="c:/download/";
+		public String DownloadFolder  ="c:/download/";//H:\\Workspace\\CashProject
+		public String WorkSpaceFroder = "H:\\Workspace\\CashProject";
 	}
+	
+	
+	
+	
 }

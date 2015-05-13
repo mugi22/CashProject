@@ -5,12 +5,13 @@
 <%
 	Properties properties = new Properties();
 	properties.load(getServletContext().getResourceAsStream("/WEB-INF/myapp.properties"));
-	String add=properties.getProperty("add");
-	String edit=properties.getProperty("edit");
-	String delete=properties.getProperty("delete");
-	String otorize=properties.getProperty("otorize");
-	String show=properties.getProperty("show");
-%>    
+	%>
+<!-- 	String add=properties.getProperty("button.add");
+	String edit=properties.getProperty("button.edit");
+	String delete=properties.getProperty("button.delete");
+	String otorize=properties.getProperty("button.otorize");
+	String show=properties.getProperty("button.show");
+ -->    
     
 
 <link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">

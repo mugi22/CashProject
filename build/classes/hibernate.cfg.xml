@@ -73,6 +73,7 @@
     <mapping class="com.id.kas.pojo.TblKelurahan"/> 
      <!-- package sesuaikan -->
     <mapping class="com.id.kas.DEVELOPMENT.TblTest"/>
+    <mapping class="com.id.kas.DEVELOPMENT.TblCoba"/>
     <!--TblRekeningIaMaster -->
     <mapping class="com.id.kas.pojo.TblKaryawan"/> 
     <mapping class="com.id.kas.pojo.TblCoaMaster" />
