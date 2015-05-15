@@ -15,24 +15,25 @@
 <head>
 <meta charset="UTF-8">
 <title>UANG KAS</title>
-<link rel="stylesheet" type="text/css"
-	href="css/themes/default/easyui.css">
+<!--  -->
+<link rel="stylesheet" type="text/css"	href="css/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="css/themes/icon.css">
 <link rel="stylesheet" type="text/css" href="css/demo.css">
+
 <script type="text/javascript" src="css/jquery.min.js"></script>
 <script type="text/javascript" src="css/jquery.easyui.min.js"></script>
 
               
 </head>
-<body>
+<body style="padding: 2px;">
 	
-	<div style="margin:  0px;"></div> 
-	<div id="cc" class="easyui-layout" style="width: 100%; height: 600px; padding: 0px;">
-		<div data-options="region:'north'" style="height: 100px; background-color:aqua;">
+	<!-- div style="margin:  0px; padding: 0px"></div--> 
+	<div id="cc" class="easyui-layout" style="width: 100%; height: 700px; padding-top: 0px;">
+		<div data-options="region:'north'" style="height: 85px; background-color:aqua; ">
 			<h2>Cash Project</h2>
 			<table width="100%">
 			<tr>
-				<td align="left" width="20%"><a href="logout.htm?userId=${user.userId}">Logout</a><br> ${user.userId} ${user.name} ${user.branchCode}
+				<td align="left" width="20%" style="padding-bottom: 1px;"><a href="logout.htm?userId=${user.userId}">Logout</a><br> ${user.userId} ${user.name} ${user.branchCode}
 				<input type="hidden" id="key" value="${key}" >
 				</td>
 				<td align="right">
@@ -56,8 +57,8 @@
 	        ${menu} 
 			
 		</div>
-		<div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
-			<iframe src="utamaMain.htm?${paramx}" style="width: 100%; height: 100%" id="iframe" frameborder="0"></iframe>			
+		<div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">		
+			<iframe src="utamaMain.htm?${paramx}" style="width: 100%; height: 100%;padding-top: 2px" id="iframe" frameborder="0"></iframe>			
 		</div>
 	</div>
 <!-- a href="cariPegawai.htm">Test</a-->
